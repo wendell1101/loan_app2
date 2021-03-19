@@ -1,0 +1,135 @@
+.main-nav {
+  width: 100%;
+  height: 10vh;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0.5rem 0.5rem;
+  transition: 300ms ease-out;
+  // background: $primaryColor1;
+  background: transparent;
+  ul {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding-top: 1rem;
+    li {
+      transition: 0.2s ease-in-out;
+      a {
+        color: #fff;
+      }
+      a:hover {
+        text-decoration: none;
+      }
+    }
+    li.active {
+      border-bottom: 2px solid $primaryColor1;
+    }
+    li:hover {
+      border-bottom: 2px solid $primaryColor3;
+    }
+    li.active-home {
+      border-bottom: 2px solid #fff !important;
+    }
+  }
+}
+.logo {
+  padding-top: 5px;
+  margin-right: auto;
+  width: 120px;
+  text-decoration: none;
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.hamburger {
+  color: #fff;
+  display: none;
+  cursor: pointer;
+  font-size: 1.3rem;
+}
+.side-nav {
+  position: fixed;
+  background: $primaryColor1;
+  top: 0;
+  left: 0;
+  width: 60%;
+  height: 100%;
+  padding: 0.5rem;
+  padding-top: 80px;
+  z-index: 1000;
+  animation: slideLeft 300ms ease-out;
+  display: none;
+  li {
+    width: 100%;
+    height: 40px;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    border-radius: 5px;
+    padding: 0.5rem 0.5rem;
+    a {
+      width: 100% !important;
+      color: #fff;
+    }
+    a:hover {
+      text-decoration: none;
+    }
+  }
+  li:hover {
+    background: $primaryColor3;
+    padding-left: 1rem;
+    transition: 300ms ease-in-out;
+  }
+  li.active {
+    background: $primaryColor3;
+  }
+}
+.side-nav-logo {
+  position: absolute;
+  top: 0;
+  width: 140px;
+  height: 80px;
+  img {
+    width: 100px;
+    height: 70px;
+  }
+}
+.side-nav.active {
+  display: block;
+}
+.sticky2 {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 8vh !important;
+  z-index: 500;
+  background: $primaryColor3;
+  padding: 45px 8px !important;
+  -webkit-box-shadow: -1px 4px 11px -2px $primaryColor4;
+  box-shadow: -1px 2px 2px -2px #f4f4f4;
+}
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 8vh !important;
+  z-index: 500;
+  background: #fff;
+  padding: 45px 8px !important;
+  -webkit-box-shadow: -1px 4px 11px -2px $primaryColor4;
+  box-shadow: -1px 2px 2px -2px #f4f4f4;
+}
+@keyframes slideLeft {
+  0% {
+    transform: translateX(-100px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}

@@ -1,0 +1,25 @@
+$primaryColor1: #1d3557;
+$primaryColor2: #e63946;
+$primaryColor3: #457b9d;
+$primaryColor4: #a8dadc;
+$primaryColor5: #f1faee;
+
+.btn-info {
+  background: $primaryColor3 !important;
+}
+.bg-info {
+  background: $primaryColor3 !important;
+}
+.text-info {
+  color: $primaryColor3 !important;
+}
+.text-title {
+  color: $primaryColor1 !important;
+}
+// .text-success {
+//   color: $primaryColor2 !important;
+// }
+// .btn-success {
+//   background: $primaryColor2 !important;
+//   border: none !important;
+// }
