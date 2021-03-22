@@ -1,4 +1,4 @@
-<?php include 'app/includes/header.php' ?>
+<?php include 'app/includes/main-header.php' ?>
 <div class="hero-wrapper"></div>
 <div class="wrapper">
     <div class="hero">
@@ -15,7 +15,7 @@
                 </div>
                 <div class="col-md-6 align-items-center hero-left p-3">
                     <div>
-                        <button class="btn btn-success btn-block mb-2">Request your loan</button>
+                        <a href="loan_create.php" class="btn btn-success btn-block mb-2">Request your loan</a>
                         <small>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quis, maiores. Doloribus ducimus fugit eius aliquam expedita libero vero eligendi dicta!</small>
                     </div>
                 </div>
@@ -27,7 +27,7 @@
     <div class="section2">
         <div class="container">
             <div class="row">
-                <div class="col-md-8 mx-auto text-center ">
+                <div class="col-md-8 mx-auto text-center w">
                     <h2>Here’s how to get an online loan FAST</h2>
                     <h4>All it takes is three simple steps.</h4>
 
@@ -46,7 +46,7 @@
                         </li>
                     </ul>
 
-                    <button class="btn btn-success mx-auto btn-lg">Get Started</button>
+                    <a href="loan_create.php" class="btn btn-success mx-auto btn-lg">Get Started</a>
                 </div>
             </div>
         </div>
@@ -63,30 +63,6 @@
             </div>
         </div>
     </div>
-
-    <!--footer -->
-    <!--Footer-->
-    <footer>
-        <div class="container justify-content-center">
-            <div class="row">
-                <div class="col-md-12 text-center">
-                    <a href="#" class="logo"><img src="assets/img/logo_dark.png" class="footer-logo" alt="logo"></a>
-                </div>
-                <div class="col-md-12 text-center mt-5">
-                    <div class="footer-icon-container">
-                        <a href="#" target="_blank"><i class="footer-icon fab fa-facebook-f" target="_blank"></i></a>
-                        <a href="#" target="_blank"><i class="footer-icon fab fa-twitter"></i></a>
-                        <a href="#" target="_blank"><i class="footer-icon fab fa-github"></i></a>
-                        <a href="#" target="_blank"><i class="footer-icon fab fa-linkedin-in"></i></a>
-                        <a href="#" target="_blank"><i class="footer-icon fab fa-youtube"></i></a>
-                    </div>
-                </div>
-                <div class="col-md-12 text-center mt-5">
-                    <p class="footer-text">Copyright &copy; 2021 - Faculty and Employee Association</p>
-                </div>
-            </div>
-        </div>
-    </footer>
 
 </div>
 

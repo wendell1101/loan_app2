@@ -96,6 +96,34 @@ li {
   margin-top: 10vh !important;
 }
 
+/*Footer*/
+
+/*footer*/
+footer {
+  padding: 0 1rem;
+  background: rgba(114, 41, 13, 0.52);
+  background: $primaryColor5;
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  z-index: -1;
+  .logo {
+    z-index: 100 !important;
+  }
+}
+.footer-icons {
+  .icon {
+    z-index: 100;
+    color: black;
+    font-size: 1.7rem;
+    margin-right: 0.5rem;
+    transition: 0.3s ease;
+  }
+  .icon:hover {
+    color: #fff !important;
+    font-size: 1.8rem;
+  }
+}
 /*back to top button*/
 
 #button {
@@ -147,38 +175,6 @@ li {
 #button.show {
   opacity: 1;
   visibility: visible;
-}
-
-/*Footer*/
-
-/*Footer*/
-
-footer {
-  padding: 100px 0;
-  min-height: 50vh;
-}
-
-.footer-logo {
-  width: 120px !important;
-}
-
-.footer-icon-container {
-  margin-top: 10px;
-  text-align: center;
-  .footer-icon {
-    color: $primaryColor1;
-    font-size: 1.5rem;
-    margin-right: 1.2rem;
-    transition: 300ms ease-out;
-  }
-  .footer-icon:hover {
-    color: $primaryColor3;
-  }
-}
-
-.footer-text {
-  font-size: 1rem;
-  color: $primaryColor1;
 }
 
 @import "components/navbar";

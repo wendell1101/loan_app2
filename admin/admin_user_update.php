@@ -85,6 +85,7 @@ if (isset($_POST['update'])) {
                         <option value="5" <?php echo ($activeUser->position_id === 5) ? "selected" : '' ?>>Assistant Treasurer</option>
                         <option value="6" <?php echo ($activeUser->position_id === 6) ? "selected" : '' ?>>Membership Committee</option>
                         <option value="7" <?php echo ($activeUser->position_id === 7) ? "selected" : '' ?>>Financial Committee</option>
+                        <option value="8" <?php echo ($activeUser->position_id === 8) ? "selected" : '' ?>>Comaker</option>
                     </select>
                 </div>
                 <input type="hidden" name="id" value="<?php echo $id ?>">

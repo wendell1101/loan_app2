@@ -1,5 +1,5 @@
 $primaryColor1: #1d3557;
-$primaryColor2: #e63946;
+$primaryColor2: #28a745;
 $primaryColor3: #457b9d;
 $primaryColor4: #a8dadc;
 $primaryColor5: #f1faee;
@@ -15,6 +15,9 @@ $primaryColor5: #f1faee;
 }
 .text-title {
   color: $primaryColor1 !important;
+}
+.title {
+  font-weight: 300;
 }
 // .text-success {
 //   color: $primaryColor2 !important;

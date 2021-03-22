@@ -15,6 +15,10 @@
   color: #1d3557 !important;
 }
 
+.title {
+  font-weight: 300;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -122,6 +126,40 @@ li {
   margin-top: 10vh !important;
 }
 
+/*Footer*/
+/*footer*/
+footer {
+  padding: 0 1rem;
+  background: rgba(114, 41, 13, 0.52);
+  background: #f1faee;
+  min-height: 100px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  z-index: -1;
+}
+
+footer .logo {
+  z-index: 100 !important;
+}
+
+.footer-icons .icon {
+  z-index: 100;
+  color: black;
+  font-size: 1.7rem;
+  margin-right: 0.5rem;
+  -webkit-transition: 0.3s ease;
+  transition: 0.3s ease;
+}
+
+.footer-icons .icon:hover {
+  color: #fff !important;
+  font-size: 1.8rem;
+}
+
 /*back to top button*/
 #button {
   display: -webkit-box;
@@ -187,39 +225,6 @@ li {
   visibility: visible;
 }
 
-/*Footer*/
-/*Footer*/
-footer {
-  padding: 100px 0;
-  min-height: 50vh;
-}
-
-.footer-logo {
-  width: 120px !important;
-}
-
-.footer-icon-container {
-  margin-top: 10px;
-  text-align: center;
-}
-
-.footer-icon-container .footer-icon {
-  color: #1d3557;
-  font-size: 1.5rem;
-  margin-right: 1.2rem;
-  -webkit-transition: 300ms ease-out;
-  transition: 300ms ease-out;
-}
-
-.footer-icon-container .footer-icon:hover {
-  color: #457b9d;
-}
-
-.footer-text {
-  font-size: 1rem;
-  color: #1d3557;
-}
-
 .main-nav {
   width: 100%;
   height: 10vh;
@@ -231,7 +236,7 @@ footer {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  padding: 0.5rem 0.5rem;
+  padding: 0.7rem 0.5rem;
   -webkit-transition: 300ms ease-out;
   transition: 300ms ease-out;
   background: transparent;
@@ -277,7 +282,7 @@ footer {
 }
 
 .logo {
-  padding-top: 5px;
+  padding: 0.8rem 0;
   margin-right: auto;
   width: 120px;
   text-decoration: none;

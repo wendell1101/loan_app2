@@ -20,16 +20,15 @@ require_once 'core.php';
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
 
     <link rel="stylesheet" href="assets/css/main.css?id=<?php echo time() ?>">
-    <link rel="stylesheet" href="assets/css/loan.css?id=<?php echo time() ?>">
 </head>
 
 <body>
-    <nav class="main-nav" id="main-nav" style="background: #28a745!important;">
+    <nav class="main-nav" id="main-nav">
         <a href="index.php" class="logo"><img src="assets/img/logo_light.png" alt="logo"></a>
         <ul>
 
             <li class="active-home">
-                <a href="index.php">Home</a>
+                <a href="#">Home</a>
             </li>
             <li>
                 <a href="about.php">About</a>

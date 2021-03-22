@@ -1,5 +1,5 @@
 <?php
-function showPrice($price)
+function formatDecimal($num)
 {
-    return 'PHP ' . number_format((float)$price, 2, '.', '');
+    return  number_format((float)$num, 2, '.', '');
 }

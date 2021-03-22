@@ -33,29 +33,32 @@
                 </a>
             </li>
             <li class="nav-item menu-open
-            <?php echo (strpos(CURRENT_URL, 'categor') !== false) ? 'active' : '' ?>
+            <?php echo (strpos(CURRENT_URL, 'type') !== false) ? 'active' : '' ?>
             ">
-                <a href="<?php echo BASE_URL . 'admin/categories.php' ?>" class="nav-link ">
+                <a href="<?php echo BASE_URL . 'admin/types.php' ?>" class="nav-link ">
                     <i class="nav-icon fa fa-list-alt"></i>
                     <p>
-                        Types
+                        Loan Types
                     </p>
                 </a>
             </li>
+
             <li class="nav-item menu-open
-            <?php echo (strpos(CURRENT_URL, 'product') !== false) ? 'active' : '' ?>
+            <?php echo (strpos(CURRENT_URL, 'department') !== false) ? 'active' : '' ?>
             ">
-                <a href="<?php echo BASE_URL . 'admin/products.php' ?>" class=" nav-link ">
-                    <i class="nav-icon fas fa-user-tie"></i>
+                <a href="<?php echo BASE_URL . 'admin/departments.php' ?>" class="nav-link">
+                    <i class="nav-icon far fa-building"></i>
                     <p>
-                        Positions
+                        Departments
                     </p>
                 </a>
             </li>
+
+
             <li class="nav-item menu-open
-            <?php echo (strpos(CURRENT_URL, 'product') !== false) ? 'active' : '' ?>
+            <?php echo (strpos(CURRENT_URL, 'loans') !== false) ? 'active' : '' ?>
             ">
-                <a href="<?php echo BASE_URL . 'admin/products.php' ?>" class=" nav-link ">
+                <a href="<?php echo BASE_URL . 'admin/loans.php' ?>" class=" nav-link ">
                     <i class="nav-icon fas fa-money-check"></i>
                     <p>
                         Loans
@@ -64,12 +67,12 @@
             </li>
 
             <li class="nav-item menu-open
-            <?php echo (strpos(CURRENT_URL, 'reservation') !== false) ? 'active' : '' ?>
+            <?php echo (strpos(CURRENT_URL, 'payment') !== false) ? 'active' : '' ?>
             ">
-                <a href="<?php echo BASE_URL . 'admin/reservations.php' ?>" class="nav-link">
-                    <i class="nav-icon far fa-building"></i>
+                <a href="<?php echo BASE_URL . 'admin/payments.php' ?>" class=" nav-link ">
+                    <i class="nav-icon fas fa-credit-card"></i>
                     <p>
-                        Departments
+                        Payments
                     </p>
                 </a>
             </li>

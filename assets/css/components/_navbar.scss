@@ -4,10 +4,10 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
-  padding: 0.5rem 0.5rem;
+  padding: 0.7rem 0.5rem;
   transition: 300ms ease-out;
-  // background: $primaryColor1;
   background: transparent;
+
   ul {
     width: 50%;
     height: 100%;
@@ -36,7 +36,7 @@
   }
 }
 .logo {
-  padding-top: 5px;
+  padding: 0.8rem 0;
   margin-right: auto;
   width: 120px;
   text-decoration: none;
