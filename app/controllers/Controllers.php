@@ -5,3 +5,4 @@ require_once 'admin/UserController.php';
 require_once 'admin/DepartmentController.php';
 require_once 'admin/TypeController.php';
 require_once 'admin/LoanController.php';
+require_once 'admin/PaymentController.php';

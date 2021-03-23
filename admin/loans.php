@@ -32,7 +32,7 @@ $loans = $adminLoan->index();
                                 <th scope="col">Term</th>
                                 <th scope="col">Amount</th>
                                 <th scope="col">Interest Rate</th>
-                                <th scope="col">Total Amount</th>
+                                <th scope="col">Total Balance</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Actions</th>
                             </tr>
@@ -52,7 +52,7 @@ $loans = $adminLoan->index();
 
                                     <td>PHP <?php echo formatDecimal($singleLoan->amount) ?></td>
                                     <td><?php echo formatDecimal($adminLoan->getInterest($singleLoan->loan_type_id)->interest) ?> %</td>
-                                    <td>PHP <?php echo formatDecimal($adminLoan->getTotalAmount($singleLoan->id)) ?></td>
+                                    <td>PHP <?php echo formatDecimal($singleLoan->total_amount) ?></td>
                                     <td>
                                         <?php echo $singleLoan->status ?>
                                     </td>
