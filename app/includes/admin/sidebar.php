@@ -56,7 +56,7 @@
 
 
             <li class="nav-item menu-open
-            <?php echo (strpos(CURRENT_URL, 'loans') !== false) ? 'active' : '' ?>
+            <?php echo (strpos(CURRENT_URL, 'loan') !== false) ? 'active' : '' ?>
             ">
                 <a href="<?php echo BASE_URL . 'admin/loans.php' ?>" class=" nav-link ">
                     <i class="nav-icon fas fa-money-check"></i>

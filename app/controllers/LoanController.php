@@ -177,11 +177,7 @@ class Loan extends Connection
         }
     }
 
-    public function finalizeLoan()
-    {
 
-        // $sql = "INSERT INTO loans ()"
-    }
 
     //get department
     public function getDepartment($id)
@@ -198,6 +194,8 @@ class Loan extends Connection
 
         $activeLoan = $_SESSION['active_loan'];
         $id = $_SESSION['id'];
+        // transaction_id
+        $transaction_id = bin2hex(random_bytes(7));
         //LOAN-2021-4
         $loan_number = "LOAN" . '-' . date("Y") . '-' . $id;
         //MEM-2021-8
@@ -209,11 +207,12 @@ class Loan extends Connection
         $amount = $activeLoan['amount'];
 
         $total_amount = $_SESSION['total_amount'];
-        $sql = "INSERT INTO loans (loan_number, membership_number, amount, term, status, department_id,
-        loan_type_id, total_amount, user_id) VALUES(:loan_number, :membership_number, :amount, :term, :status, :department_id,
+        $sql = "INSERT INTO loans (transaction_id, loan_number, membership_number, amount, term, status, department_id,
+        loan_type_id, total_amount, user_id) VALUES(:transaction_id, :loan_number, :membership_number, :amount, :term, :status, :department_id,
         :loan_type_id, :total_amount, :user_id)";
         $stmt = $this->conn->prepare($sql);
         $run = $stmt->execute([
+            'transaction_id' => $transaction_id,
             'loan_number' => $loan_number,
             'membership_number' => $membership_number,
             'amount' => $amount,

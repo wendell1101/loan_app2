@@ -24,13 +24,13 @@ if (isset($_GET['id'])) {
         <?php include 'app/includes/message.php' ?>
         <article class="card border">
             <div class="card-body">
-                <h6>Loan # <?php echo $activeLoan->loan_number ?></h6>
+                <h6>Transaction ID: <?php echo $activeLoan->transaction_id ?></h6>
                 <article class="card">
                     <div class="card-body row">
                         <div class="col"> <strong>Loan By:</strong> <br><?php echo ucfirst($activeUser->firstname) . ' ' . ucfirst($activeUser->lastname) ?></div>
                         <div class="col"> <strong>Email:</strong> <br><?php echo $activeUser->email ?></div>
                         <div class="col text-uppercase"> <strong>Status:</strong> <br> <?php echo $activeLoan->status ?> </div>
-                        <div class="col"> <strong>Membership #:</strong> <br> <?php echo $activeLoan->membership_number ?></div>
+                        <div class="col"> <strong>Loan #:</strong> <br> <?php echo $activeLoan->loan_number ?></div>
                     </div>
                 </article>
                 <div class="track">
