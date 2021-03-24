@@ -1,5 +1,6 @@
 <?php
 require_once 'core.php';
+require_once 'app/middlewares/GuessMiddleware.php';
 
 $firstname = $lastname = $email = $password1 = $password2 = $gender = $contact_number = '';
 if (isset($_POST['register'])) {
@@ -34,7 +35,7 @@ if (isset($_POST['register'])) {
 <body class="auth-body">
     <div class="container">
         <div class="row">
-            <div class="col-md-5 mx-auto shadow mt-5 bg-white p-3 rounded register-form">
+            <div class="col-md-5 mx-auto shadow mt-5 bg-white p-3 rounded register-form register">
                 <h2 class="text-center text-title mb-2">Register Here</h2>
                 <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST">
                     <div class="row">

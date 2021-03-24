@@ -4,8 +4,12 @@ require_once '../path.php';
 require_once '../core.php';
 require_once  '../app/includes/admin/header.php';
 require_once '../app/middlewares/AuthMiddleware.php';
+require_once '../app/middlewares/AdminLoans.php';
+
+
 $auth = new Auth();
 $auth->restrict();
+
 
 
 $adminLoan = new AdminLoan();

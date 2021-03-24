@@ -49,7 +49,7 @@ li {
 }
 .hero-left {
   opacity: 0.7;
-  background: $primaryColor1;
+  background: rgb(35, 65, 83);
   border-radius: 1rem;
   color: #fff;
   display: flex;
@@ -120,7 +120,7 @@ footer {
     transition: 0.3s ease;
   }
   .icon:hover {
-    color: #fff !important;
+    color: $primaryColor1 !important;
     font-size: 1.8rem;
   }
 }
@@ -177,6 +177,22 @@ footer {
   visibility: visible;
 }
 
+/*About*/
+.about-icon {
+  font-size: 1.5rem;
+}
+.text-contact {
+  border-bottom: 2px solid $primaryColor2;
+}
+
+/*authentication form*/
+.login {
+  margin-top: 200px !important;
+}
+.register {
+  margin-top: 100px !important;
+}
+
 @import "components/navbar";
 
 /*Media Queries*/
@@ -194,6 +210,9 @@ footer {
   }
 }
 @media (max-width: 786px) {
+  .contact-texts {
+    text-align: center;
+  }
 }
 @media (max-width: 600px) {
 }

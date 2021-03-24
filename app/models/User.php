@@ -44,4 +44,39 @@ class User extends Connection
             return $user->position_id == 1;
         }
     }
+    public function isTreasurer()
+    {
+        if (self::Auth()) {
+            $user = $this->getUser();
+            return ($user->position_id == 4 || $user->position_id == 5);
+        }
+    }
+    public function isComaker()
+    {
+        if (self::Auth()) {
+            $user = $this->getUser();
+            return $user->position_id == 8;
+        }
+    }
+    public function isMembershipCommittee()
+    {
+        if (self::Auth()) {
+            $user = $this->getUser();
+            return $user->position_id == 6;
+        }
+    }
+    public function isFinancialCommitee()
+    {
+        if (self::Auth()) {
+            $user = $this->getUser();
+            return $user->position_id == 7;
+        }
+    }
+    public function isPresident()
+    {
+        if (self::Auth()) {
+            $user = $this->getUser();
+            return $user->position_id == 3;
+        }
+    }
 }

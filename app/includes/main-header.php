@@ -1,6 +1,10 @@
 <?php
 require_once 'core.php';
-
+if (isset($_POST['logout'])) {
+    session_destroy();
+    unset($_SESSION['id']);
+    header('Location: login.php');
+}
 ?>
 
 
@@ -27,7 +31,7 @@ require_once 'core.php';
         <a href="index.php" class="logo"><img src="assets/img/logo_light.png" alt="logo"></a>
         <ul>
 
-            <li class="active-home">
+            <li class="">
                 <a href="#">Home</a>
             </li>
             <li>
@@ -48,7 +52,7 @@ require_once 'core.php';
                     </li>
                 <?php endif; ?>
                 <li>
-                    <form action="logout.php" method="POST">
+                    <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST">
                         <button type="submit" class="text-white" name="logout" style="border:none; background:none; width:100%">Logout</button>
                     </form>
                 </li>
@@ -67,7 +71,7 @@ require_once 'core.php';
     <ul class="side-nav">
 
         <a href="index.php" class="side-nav-logo"><img src="assets/img/logo_light.png" alt="logo"></a>
-        <li class="active">
+        <li class="">
             <a href="index.php">Home</a>
         </li>
         <li>
@@ -83,7 +87,7 @@ require_once 'core.php';
         <?php if (User::Auth()) : ?>
 
             <li>
-                <form action="logout.php" method="POST">
+                <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST">
                     <button type="submit" class="text-white" name="logout" style="border:none; background:none; width:100%">Logout</button>
                 </form>
             </li>

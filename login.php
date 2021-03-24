@@ -1,5 +1,6 @@
 <?php
 require_once 'core.php';
+require_once 'app/middlewares/GuessMiddleware.php';
 $email = $password1 = '';
 if (isset($_POST['login'])) {
     // instantiate user validator
@@ -31,7 +32,7 @@ if (isset($_POST['login'])) {
 <body class="auth-body">
     <div class="container">
         <div class="row">
-            <div class="col-md-5 mx-auto shadow mt-5 bg-white p-3 rounded register-form">
+            <div class="col-md-5 mx-auto shadow  bg-white p-3 rounded register-form login">
                 <h2 class="text-center text-title mb-2">Login Here</h2>
                 <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST">
                     <?php include 'app/includes/message.php' ?>
@@ -74,7 +75,7 @@ if (isset($_POST['login'])) {
                         <span class="text-muted">Not yet a user? <a href="register.php">Register Here</a></span>
                     </div>
                     <div class="d-grid">
-                        <button type="submit" name="login" class="btn btn-info btn-block">Login</button>
+                        <button type="submit" name="login" class="btn btn-success btn-block">Login</button>
                     </div>
                 </form>
             </div>

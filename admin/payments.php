@@ -3,6 +3,7 @@ ob_start();
 require_once '../core.php';
 require_once '../app/includes/admin/header.php';
 require_once '../app/middlewares/AuthMiddleware.php';
+require_once '../app/middlewares/AdminPayments.php';
 $auth = new Auth();
 $auth->restrict();
 
@@ -31,6 +32,7 @@ $payments = $activePayment->index();
                                 <th scope="col">Payment By</th>
                                 <th scope="col">Amount Paid</th>
                                 <th scope="col">Paid at</th>
+                                <th scope="col">Generate Receipt</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -43,7 +45,7 @@ $payments = $activePayment->index();
                                     <td><?php echo $payment->payment_by ?></td>
                                     <td>PHP <?php echo formatDecimal($payment->payment_amount) ?></td>
                                     <td> <?php echo formatDate($payment->paid_at) ?></td>
-
+                                    <td><a href="get_receipt.php?id=<?php echo $payment->id ?>">Get Receipt</a></td>
 
 
                                 </tr>

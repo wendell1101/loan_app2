@@ -6,6 +6,16 @@ require_once  '../app/includes/admin/header.php';
 require_once '../app/middlewares/AuthMiddleware.php';
 $auth = new Auth();
 $auth->restrict();
+
+$dashboard = new Dashboard();
+
+$usersCount = $dashboard->getUsersCount();
+$departmentsCount = $dashboard->getDepartmentsCount();
+$paymentsCount = $dashboard->getPaymentsCount();
+$loanTypesCount = $dashboard->getLoanTypesCount();
+$loansCount = $dashboard->getLoansCount();
+
+
 ?>
 
 <!-- Main content -->
@@ -13,12 +23,12 @@ $auth->restrict();
 <section class="content">
     <div class="container-fluid">
         <div class="row">
-            <?php include  '../app/includes/message.php' ?>
+            <?php include '../app/includes/message.php' ?>
             <div class="col-lg-3 col-6">
                 <!-- small box -->
                 <div class="small-box bg-warning">
                     <div class="inner">
-                        <h3>2</h3>
+                        <h3><?php echo $usersCount; ?></h3>
 
                         <p>Users</p>
                     </div>
@@ -33,7 +43,7 @@ $auth->restrict();
                 <!-- small box -->
                 <div class="small-box bg-info">
                     <div class="inner">
-                        <h3>3</h3>
+                        <h3><?php echo $loanTypesCount ?></h3>
                         <p>Types</p>
                     </div>
                     <div class="icon">
@@ -47,7 +57,7 @@ $auth->restrict();
                 <!-- small box -->
                 <div class="small-box bg-success">
                     <div class="inner">
-                        <h3>5</h3>
+                        <h3><?php echo $loansCount ?></h3>
                         <p>Loans</p>
                     </div>
                     <div class="icon">
@@ -61,28 +71,28 @@ $auth->restrict();
                 <!-- small box -->
                 <div class="small-box bg-secondary">
                     <div class="inner">
-                        <h3>5</h3>
+                        <h3><?php echo $paymentsCount ?></h3>
 
-                        <p>Departments</p>
+                        <p>Payments</p>
                     </div>
                     <div class="icon">
-                        <i class="far fa-building"></i>
+                        <i class="far fa-credit-card"></i>
                     </div>
                     <a href="reservations.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
             <!-- ./col -->
-            <div class="col-md-6 mt-5">
-                <h5 class="text-center">Data Summary</h5>
+            <div class="col-md-6 mx-auto mt-5">
+                <h5 class="text-center">Loan Summary</h5>
                 <canvas id="myChart" width="400" height="200"></canvas>
-            </div>
+                <!-- </div>
             <div class="col-md-6 mt-5">
                 <h5 class="text-center">Loan Summary (<?php echo date("Y") ?>)</h5>
                 <canvas id="lineChart" width="400" height="200"></canvas>
+            </div> -->
             </div>
-        </div>
 
-    </div><!-- /.container-fluid -->
+        </div><!-- /.container-fluid -->
 </section>
 
 <!-- /.content -->
@@ -93,17 +103,17 @@ $auth->restrict();
 <script>
     // BAR GRAPH
     var ctx = document.getElementById('myChart').getContext('2d');
-    var usersCount = "<?php echo $dashboard->getUsersCount() ?>";
-    var productsCount = "<?php echo $dashboard->getProductsCount() ?>";
-    var categoriesCount = "<?php echo $dashboard->getCategoriesCount() ?>";
-    var reservationsCount = "<?php echo $dashboard->getReservationsCount() ?>";
+    var usersCount = "<?php echo $usersCount ?>";
+    var typesCount = "<?php echo $loanTypesCount ?>";
+    var loansCount = "<?php echo $loansCount ?>";
+    var paymentsCount = "<?php echo $paymentsCount ?>";
     var myChart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ['Categories', 'Products', 'Users', 'Reservations'],
+            labels: ['Types', 'Loans', 'Users', 'Payments'],
             datasets: [{
                 label: 'Total Result',
-                data: [categoriesCount, productsCount, usersCount, reservationsCount],
+                data: [typesCount, loansCount, usersCount, paymentsCount],
                 backgroundColor: [
                     '#17a2b8',
                     '#28a745',

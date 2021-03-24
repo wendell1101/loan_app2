@@ -3,6 +3,7 @@ ob_start();
 require_once '../core.php';
 require_once '../app/includes/admin/header.php';
 require_once '../app/middlewares/AuthMiddleware.php';
+require_once '../app/middlewares/SuperAdmin.php';
 $auth = new Auth();
 $auth->restrict();
 

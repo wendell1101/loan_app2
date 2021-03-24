@@ -11,7 +11,8 @@ class Loan extends Connection
 
     public function index()
     {
-        $sql = "SELECT * FROM loans";
+        $userId = $_SESSION['id'];
+        $sql = "SELECT * FROM loans  WHERE user_id=$userId";
         $stmt = $this->conn->query($sql);
         $stmt->execute();
         return $stmt->fetchAll();

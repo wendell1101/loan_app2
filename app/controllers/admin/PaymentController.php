@@ -75,6 +75,13 @@ class Payment extends Connection
         $type = $stmt->fetch();
         return  $type->name;
     }
+    public function getSingleLoan($id)
+    {
+        $sql = "SELECT * FROM loans WHERE id=$id";
+        $stmt = $this->conn->query($sql);
+        $stmt->execute();
+        $type = $stmt->fetch();
+    }
     public function getTotalAmount($loan_id)
     {
         $loan = $this->getLoan($loan_id);
