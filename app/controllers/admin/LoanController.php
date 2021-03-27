@@ -1,4 +1,9 @@
 <?php
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
 class AdminLoan extends Connection
 {
     private $data;
@@ -193,11 +198,62 @@ class AdminLoan extends Connection
             'id' => $id,
         ]);
 
+
         if ($updated) {
-            message('success', 'A loan has been updated');
-            redirect('loans.php');
+            $loan = $this->getLoan($id);
+            $activeUser = $this->getUser($loan->user_id);
+            $this->send_mail($activeUser, $loan);
         } else {
-            echo 'error occured';
+            message('danger', 'A loan has been updated, but failed to send email notification');
+            redirect('loans.php');
+        }
+    }
+    private function send_mail($user, $loan)
+    {
+        //send email
+
+        // Load Composer's autoloader
+        require '../mail/Exception.php';
+        require '../mail/PHPMailer.php';
+        require '../mail/SMTP.php';
+        // Instantiation and passing `true` enables exceptions
+        $mail = new PHPMailer();
+        try {
+
+            //Server settings
+            // $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      // Enable verbose debug output
+            $mail->isSMTP();                                            // Send using SMTP
+            $mail->Host       = 'smtp.gmail.com';                    // Set the SMTP server to send through
+            $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
+            $mail->Username   = EMAIL;                     // SMTP username
+            $mail->Password   = PASS;                               // SMTP password
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
+            $mail->Port       = 587;                                    // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
+
+            //Recipients
+            $mail->setFrom('fea@gmail.com', 'Faculty and Employee Association');
+            $mail->addAddress($user->email);     // Add a recipient
+
+
+            // Content
+            $mail->isHTML(true);                                  // Set email format to HTML
+            $mail->Subject = 'Loan Update';
+            $mail->Body    = "
+                <h3>Good day $user->firstname $user->lastname! </h3>
+                <h4>Your loan status is now $loan->status. </h4>
+                <p>Thank you for trusting us. </p><br><br>
+                <p>Transaction Id: $loan->transaction_id </p>
+
+            ";
+            $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+
+            $sent = $mail->send();
+            if ($sent) {
+                message('success', 'A loan has been updated');
+                header('location: loans.php');
+            }
+        } catch (Exception $e) {
+            echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
         }
     }
 }

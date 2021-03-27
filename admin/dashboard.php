@@ -49,7 +49,7 @@ $loansCount = $dashboard->getLoansCount();
                     <div class="icon">
                         <i class="fa fa-list-alt"></i>
                     </div>
-                    <a href="categories.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    <a href="types.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
             <!-- ./col -->
@@ -63,7 +63,7 @@ $loansCount = $dashboard->getLoansCount();
                     <div class="icon">
                         <i class="fas fa-money-check"></i>
                     </div>
-                    <a href="products.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    <a href="loans.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
             <!-- ./col -->
@@ -78,7 +78,7 @@ $loansCount = $dashboard->getLoansCount();
                     <div class="icon">
                         <i class="far fa-credit-card"></i>
                     </div>
-                    <a href="reservations.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    <a href="payments.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
             <!-- ./col -->

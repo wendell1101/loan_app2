@@ -52,6 +52,13 @@ class Loan extends Connection
         $stmt->execute(['id' => $id]);
         return $stmt->fetch();
     }
+    public function getPayments($id)
+    {
+        $sql = "SELECT * FROM payments WHERE loan_id=:id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute(['id' => $id]);
+        return $stmt->fetchAll();
+    }
     public function getDepartments()
     {
         $sql = "SELECT * FROM departments";

@@ -6,13 +6,15 @@ $auth = new Auth();
 $auth->restrict();
 
 $loan = new Loan();
+// $activeUser = $loan->getUser($_SESSION['id']);
 
-$loans = $loan->index();
-$activeUser = $loan->getUser($_SESSION['id']);
-// $payments = $loan->getPayments($loan->id);
-
-
+if (isset($_GET['id'])) {
+    $payments = $loan->getPayments($_GET['id']);
+} else {
+    redirect('loans.php');
+}
 ?>
+
 <?php require_once BASE . '/app/includes/header.php' ?>
 
 <div class="wrapper">
@@ -21,38 +23,38 @@ $activeUser = $loan->getUser($_SESSION['id']);
             <?php include 'app/includes/message.php' ?>
             <div class="card border">
                 <div class="card-header d-flex align-items-center">
-                    <h4>Loans</h4>
+                    <h4>Payment History</h4>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <?php if ($loans) : ?>
+                        <?php if ($payments) : ?>
                             <table class="table">
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col">Loan Number</th>
-                                        <th scope="col">Type</th>
-                                        <th scope="col">Status</th>
-                                        <th scope="col">Payment History</th>
-                                        <th scope="col">Total Amount</th>
+                                        <th scope="col">Reference Number</th>
+                                        <th scope="col">Payment By</th>
+                                        <th scope="col">Amount</th>
+                                        <th scope="col">Paid At</th>
+
 
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php include 'app/includes/message.php' ?>
 
-                                    <?php foreach ($loans as $key => $activeLoan) : ?>
+                                    <?php foreach ($payments as $key => $activePayment) : ?>
                                         <tr>
                                             <th scope="row"><?php echo $key + 1 ?></th>
-                                            <td><a href="loan_detail.php?id=<?php echo $activeLoan->id ?>">
-                                                    <?php echo $activeLoan->loan_number ?></a></td>
-                                            <td><?php echo $loan->getLoanType($activeLoan->loan_type_id) ?></td>
-                                            <td><?php echo $activeLoan->status ?></td>
-                                            <td><a href="payment_history.php?id=<?php echo $activeLoan->id ?>">View</a></td>
-                                            <td>PHP <?php echo formatDecimal($activeLoan->total_amount) ?></td>
+                                            <td> <?php echo $activePayment->reference_number ?></td>
+                                            <td> <?php echo $activePayment->payment_by ?></td>
+                                            <td>PHP <?php echo formatDecimal($activePayment->payment_amount) ?></td>
+                                            <td><?php echo shortDate($activePayment->paid_at) ?></td>
+
+
                                         </tr>
                                     <?php endforeach; ?>
-
+                                    Current Balance: PHP <?php echo formatDecimal($loan->getLoan($activePayment->loan_id)->total_amount) ?>
                                 </tbody>
                             </table>
                         <?php else : ?>

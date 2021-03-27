@@ -61,7 +61,7 @@ if (isset($_POST['loan'])) {
                     </div>
                     <div class="form-group">
                         <label for="amount">Amount</label>
-                        <input type="text" name="amount" id="amount" class="form-control
+                        <input type="number" name="amount" id="amount" max="60000" class="form-control
                         <?php
                         if (!empty(($amount))) {
                             echo $errors['amount'] ? 'is-invalid' : 'is-valid';
