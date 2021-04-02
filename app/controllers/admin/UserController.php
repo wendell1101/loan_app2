@@ -9,11 +9,19 @@ class AdminUser extends Connection
         parent::__construct();
     }
 
-    public function index()
+    public function index($status)
     {
-        $sql = "SELECT * FROM users";
-        $stmt = $this->conn->query($sql);
-        return $users = $stmt->fetchAll();
+        if ($status === '' || $status === 'all') {
+            $sql = "SELECT * FROM users";
+            $stmt = $this->conn->query($sql);
+            $stmt->execute();
+            return $stmt->fetchAll();
+        } else {
+            $sql = "SELECT * FROM users WHERE active=:status";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute(['status' => $status]);
+            return $stmt->fetchAll();
+        }
     }
 
     public function getData()
@@ -28,9 +36,45 @@ class AdminUser extends Connection
         $position = $stmt->fetch();
         if ($position->name) {
             return $position->name;
-        } else {
-            return 'admin';
         }
+    }
+
+    public function getUserDeposit($id)
+    {
+        $sql = "SELECT * FROM fixed_deposits WHERE user_id=:id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute(['id' => $id]);
+        $deposits = $stmt->fetchAll();
+        $total = 0;
+        foreach ($deposits as $deposit) {
+            $total += $deposit->amount;
+        }
+        return $total;
+    }
+    public function getUserSavings($id)
+    {
+        $sql = "SELECT * FROM savings WHERE user_id=:id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute(['id' => $id]);
+        $deposits = $stmt->fetchAll();
+        $total = 0;
+        foreach ($deposits as $deposit) {
+            $total += $deposit->amount;
+        }
+        return $total;
+    }
+    public function getUserLoans($id)
+    {
+        $status = 'active';
+        $sql = "SELECT * FROM loans WHERE user_id=:id AND status=:status";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute(['id' => $id, 'status' => $status]);
+        $loans = $stmt->fetchAll();
+        $total = 0;
+        foreach ($loans as $loan) {
+            $total += $loan->total_amount;
+        }
+        return $total;
     }
     public function create($data)
     {
@@ -48,13 +92,11 @@ class AdminUser extends Connection
                 return;
             }
 
-            $this->validateFirstname();
-            $this->validateLastname();
             $this->validateEmail();
             $this->validatePassword1();
             $this->validatePassword2();
-            $this->validateGender();
-            $this->validateContactNumber();
+            // $this->validateGender();
+            // $this->validateContactNumber();
             return $this->errors;
         }
     }
@@ -188,22 +230,59 @@ class AdminUser extends Connection
             } else {
 
                 // register user using named params
-                $sql = "INSERT INTO users (firstname, lastname, gender, contact_number,email, password, position_id)
-            VALUES (:firstname, :lastname, :gender, :contact_number, :email, :password, :position_id)";
-                $stmt = $this->conn->prepare($sql);
                 // hash the password before saving to the database
+                $account_number = time() . rand(10 * 45, 100 * 98);
+                $firstname = $this->data['firstname'];
+                $middlename = $this->data['middlename'];
+                $lastname = $this->data['lastname'];
+                $home_address = $this->data['home_address'];
+                $permanent_address = $this->data['permanent_address'];
+                $gender = $this->data['gender'];
+                $birth_date = $this->data['birth_date'];
+                $contact_number = $this->data['contact_number'];
+                $email = $this->data['email'];
                 $password = md5($this->data['password1']);
+                $position_id = $this->data['position_id'];
+                $sg = $this->data['sg'];
+                $employment_status = $this->data['employment_status'];
+                $department_id = $this->data['department_id'];
+                $name_of_spouse = $this->data['name_of_spouse'];
+                $fathers_name = $this->data['fathers_name'];
+                $mothers_maiden_name = $this->data['mothers_maiden_name'];
+                $paid_membership = 0;
+                $active = 0;
 
-                // bind param and execute
+                $sql = "INSERT INTO users (account_number, firstname, middlename, lastname, home_address, permanent_address, gender, birth_date,
+            contact_number,email, password, position_id, sg, employment_status, department_id, name_of_spouse, fathers_name,
+            mothers_maiden_name, paid_membership, active)
+            VALUES (:account_number, :firstname, :middlename, :lastname, :home_address, :permanent_address, :gender, :birth_date,
+            :contact_number,:email, :password, :position_id, :sg, :employment_status, :department_id, :name_of_spouse, :fathers_name,
+            :mothers_maiden_name, :paid_membership, :active)";
+                $stmt = $this->conn->prepare($sql);
                 $run = $stmt->execute([
-                    'firstname' => $this->data['firstname'],
-                    'lastname' => $this->data['lastname'],
-                    'gender' => $this->data['gender'],
-                    'contact_number' => $this->data['contact_number'],
-                    'email' => $this->data['email'],
+                    'account_number' => $account_number,
+                    'firstname' => $firstname,
+                    'middlename' => $middlename,
+                    'lastname' => $lastname,
+                    'home_address' => $home_address,
+                    'permanent_address' => $permanent_address,
+                    'gender' => $gender,
+                    'birth_date' => $birth_date,
+                    'contact_number' => $contact_number,
+                    'email' => $email,
                     'password' => $password,
-                    'position_id' => $this->data['position_id'],
+                    'position_id' => $position_id,
+                    'sg' => $sg,
+                    'employment_status' => $employment_status,
+                    'department_id' => $department_id,
+                    'name_of_spouse' => $name_of_spouse,
+                    'fathers_name' => $fathers_name,
+                    'mothers_maiden_name' => $mothers_maiden_name,
+                    'mothers_maiden_name' => $mothers_maiden_name,
+                    'paid_membership' => $paid_membership,
+                    'active' => $active,
                 ]);
+
                 $lastId = $this->conn->lastInsertId();
                 if ($run) {
                     message('success', 'A new user has been created');
@@ -244,6 +323,15 @@ class AdminUser extends Connection
         $user = $stmt->fetch();
         return $user;
     }
+    // get single department
+    public function getDepartment($id)
+    {
+        $sql = "SELECT * FROM departments WHERE id=:id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute(['id' => $id]);
+        $department = $stmt->fetch();
+        return $department;
+    }
 
     //update category
     public function update($data)
@@ -257,8 +345,9 @@ class AdminUser extends Connection
         $id = $this->data['id'];
         $active = $this->data['active'];
         $position_id = $this->data['position_id'];
+        $paid_membership = $this->data['paid_membership'];
 
-        $sql = "UPDATE users SET active=$active, position_id=$position_id WHERE id=$id";
+        $sql = "UPDATE users SET paid_membership=$paid_membership, active=$active, position_id=$position_id WHERE id=$id";
         $updated = $this->conn->query($sql);
         if ($updated) {
             message('success', 'A user has been updated');

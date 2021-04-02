@@ -71,8 +71,15 @@ if (isset($_POST['update'])) {
                 <div class="form-group">
                     <label for="role">Status</label>
                     <select name="active" id="active" class="form-control">
-                        <option value="0" <?php echo (!$activeUser->active) ? "selected" : '' ?>>Inactive</option>
-                        <option value="1" <?php echo ($activeUser->active) ? "selected" : '' ?>>Active</option>
+                        <option value="0" <?php echo (!$activeUser->active) ? "selected" : '' ?>>Pending</option>
+                        <option value="1" <?php echo ($activeUser->active) ? "selected" : '' ?>>Approve</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="role">Membership Fee</label>
+                    <select name="paid_membership" id="paid_membership" class="form-control">
+                        <option value="0" <?php echo (!$activeUser->paid_membership) ? "selected" : '' ?>>Not Paid</option>
+                        <option value="1" <?php echo ($activeUser->paid_membership) ? "selected" : '' ?>>Paid</option>
                     </select>
                 </div>
                 <div class="form-group">

@@ -57,6 +57,13 @@ class AdminLoan extends Connection
         $stmt->execute(['id' => $id]);
         return $stmt->fetch();
     }
+    public function getComaker($id)
+    {
+        $sql = "SELECT * FROM users WHERE id=:id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute(['id' => $id]);
+        return $stmt->fetch();
+    }
     public function getLoanTypeName($id)
     {
         $sql = "SELECT * FROM loan_types WHERE id=$id";

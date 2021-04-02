@@ -84,7 +84,7 @@ class Department extends Connection
             redirect('departments.php');
         }
     }
-    // get single category
+    // get single department
     public function getDepartment($id)
     {
         $sql = "SELECT * FROM departments WHERE id=:id";
@@ -93,6 +93,7 @@ class Department extends Connection
         $department = $stmt->fetch();
         return $department;
     }
+
 
 
     //update category

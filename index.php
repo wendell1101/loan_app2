@@ -3,6 +3,7 @@
 <div class="wrapper">
     <div class="hero">
         <div class="container">
+            <span class="text-center"><?php include 'app/includes/message.php'; ?></span>
             <div class="row">
                 <div class="col-md-6">
                     <h1 class="text-white">Get an online loan in just 5 mins</h1>
@@ -15,7 +16,7 @@
                 </div>
                 <div class="col-md-6 align-items-center hero-left p-3">
                     <div>
-                        <a href="loan_create.php" class="btn btn-success btn-block mb-2">Request your loan</a>
+                        <a href="select_loan.php" class="btn btn-success btn-block mb-2">Request your loan</a>
                         <small>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quis, maiores. Doloribus ducimus fugit eius aliquam expedita libero vero eligendi dicta!</small>
                     </div>
                 </div>

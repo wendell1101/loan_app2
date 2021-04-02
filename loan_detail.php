@@ -9,8 +9,12 @@ unset($_SESSION['active_amount']);
 unset($_SESSION['active_loan']);
 $loan = new Loan();
 if (isset($_GET['id'])) {
+
     $activeLoan = $loan->getLoan($_GET['id']);
     $activeUser = $loan->getUser($activeLoan->user_id);
+    // $interest_amount = $_SESSION['interest_amount_per_month'];
+    $amount_per_month = $activeLoan->amount / $activeLoan->term;
+    $amount_per_15th = $amount_per_month / 2;
     $comakers = $loan->getComakers();
 } else {
     redirect('loan_create.php');
@@ -62,8 +66,11 @@ if (isset($_GET['id'])) {
                 <span style="font-weight:500">Date: </span>
                 <span><?php echo shortDate($activeLoan->created_at) ?></span><br>
                 <span style="font-weight:500">Amount: </span>PHP <?php echo formatDecimal($activeLoan->amount) ?><span></span><br>
-                <span style="font-weight:500">Interest: </span><?php echo formatDecimal($loan->getInterest($activeLoan->loan_type_id)->interest) ?> % <span></span><br>
-                <span style="font-weight:500">Total Amount: PHP <?php echo formatDecimal($activeLoan->total_amount) ?></span><br><br>
+                <span style="font-weight:500">Interest: </span><?php echo formatDecimal($loan->getInterest($activeLoan->loan_type_id)->interest) ?> %
+                <span></span><br>
+                <span style="font-weight:500">Expected Payment(per month):</span> PHP <?php echo formatDecimal($amount_per_month) ?><br>
+                <span style="font-weight:500">Expected Payment(per kinsenas):</span> PHP <?php echo formatDecimal($amount_per_15th) ?></span><br>
+                <span style="font-weight:500">Total Amount:</span> PHP <?php echo formatDecimal($activeLoan->total_amount) ?></span><br>
                 <?php if ($comakers) : ?>
                     <?php foreach ($comakers as $comaker) : ?>
                         <span style="font-weight:200">Comaker: <?php echo ucfirst($comaker->firstname) . ' ' . ucfirst($comaker->lastname) ?></span><br>

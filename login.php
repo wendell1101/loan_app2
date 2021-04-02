@@ -29,10 +29,10 @@ if (isset($_POST['login'])) {
     <link rel="stylesheet" href="assets/css/main.css">
 </head>
 
-<body class="auth-body">
+<body style="background: #eee">
     <div class="container">
         <div class="row">
-            <div class="col-md-5 mx-auto shadow  bg-white p-3 rounded register-form login">
+            <div class="col-md-5 mx-auto shadow  p-3 rounded register-form">
                 <h2 class="text-center text-title mb-2">Login Here</h2>
                 <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST">
                     <?php include 'app/includes/message.php' ?>

@@ -68,7 +68,7 @@ class Loan extends Connection
     }
     public function getComakers()
     {
-        $sql = "SELECT * FROM users where position_id=8 OR position_id=9";
+        $sql = "SELECT * FROM users where position_id=8";
         $stmt = $this->conn->query($sql);
         $stmt->execute();
         return  $stmt->fetchAll();
@@ -90,10 +90,9 @@ class Loan extends Connection
                 return;
             }
 
-            $this->validateLoanType();
+            // $this->validateLoanType();
             // $this->validateAmount();
             $this->validateTerm();
-            $this->validateDepartment();
             // $this->validateTotalAmount();
 
             return $this->errors;
@@ -125,15 +124,12 @@ class Loan extends Connection
     {
         if ($this->data['term'] === 'null') {
             $this->addError('term', 'You must choose a loan term');
+        } elseif (($this->data['loan_type_id'] === 3) && ($this->data['term'] !== 5)) {
+            $this->addError('term', 'You must select 5 months as fixed term for character loan');
         }
     }
     // validate department
-    private function validateDepartment()
-    {
-        if ($this->data['department_id'] === 'null') {
-            $this->addError('department_id', 'You must choose a department');
-        }
-    }
+
     // validate total amount
     private function validateTotalAmount()
     {
@@ -180,6 +176,8 @@ class Loan extends Connection
             $total_amount = $amount += $percent * $this->data['term'];
             $_SESSION['active_loan'] = $this->data;
             $_SESSION['total_amount'] = $total_amount;
+            $_SESSION['interest_amount_per_month'] = $percent;
+            $_SESSION['comakers'] = $this->data['position_id'];
 
             redirect("finalize_loan.php");
         }
@@ -195,8 +193,55 @@ class Loan extends Connection
         $stmt->execute(['id' => $id]);
         return $stmt->fetch();
     }
+    public function getLoanByType($name)
+    {
+        $sql = "SELECT * FROM loan_types WHERE name=:name";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute(['name' => $name]);
+        $loan =  $stmt->fetch();
+        return $loan;
+    }
 
+    // check if current user has fixed_deposits
+    public function checkIfHasFixedDeposit($id)
+    {
+        $sql = "SELECT * FROM fixed_deposits WHERE user_id=:id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute(['id' => $id]);
+        $deposits = $stmt->fetchAll();
+        $total = 0;
+        foreach ($deposits as $deposit) {
+            $total += $deposit->amount;
+        }
+        return $total > 0;
+    }
+    public function getLoanableAmount($id)
+    {
+        $sql = "SELECT * FROM fixed_deposits WHERE user_id=:id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute(['id' => $id]);
+        $deposits = $stmt->fetchAll();
+        $total = 0;
+        foreach ($deposits as $deposit) {
+            $total += $deposit->amount;
+        }
+        $loanable_amount = $total * 3;
+        return $loanable_amount;
+    }
     // save loan
+    public function getComaker1()
+    {
+        $sql = "SELECT * FROM users WHERE position_id=8";
+        $stmt = $this->conn->query($sql);
+        return $stmt->fetch();
+    }
+    public function getComaker2()
+    {
+        $sql = "SELECT * FROM users WHERE position_id=9";
+        $stmt = $this->conn->query($sql);
+        return $stmt->fetch();
+    }
+
     public function saveLoan()
     {
 
@@ -209,15 +254,16 @@ class Loan extends Connection
         //MEM-2021-8
         $membership_number = "MEM" . '-' . date("Y") . '-' . $id;
         $status = "pending";
+        $position_id = json_encode($_SESSION['comakers']);
 
         // total amount
 
         $amount = $activeLoan['amount'];
 
         $total_amount = $_SESSION['total_amount'];
-        $sql = "INSERT INTO loans (transaction_id, loan_number, membership_number, amount, term, status, department_id,
-        loan_type_id, total_amount, user_id) VALUES(:transaction_id, :loan_number, :membership_number, :amount, :term, :status, :department_id,
-        :loan_type_id, :total_amount, :user_id)";
+        $sql = "INSERT INTO loans (transaction_id, loan_number, membership_number, amount, term, status,
+        position_id, loan_type_id, total_amount, user_id) VALUES(:transaction_id, :loan_number, :membership_number, :amount, :term, :status,
+        :position_id,:loan_type_id, :total_amount, :user_id)";
         $stmt = $this->conn->prepare($sql);
         $run = $stmt->execute([
             'transaction_id' => $transaction_id,
@@ -226,7 +272,7 @@ class Loan extends Connection
             'amount' => $amount,
             'term' => $activeLoan['term'],
             'status' => $status,
-            'department_id' => $activeLoan['department_id'],
+            'position_id' => $position_id,
             'loan_type_id' => $activeLoan['loan_type_id'],
             'total_amount' => $total_amount,
             'user_id' => $id,
@@ -234,6 +280,8 @@ class Loan extends Connection
         if ($run) {
             $lastId = $this->conn->lastInsertId();
             redirect("loan_detail.php?id=$lastId");
+        } else {
+            echo 'There was an error';
         }
     }
 

@@ -234,6 +234,14 @@ footer .logo {
   border-bottom: 2px solid #28a745;
 }
 
+.loan-type-box {
+  min-height: 200px;
+}
+
+.loan-type-box:hover {
+  text-decoration: none !important;
+}
+
 /*authentication form*/
 .login {
   margin-top: 200px !important;

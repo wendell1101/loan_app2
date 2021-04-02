@@ -22,8 +22,6 @@ class UserController extends Connection
                 return;
             }
 
-            $this->validateFirstname();
-            $this->validateLastname();
             $this->validateEmail();
             $this->validatePassword1();
             $this->validatePassword2();
@@ -47,6 +45,28 @@ class UserController extends Connection
     public function getData()
     {
         return $this->data;
+    }
+    //get all positions
+
+    public function getPositions()
+    {
+        $stmt = $this->conn->query('SELECT * FROM positions');
+        return  $stmt->fetchAll();
+    }
+    public function getPositions2()
+    {
+        $stmt = $this->conn->query('SELECT * FROM positions WHERE id!=8');
+        return  $stmt->fetchAll();
+    }
+
+    // get all departments
+
+    public function getDepartments()
+    {
+        $sql = "SELECT * FROM departments";
+        $stmt = $this->conn->query($sql);
+        $stmt->execute();
+        return  $stmt->fetchAll();
     }
     // validate firstname
     private function validateFirstname()
@@ -175,6 +195,7 @@ class UserController extends Connection
     // register
     private function register()
     {
+
         // check if email already exists
         $sql = "SELECT * FROM users WHERE email=:email LIMIT 1";
         $stmt = $this->conn->prepare($sql);
@@ -186,30 +207,74 @@ class UserController extends Connection
         } else {
 
             // register user using named params
-            $sql = "INSERT INTO users (firstname, lastname, gender, contact_number,email, password, position_id)
-            VALUES (:firstname, :lastname, :gender, :contact_number, :email, :password, :position_id)";
-            $stmt = $this->conn->prepare($sql);
             // hash the password before saving to the database
+            $rand1 = rand(1, 10);
+            $rand2 = rand(1, 45);
+            $rand3 = rand(1, 100);
+            $rand4 = rand(1, 99);
+            $account_number = time() . rand($rand1 * $rand2, $rand3 * $rand4);
+            $firstname = $this->data['firstname'];
+            $middlename = $this->data['middlename'];
+            $lastname = $this->data['lastname'];
+            $home_address = $this->data['home_address'];
+            $permanent_address = $this->data['permanent_address'];
+            $gender = $this->data['gender'];
+            $birth_date = $this->data['birth_date'];
+            $contact_number = $this->data['contact_number'];
+            $email = $this->data['email'];
             $password = md5($this->data['password1']);
+            $position_id = $this->data['position_id'];
+            $sg = $this->data['sg'];
+            $employment_status = $this->data['employment_status'];
+            $department_id = $this->data['department_id'];
+            $name_of_spouse = $this->data['name_of_spouse'];
+            $fathers_name = $this->data['fathers_name'];
+            $mothers_maiden_name = $this->data['mothers_maiden_name'];
+            $paid_membership = 0;
+            $active = 0;
 
-            // bind param and execute
+            $sql = "INSERT INTO users (account_number, firstname, middlename, lastname, home_address, permanent_address, gender, birth_date,
+            contact_number,email, password, position_id, sg, employment_status, department_id, name_of_spouse, fathers_name,
+            mothers_maiden_name, paid_membership, active)
+            VALUES (:account_number, :firstname, :middlename, :lastname, :home_address, :permanent_address, :gender, :birth_date,
+            :contact_number,:email, :password, :position_id, :sg, :employment_status, :department_id, :name_of_spouse, :fathers_name,
+            :mothers_maiden_name, :paid_membership, :active)";
+            $stmt = $this->conn->prepare($sql);
             $run = $stmt->execute([
-                'firstname' => $this->data['firstname'],
-                'lastname' => $this->data['lastname'],
-                'gender' => $this->data['gender'],
-                'contact_number' => $this->data['contact_number'],
-                'email' => $this->data['email'],
+                'account_number' => $account_number,
+                'firstname' => $firstname,
+                'middlename' => $middlename,
+                'lastname' => $lastname,
+                'home_address' => $home_address,
+                'permanent_address' => $permanent_address,
+                'gender' => $gender,
+                'birth_date' => $birth_date,
+                'contact_number' => $contact_number,
+                'email' => $email,
                 'password' => $password,
-                'position_id' => 2,
+                'position_id' => $position_id,
+                'sg' => $sg,
+                'employment_status' => $employment_status,
+                'department_id' => $department_id,
+                'name_of_spouse' => $name_of_spouse,
+                'fathers_name' => $fathers_name,
+                'mothers_maiden_name' => $mothers_maiden_name,
+                'mothers_maiden_name' => $mothers_maiden_name,
+                'paid_membership' => $paid_membership,
+                'active' => $active,
             ]);
+
             $lastId = $this->conn->lastInsertId();
             if ($run) {
                 message('success', 'Your account has been created successfully.
                  Please wait for account approval from membership committee to login.');
                 redirect('login.php');
+            } else {
+                echo 'error occured';
             }
         }
     }
+
 
 
     // Check if user is registered for login
@@ -236,7 +301,7 @@ class UserController extends Connection
             $this->addError('email', 'Invalid Credentials. An email or password is incorrect. Please try again');
             $this->addError('password1', 'Invalid Credentials. An email or password is incorrect. Please try again');
         } else {
-            if ($user->active === 0) {
+            if ($user->active === 0 || $user->paid_membership === 0) {
                 // $this->addError('email', 'Account is valid but not yet active');
                 message('danger', 'Account is valid but not yet active');
                 // redirect('login.php');

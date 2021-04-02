@@ -146,7 +146,7 @@ class Payment extends Connection
     private function checkIfHasError()
     {
         if (!array_filter($this->errors)) {
-            $reference_number = time() . rand(10 * 45, 100 * 98);;
+            $reference_number = time() . rand(10 * 45, 100 * 98);
             $payment_by = $this->data['payment_by'];
             $payment_amount = $this->data['payment_amount'];
             $loan_id = $this->data['loan_id'];

@@ -58,7 +58,7 @@ if (isset($_GET['id'])) {
                                 </tbody>
                             </table>
                         <?php else : ?>
-                            <h2 class="text-secondary text-center">No Loan Yet</h2>
+                            <h2 class="text-secondary text-center">No Payment Yet</h2>
                         <?php endif; ?>
                     </div>
                 </div>

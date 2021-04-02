@@ -5,6 +5,7 @@ if (isset($_POST['logout'])) {
     unset($_SESSION['id']);
     header('Location: login.php');
 }
+
 ?>
 
 
@@ -46,6 +47,9 @@ if (isset($_POST['logout'])) {
             </li>
 
             <?php if (User::Auth()) : ?>
+                <li>
+                    <a href="profile.php?id=<?php echo $_SESSION['id'] ?>">Profile</a>
+                </li>
                 <?php if ($user->isAdmin()) : ?>
                     <li>
                         <a href="admin/dashboard.php">Admin</a>
@@ -86,6 +90,9 @@ if (isset($_POST['logout'])) {
 
         <?php if (User::Auth()) : ?>
 
+            <li>
+                <a href="profile.php?id=<?php echo $_SESSION['id'] ?>">Profile</a>
+            </li>
             <li>
                 <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST">
                     <button type="submit" class="text-white" name="logout" style="border:none; background:none; width:100%">Logout</button>

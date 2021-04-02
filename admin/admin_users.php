@@ -13,7 +13,13 @@ $auth->restrict();
 $adminUser = new AdminUser();
 
 
-$users = $adminUser->index();
+$users = $adminUser->index('');
+//sort by status
+$active = '';
+if (isset($_POST['active'])) {
+    $active = sanitize($_POST['active']);
+    $users = $adminUser->index($active);
+}
 ?>
 
 
@@ -25,6 +31,16 @@ $users = $adminUser->index();
         </div>
         <div class="card-body">
             <div class="table-responsive">
+                <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST" class="ml-auto" id="sort-form">
+                    <div class="form-group">
+                        <label for="status">Sort users by status:</label>
+                        <select name="active" id="active">
+                            <option value="all">All</option>
+                            <option value="1" <?php echo ($active == '1') ? 'selected' : '' ?>>Approved</option>
+                            <option value="0" <?php echo ($active == '0') ? 'selected' : '' ?>>Pending</option>
+                        </select>
+                    </div>
+                </form>
                 <?php if ($users) : ?>
                     <table class="table">
                         <thead>
@@ -37,6 +53,7 @@ $users = $adminUser->index();
                                 <th scope="col">Contact</th>
                                 <th scope="col">Position</th>
                                 <th scope="col">Status</th>
+                                <th scope="col">Membership Fee</th>
                                 <th scope="col">Actions</th>
                             </tr>
                         </thead>
@@ -49,7 +66,7 @@ $users = $adminUser->index();
                                     <td>
                                         <img class="rounded-circle" width="35" src="https://ui-avatars.com/api/?name=<?php echo $singleUser->firstname . ' ' . $singleUser->lastname ?>" alt="image">
                                     </td>
-                                    <td><?php echo $singleUser->firstname . ' ' . $singleUser->lastname ?></td>
+                                    <td><a href="admin_user_detail.php?id=<?php echo $singleUser->id ?>"><?php echo ucfirst($singleUser->firstname) . ' ' . ucfirst($singleUser->lastname) ?></a></td>
                                     <td><?php echo $singleUser->email ?></td>
                                     <td><?php echo $singleUser->gender ?></td>
                                     <td><?php echo $singleUser->contact_number ?></td>
@@ -60,11 +77,12 @@ $users = $adminUser->index();
                                     </td>
                                     <td>
                                         <?php if ($singleUser->active) : ?>
-                                            <span class="text-success">active</span>
+                                            <span class="text-success">approved</span>
                                         <?php else : ?>
-                                            <span class="text-danger">inactive</span>
+                                            <span class="text-danger">pending</span>
                                         <?php endif; ?>
                                     </td>
+                                    <td><?php echo ($singleUser->paid_membership) ? 'paid' : 'not paid' ?></td>
                                     <td class="d-flex">
                                         <form action="admin_user_update.php" method="POST">
                                             <input type="hidden" name="id" value="<?php echo $singleUser->id ?>">
@@ -97,6 +115,34 @@ $users = $adminUser->index();
 <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
+
+<script>
+    const sortForm = document.getElementById('sort-form');
+    const status = document.getElementById('active');
+
+    const searchForm = document.getElementById('search-form');
+    const query = document.getElementById('q');
+    const loader = document.getElementById('loader');
+    const searchBtn = document.getElementById('search-btn');
+
+    // sort
+    status.addEventListener('change', (e) => {
+        e.preventDefault();
+        sortForm.submit();
+    })
+
+    // automatically search after 1.5secs
+    query.addEventListener('keyup', () => {
+        setTimeout(() => {
+            searchBtn.innerHTML = `
+            Searching ...
+            <img src="../assets/img/loader.gif" id="loader" alt="" width="20">
+            `;
+            searchForm.submit();
+        }, 1500);
+
+    })
+</script>
 
 <?php require_once BASE . '/app/includes/admin/footer.php' ?>
 <?php ob_flush() ?>

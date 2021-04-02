@@ -8,7 +8,8 @@ $auth->restrict();
 $loan = new Loan();
 $loan_type_id = $amount = $term = $department_id = '';
 $departments = $loan->getDepartments();
-$loan_types = $loan->getLoanTypes();
+$loan_type = $loan->getLoanByType('regular');
+$comakers = $loan->getComakers();
 $checkIfHasFixedDeposit = $loan->checkIfHasFixedDeposit($_SESSION['id']);
 $loanable_amount = $loan->getLoanableAmount($_SESSION['id']);
 
@@ -43,16 +44,13 @@ if (isset($_POST['loan'])) {
                 <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST" class="shadow p-3">
                     <div class="form-group">
                         <label for="loan_type_id">Loan Type</label>
-                        <select name="loan_type_id" id="loan_type_id" required class="form-control">
+                        <select name="loan_type_id" id="loan_type_id" required class="form-control" read-only>
                             <option value="">Select loan type</option>
-                            <?php foreach ($loan_types as $type) : ?>
-                                <option value="<?php echo $type->id ?>" <?php echo ($loan_type_id === $type->id) ? 'selected' : '' ?>>
-                                    <?php echo $type->name . ' - ' . $type->interest ?>
-                                    % interest rate
-                                </option>
-                            <?php endforeach; ?>
-                            <!-- <option value="#">Regular - 1% interest rate -6/12/18 months</option>
-                            <option value="#">Character - 1% interest rate - 5 months</option> -->
+                            <option value="<?php echo $loan_type->id ?>" selected>
+                                <?php echo $loan_type->name . ' - ' . $loan_type->interest ?>
+                                % interest rate
+                            </option>
+
                         </select>
                     </div>
                     <div class="form-group">
@@ -88,7 +86,6 @@ if (isset($_POST['loan'])) {
 
                         ">
                             <option value="null">Select term</option>
-                            <option value="5">5 months</option>
                             <option value="6">6 months</option>
                             <option value="12">12 months</option>
                             <option value="18">18 months</option>
@@ -97,6 +94,14 @@ if (isset($_POST['loan'])) {
                         <div class="text-danger">
                             <small><?php echo $errors['term'] ?? '' ?></small>
                         </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="position_id">Choose 2 Comaker</label>
+                        <select name="position_id[]" id="position_id" class="form-control" multiple>
+                            <?php foreach ($comakers as $comaker) : ?>
+                                <option value="<?php echo $comaker->id ?>"><?php echo ucfirst($comaker->firstname) . ' ' . ucfirst($comaker->lastname) ?></option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
 
 

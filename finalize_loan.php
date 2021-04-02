@@ -9,14 +9,18 @@ $loan = new Loan();
 if (isset($_SESSION['active_loan']) && isset($_SESSION['total_amount'])) {
     // print_r($_GET['activeLoan']);
     $activeLoan = $_SESSION['active_loan'];
+    $comakers = $_SESSION['comakers'];
     $amount = $activeLoan['amount'];
     $total_amount = $_SESSION['total_amount'];
+    $interest_amount = $_SESSION['interest_amount_per_month'];
+    $amount_per_month = $amount / $activeLoan['term'];
+    $amount_per_15th = $amount_per_month / 2;
+
     $interest = $loan->getInterest($activeLoan['loan_type_id'])->interest;
     $loan_type = $loan->getInterest($activeLoan['loan_type_id'])->name;
     $activeUser = $user->getUser();
-    $department = $loan->getDepartment($activeLoan['department_id']);
 } else {
-    redirect('loan_create.php');
+    redirect('select_loan.php');
 }
 if (isset($_POST['finalize_loan'])) {
     $loan->saveLoan();
@@ -54,16 +58,13 @@ if (isset($_POST['finalize_loan'])) {
                 </p>
                 <p>
                     <small>Interest Rate:</small>
-                    <?php echo formatDecimal($interest) ?> % per month
+                    <?php echo formatDecimal($interest) ?> % (PHP <?php echo formatDecimal($interest_amount) ?>) per month
                 </p>
                 <p>
                     <small>Term:</small>
                     <?php echo $activeLoan['term'] ?> months
                 </p>
-                <p>
-                    <small>Department:</small>
-                    <?php echo $department->name ?>
-                </p>
+
                 <p>
                     <small>Amount:</small>
                     PHP <?php echo formatDecimal($amount) ?>
@@ -72,8 +73,24 @@ if (isset($_POST['finalize_loan'])) {
                     <small>Total Amount:</small>
                     PHP <?php echo formatDecimal($total_amount) ?>
                 </p>
+                <p>
+                    <small>Expected Payment(per month):</small>
+                    PHP <?php echo formatDecimal($amount_per_month) ?>
+                </p>
+                <p>
+                    <small>Expected Payment(per kinsenas):</small>
+                    PHP <?php echo formatDecimal($amount_per_15th) ?>
+                </p>
+                <p class="">
+                    <small>Comaker:</small><br>
+                    <?php foreach ($comakers as $comaker) : ?>
+                        <?php $selectedComaker = $loan->getUser($comaker) ?>
+                        <small><?php echo ucfirst($selectedComaker->firstname) . ' ' . ucfirst($selectedComaker->lastname) . ',' ?></small>
+                    <?php endforeach; ?>
+                </p>
+
                 <div class="d-flex">
-                    <a href="loan.php" class="btn btn-secondary mr-2">Cancel</a>
+                    <a href="select_loan.php" class="btn btn-secondary mr-2">Cancel</a>
                     <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST">
                         <button type="submit" name="finalize_loan" class="btn btn-success">Finalize Loan</a>
                     </form>

@@ -53,6 +53,26 @@
                     </p>
                 </a>
             </li>
+            <li class="nav-item menu-open
+            <?php echo (strpos(CURRENT_URL, 'deposit') !== false) ? 'active' : '' ?>
+            ">
+                <a href="<?php echo BASE_URL . 'admin/fixed_deposits.php' ?>" class="nav-link">
+                    <i class="nav-icon fas fa-hand-holding-usd"></i>
+                    <p>
+                        Fixed Deposits
+                    </p>
+                </a>
+            </li>
+            <li class="nav-item menu-open
+            <?php echo (strpos(CURRENT_URL, 'saving') !== false) ? 'active' : '' ?>
+            ">
+                <a href="<?php echo BASE_URL . 'admin/savings.php' ?>" class="nav-link">
+                    <i class="nav-icon fas fa-piggy-bank"></i>
+                    <p>
+                        Savings
+                    </p>
+                </a>
+            </li>
 
 
             <li class="nav-item menu-open

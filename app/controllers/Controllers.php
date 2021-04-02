@@ -1,6 +1,9 @@
 <?php
 require_once 'UserController.php';
 require_once 'LoanController.php';
+require_once 'FixedDepositController.php';
+require_once 'admin/FixedDepositController.php';
+require_once 'admin/SavingController.php';
 require_once 'admin/DashboardController.php';
 require_once 'admin/UserController.php';
 require_once 'admin/DepartmentController.php';

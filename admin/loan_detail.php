@@ -14,6 +14,7 @@ if (isset($_GET['id'])) {
     $loan = $adminLoan->getLoan($_GET['id']);
     $user = $adminLoan->getUser($loan->user_id);
     $type = $adminLoan->getLoanTypeName($loan->loan_type_id);
+    $comakers = json_decode($loan->position_id);
 } else {
     redirect('loans.php');
 }
@@ -30,6 +31,7 @@ if (isset($_GET['id'])) {
         </div>
         <div class="card-body">
             <div class="table-responsive">
+                <a href="loans.php"><i class="fas fa-arrow-circle-left text-success mb-2" style="font-size: 1.5rem"></i></a>
                 <?php if ($loan) : ?>
                     <table class="table">
                         <thead>
@@ -39,7 +41,7 @@ if (isset($_GET['id'])) {
                                 <th scope="col">Email</th>
                                 <th scope="col">Contact Number</th>
                                 <th scope="col">Type</th>
-                                <th scope="col">Status</th>
+                                <th scope="col">Comakers</th>
                                 <th scope="col">Created at</th>
                             </tr>
                         </thead>
@@ -57,7 +59,12 @@ if (isset($_GET['id'])) {
 
                                 <td><?php echo $user->contact_number ?></td>
                                 <td><?php echo $type ?></td>
-                                <td><?php echo $loan->status ?></td>
+                                <td>
+                                    <?php foreach ($comakers as $comaker) : ?>
+                                        <?php $user = $adminLoan->getComaker($comaker); ?>
+                                        <?php echo ucfirst($user->firstname) . ' ' . ucfirst($user->lastname) ?>,<br>
+                                    <?php endforeach ?>
+                                </td>
                                 <td>
                                     <?php echo shortDate($loan->created_at) ?>
                                 </td>

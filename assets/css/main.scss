@@ -185,6 +185,12 @@ footer {
   border-bottom: 2px solid $primaryColor2;
 }
 
+.loan-type-box {
+  min-height: 200px;
+}
+.loan-type-box:hover {
+  text-decoration: none !important;
+}
 /*authentication form*/
 .login {
   margin-top: 200px !important;
