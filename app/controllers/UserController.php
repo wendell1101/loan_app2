@@ -307,6 +307,7 @@ class UserController extends Connection
                 // redirect('login.php');
             } else {
                 $_SESSION['id'] = $user->id;
+                $_SESSION['position_id'] = $user->position_id;
                 if ($user->position_id != 2) {
                     redirect('admin/dashboard.php');
                 } else {

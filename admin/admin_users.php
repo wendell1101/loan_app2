@@ -42,7 +42,7 @@ if (isset($_POST['active'])) {
                     </div>
                 </form>
                 <?php if ($users) : ?>
-                    <table class="table">
+                    <table class="table" id="myTable">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
@@ -54,6 +54,7 @@ if (isset($_POST['active'])) {
                                 <th scope="col">Position</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Membership Fee</th>
+                                <th scope="col">Membership Receipt</th>
                                 <th scope="col">Actions</th>
                             </tr>
                         </thead>
@@ -83,6 +84,7 @@ if (isset($_POST['active'])) {
                                         <?php endif; ?>
                                     </td>
                                     <td><?php echo ($singleUser->paid_membership) ? 'paid' : 'not paid' ?></td>
+                                    <td><a href="membership_receipt.php?id=<?php echo $singleUser->id ?>">Receipt</a></td>
                                     <td class="d-flex">
                                         <form action="admin_user_update.php" method="POST">
                                             <input type="hidden" name="id" value="<?php echo $singleUser->id ?>">

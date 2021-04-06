@@ -22,7 +22,7 @@ $fixedDeposits = $fixedDeposit->index();
         <div class="card-body">
             <div class="table-responsive">
                 <?php if ($fixedDeposits) : ?>
-                    <table class="table">
+                    <table class="table" id="myTable">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>

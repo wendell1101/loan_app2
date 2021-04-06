@@ -22,7 +22,7 @@ $departments = $activeDepartment->index();
         <div class="card-body">
             <div class="table-responsive">
                 <?php if ($departments) : ?>
-                    <table class="table">
+                    <table class="table" id="myTable">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
