@@ -23,7 +23,6 @@ $loans = $adminLoan->index();
     <div class="card shadow">
         <div class="card-header d-flex align-items-center">
             <h4>Loans</h4>
-            <a href="loan_create.php" class="btn btn-primary ml-auto"><i class="fas fa-plus text-light"></i></a>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -48,7 +47,7 @@ $loans = $adminLoan->index();
                                 <tr class="align-items-center">
                                     <th scope="row"><?php echo $key + 1 ?></th>
                                     <td>
-                                        <a href="loan_detail.php?id=<?php echo $singleLoan->id ?>"><?php echo $singleLoan->transaction_id ?></a>
+                                        <a class="text-info" href="loan_detail.php?id=<?php echo $singleLoan->id ?>"><?php echo $singleLoan->transaction_id ?></a>
                                     </td>
                                     <td>
                                         <?php echo $singleLoan->term ?> months

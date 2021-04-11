@@ -96,18 +96,7 @@
                     </p>
                 </a>
             </li>
-            <?php if ($_SESSION['position_id'] == 8) : ?>
-                <li class="nav-item menu-open
-            <?php echo (strpos(CURRENT_URL, 'comaker') !== false) ? 'active' : '' ?>
-            ">
-                    <a href="<?php echo BASE_URL . 'admin/comaker_loan_requests.php' ?>" class=" nav-link ">
-                        <i class="nav-icon fas fa-credit-card"></i>
-                        <p>
-                            Comaker Loan Requests
-                        </p>
-                    </a>
-                </li>
-            <?php endif ?>
+
 
 
 

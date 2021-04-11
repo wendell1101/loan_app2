@@ -225,7 +225,14 @@ class Loan extends Connection
         foreach ($deposits as $deposit) {
             $total += $deposit->amount;
         }
-        $loanable_amount = $total * 3;
+        $activeUser = $this->getUser($_SESSION['id']);
+        $loanable_amount = 0;
+        if ($activeUser->employment_status == 'regular') {
+            $loanable_amount = $total * 3;
+        } elseif ($activeUser->employment_status == 'job_order') {
+            $loanable_amount = $total * 2;
+        }
+
         return $loanable_amount;
     }
     // save loan

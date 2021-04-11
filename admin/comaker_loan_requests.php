@@ -16,6 +16,7 @@ $adminLoan = new AdminLoan();
 
 
 $loans = $adminLoan->index();
+// dump($loans);
 ?>
 
 

@@ -50,7 +50,6 @@ if (isset($_POST['active'])) {
                                 <th scope="col">Name</th>
                                 <th scope="col">Email</th>
                                 <th scope="col">Gender</th>
-                                <th scope="col">Contact</th>
                                 <th scope="col">Position</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Membership Fee</th>
@@ -67,10 +66,10 @@ if (isset($_POST['active'])) {
                                     <td>
                                         <img class="rounded-circle" width="35" src="https://ui-avatars.com/api/?name=<?php echo $singleUser->firstname . ' ' . $singleUser->lastname ?>" alt="image">
                                     </td>
-                                    <td><a href="admin_user_detail.php?id=<?php echo $singleUser->id ?>"><?php echo ucfirst($singleUser->firstname) . ' ' . ucfirst($singleUser->lastname) ?></a></td>
+                                    <td><a class="text-info" href="admin_user_detail.php?id=<?php echo $singleUser->id ?>"><?php echo ucfirst($singleUser->firstname) . ' ' . ucfirst($singleUser->lastname) ?></a></td>
                                     <td><?php echo $singleUser->email ?></td>
                                     <td><?php echo $singleUser->gender ?></td>
-                                    <td><?php echo $singleUser->contact_number ?></td>
+
                                     <td>
                                         <span class="<?php echo ($adminUser->getPosition($singleUser->position_id) != 'customer') ? 'text-success' : 'text-secondary' ?> ">
                                             <?php echo $adminUser->getPosition($singleUser->position_id) ?>

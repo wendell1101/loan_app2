@@ -7,4 +7,11 @@ require_once 'app/controllers/Controllers.php';
 
 $user = new User();
 
+
+function dump($value) // to be deleted soon
+
+{
+    echo "<pre>", print_r($value, true), "</pre>";
+    die();
+}
 session_start();

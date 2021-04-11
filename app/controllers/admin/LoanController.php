@@ -20,6 +20,24 @@ class AdminLoan extends Connection
         $stmt = $this->conn->query($sql);
         return $stmt->fetchAll();
     }
+    public function getLoansPerComaker()
+    {
+        $user_id = $_SESSION['id'];
+
+        $sql = "SELECT * FROM loans";
+        $stmt = $this->conn->query($sql);
+        $loans = $stmt->fetchAll();
+        $loan_users_id = [];
+        foreach ($loans as $loan) {
+            $loan_users_id = $loan->position_id;
+        }
+        // echo $loan_users_id;
+        if (strpos($user_id, $loan_users_id) !== false) {
+            echo 'true';
+        }
+        die();
+        return $stmt->fetchAll();
+    }
 
     public function getData()
     {
