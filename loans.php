@@ -22,6 +22,7 @@ $activeUser = $loan->getUser($_SESSION['id']);
             <div class="card border">
                 <div class="card-header d-flex align-items-center">
                     <h4>Loans</h4>
+                    <a href="select_loan.php" class="btn btn-success ml-auto">Request Loan<i class="ml-3 fas fa-plus text-light"></i></a>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -30,7 +31,7 @@ $activeUser = $loan->getUser($_SESSION['id']);
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col">Loan Number</th>
+                                        <th scope="col">Transaction ID</th>
                                         <th scope="col">Type</th>
                                         <th scope="col">Status</th>
                                         <th scope="col">Payment History</th>
@@ -45,7 +46,7 @@ $activeUser = $loan->getUser($_SESSION['id']);
                                         <tr>
                                             <th scope="row"><?php echo $key + 1 ?></th>
                                             <td><a href="loan_detail.php?id=<?php echo $activeLoan->id ?>">
-                                                    <?php echo $activeLoan->loan_number ?></a></td>
+                                                    <?php echo $activeLoan->transaction_id ?></a></td>
                                             <td><?php echo $loan->getLoanType($activeLoan->loan_type_id) ?></td>
                                             <td><?php echo $activeLoan->status ?></td>
                                             <td><a href="payment_history.php?id=<?php echo $activeLoan->id ?>">View</a></td>

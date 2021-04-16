@@ -11,6 +11,8 @@ $auth->restrict();
 $activePayment = new Payment();
 $payments = $activePayment->index();
 
+$loans = $activePayment->getLoans();
+
 
 ?>
 
@@ -19,7 +21,9 @@ $payments = $activePayment->index();
     <div class="card shadow">
         <div class="card-header d-flex align-items-center">
             <h4>Payments</h4>
-            <a href="<?php echo 'payment_create.php' ?>" class="btn btn-primary ml-auto"><i class="fas fa-plus text-light"></i></a>
+            <?php if ($loans) : ?>
+                <a href="<?php echo 'payment_create.php' ?>" class="btn btn-primary ml-auto"><i class="fas fa-plus text-light"></i></a>
+            <?php endif ?>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -45,7 +49,7 @@ $payments = $activePayment->index();
                                     <td><?php echo $payment->payment_by ?></td>
                                     <td>PHP <?php echo formatDecimal($payment->payment_amount) ?></td>
                                     <td> <?php echo formatDate($payment->paid_at) ?></td>
-                                    <td><a href="get_receipt.php?id=<?php echo $payment->id ?>">Get Receipt</a></td>
+                                    <td><a href="get_receipt.php?id=<?php echo $payment->id ?>" class="text-info">Get Receipt</a></td>
 
 
                                 </tr>

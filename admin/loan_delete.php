@@ -34,7 +34,7 @@ if (isset($_POST['delete'])) {
         <div class="card-body">
             <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST">
                 <div class="form-group">
-                    <h1>Are you sure you want to delete <?php echo $activeLoan->transaction_id ?>?</h1>
+                    <h1 style="font-size: 2rem">Are you sure you want to delete <?php echo $activeLoan->transaction_id ?>?</h1>
                     <div class="form-group d-flex justify-content-end align-items-center mt-2">
                         <input type="hidden" name="id" value="<?php echo $activeLoan->id ?>">
                         <a href="loans.php" class="btn btn-secondary mr-2">Cancel</a>

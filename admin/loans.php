@@ -22,7 +22,7 @@ $loans = $adminLoan->index();
 <div class="container">
     <div class="card shadow">
         <div class="card-header d-flex align-items-center">
-            <h4>Loans</h4>
+            <h4>Approved Loans by comakers </h4>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -81,7 +81,7 @@ $loans = $adminLoan->index();
                         </tbody>
                     </table>
                 <?php else : ?>
-                    <h2 class="text-secondary text-center">No User Yet</h2>
+                    <h2 class="text-secondary text-center">No Loan Yet</h2>
                 <?php endif; ?>
             </div>
         </div>

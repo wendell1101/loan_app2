@@ -63,12 +63,27 @@ class AdminUser extends Connection
         }
         return $total;
     }
-    public function getUserLoans($id)
+    public function getUserRegularLoans($id)
     {
         $status = 'active';
-        $sql = "SELECT * FROM loans WHERE user_id=:id AND status=:status";
+        $type = 1;
+        $sql = "SELECT * FROM loans WHERE user_id=:id AND status=:status AND loan_type_id=:type";
         $stmt = $this->conn->prepare($sql);
-        $stmt->execute(['id' => $id, 'status' => $status]);
+        $stmt->execute(['id' => $id, 'status' => $status, 'type' => $type]);
+        $loans = $stmt->fetchAll();
+        $total = 0;
+        foreach ($loans as $loan) {
+            $total += $loan->total_amount;
+        }
+        return $total;
+    }
+    public function getUserCharacterLoans($id)
+    {
+        $status = 'active';
+        $type = 3;
+        $sql = "SELECT * FROM loans WHERE user_id=:id AND status=:status AND loan_type_id=:type";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute(['id' => $id, 'status' => $status, 'type' => $type]);
         $loans = $stmt->fetchAll();
         $total = 0;
         foreach ($loans as $loan) {
@@ -231,7 +246,11 @@ class AdminUser extends Connection
 
                 // register user using named params
                 // hash the password before saving to the database
-                $account_number = time() . rand(10 * 45, 100 * 98);
+                $rand1 = rand(1, 10);
+                $rand2 = rand(1, 45);
+                $rand3 = rand(1, 100);
+                $rand4 = rand(1, 99);
+                $account_number = time() . rand($rand1 * $rand2, $rand3 * $rand4);
                 $firstname = $this->data['firstname'];
                 $middlename = $this->data['middlename'];
                 $lastname = $this->data['lastname'];
@@ -249,15 +268,18 @@ class AdminUser extends Connection
                 $name_of_spouse = $this->data['name_of_spouse'];
                 $fathers_name = $this->data['fathers_name'];
                 $mothers_maiden_name = $this->data['mothers_maiden_name'];
+                $beneficiary = $this->data['beneficiary'];
                 $paid_membership = 0;
                 $active = 0;
-
+                $reason1 = $this->data['reason1'];
+                $reason2 = $this->data['reason2'];
+                $reason3 = $this->data['reason3'];
                 $sql = "INSERT INTO users (account_number, firstname, middlename, lastname, home_address, permanent_address, gender, birth_date,
-            contact_number,email, password, position_id, sg, employment_status, department_id, name_of_spouse, fathers_name,
-            mothers_maiden_name, paid_membership, active)
-            VALUES (:account_number, :firstname, :middlename, :lastname, :home_address, :permanent_address, :gender, :birth_date,
-            :contact_number,:email, :password, :position_id, :sg, :employment_status, :department_id, :name_of_spouse, :fathers_name,
-            :mothers_maiden_name, :paid_membership, :active)";
+                contact_number,email, password, position_id, sg, employment_status, department_id, name_of_spouse, fathers_name,
+                mothers_maiden_name, beneficiary, paid_membership, active, reason1, reason2, reason3)
+                VALUES (:account_number, :firstname, :middlename, :lastname, :home_address, :permanent_address, :gender, :birth_date,
+                :contact_number,:email, :password, :position_id, :sg, :employment_status, :department_id, :name_of_spouse, :fathers_name,
+                :mothers_maiden_name, :beneficiary, :paid_membership, :active, :reason1, :reason2,:reason3)";
                 $stmt = $this->conn->prepare($sql);
                 $run = $stmt->execute([
                     'account_number' => $account_number,
@@ -278,10 +300,14 @@ class AdminUser extends Connection
                     'name_of_spouse' => $name_of_spouse,
                     'fathers_name' => $fathers_name,
                     'mothers_maiden_name' => $mothers_maiden_name,
-                    'mothers_maiden_name' => $mothers_maiden_name,
+                    'beneficiary' => $beneficiary,
                     'paid_membership' => $paid_membership,
                     'active' => $active,
+                    'reason1' => $reason1,
+                    'reason2' => $reason2,
+                    'reason3' => $reason3,
                 ]);
+
 
                 $lastId = $this->conn->lastInsertId();
                 if ($run) {

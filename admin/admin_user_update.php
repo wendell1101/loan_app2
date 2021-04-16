@@ -86,13 +86,12 @@ if (isset($_POST['update'])) {
                     <label for="role">Position</label>
                     <select name="position_id" id="position_id" class="form-control">
                         <option value="1" <?php echo ($activeUser->position_id === 1) ? "selected" : '' ?>>Admin</option>
-                        <option value="2" <?php echo ($activeUser->position_id === 2) ? "selected" : '' ?>>Customer</option>
+                        <option value="2" <?php echo ($activeUser->position_id === 2) ? "selected" : '' ?>>Member</option>
                         <option value="3" <?php echo ($activeUser->position_id === 3) ? "selected" : '' ?>>President</option>
                         <option value="4" <?php echo ($activeUser->position_id === 4) ? "selected" : '' ?>>Treasurer</option>
                         <option value="5" <?php echo ($activeUser->position_id === 5) ? "selected" : '' ?>>Assistant Treasurer</option>
                         <option value="6" <?php echo ($activeUser->position_id === 6) ? "selected" : '' ?>>Membership Committee</option>
                         <option value="7" <?php echo ($activeUser->position_id === 7) ? "selected" : '' ?>>Financial Committee</option>
-                        <option value="8" <?php echo ($activeUser->position_id === 8) ? "selected" : '' ?>>Comaker</option>
                     </select>
                 </div>
                 <input type="hidden" name="id" value="<?php echo $id ?>">

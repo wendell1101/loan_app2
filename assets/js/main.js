@@ -48,3 +48,32 @@ function fixNav() {
     navbar.classList.remove("sticky");
   }
 }
+
+// select only two in multiple select in select option
+
+$(document).ready(function () {
+  var last_valid_selection = null;
+
+  $("#comaker_id").change(function (event) {
+    if ($(this).val().length > 2) {
+      $(this).val(last_valid_selection);
+    } else {
+      last_valid_selection = $(this).val();
+    }
+  });
+});
+
+$(".selecte").select2({
+  maximumSelectionLength: 2,
+});
+
+$("form").on("submit", function () {
+  var minimum = 2;
+
+  if ($(".selecte").select2("data").length >= minimum) {
+    return true;
+  } else {
+    alert("Please choose at least " + minimum + " comaker(s)");
+    return false;
+  }
+});

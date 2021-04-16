@@ -9,7 +9,7 @@ $loan = new Loan();
 $loan_type_id = $amount = $term = $department_id = '';
 $departments = $loan->getDepartments();
 $loan_type = $loan->getLoanByType('regular');
-$comakers = $loan->getComakers();
+$comakers = $loan->getOtherUsers();
 $checkIfHasFixedDeposit = $loan->checkIfHasFixedDeposit($_SESSION['id']);
 $loanable_amount = $loan->getLoanableAmount($_SESSION['id']);
 
@@ -41,7 +41,7 @@ if (isset($_POST['loan'])) {
 
         <div class="row">
             <div class="col-md-9 mx-auto">
-                <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST" class="shadow p-3">
+                <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST" class="shadow p-3 loan-form">
                     <div class="form-group">
                         <label for="loan_type_id">Loan Type</label>
                         <select name="loan_type_id" id="loan_type_id" required class="form-control" read-only>
@@ -55,7 +55,7 @@ if (isset($_POST['loan'])) {
                     </div>
                     <div class="form-group">
                         <label for="amount">Amount</label>
-                        <input type="number" name="amount" id="amount" max="<?php echo $loanable_amount ?>" required class="form-control
+                        <input type="number" name="amount" id="amount" max="60000" required class="form-control
                         <?php
                         if (!empty(($amount))) {
                             echo $errors['amount'] ? 'is-invalid' : 'is-valid';
@@ -66,7 +66,6 @@ if (isset($_POST['loan'])) {
                         }
                         ?>
                         " value="<?php echo $amount ?>">
-                        <small class="text-primary">Maximum Loanable Amount: PHP <?php echo formatDecimal($loanable_amount) ?></small>
                         <div class="text-danger">
                             <small><?php echo $errors['amount'] ?? '' ?></small>
                         </div>
@@ -96,16 +95,16 @@ if (isset($_POST['loan'])) {
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="position_id">Choose 2 Comaker</label>
-                        <select name="position_id[]" id="position_id" class="form-control" multiple>
+                        <label for="comaker_id">Choose 2 Comaker</label>
+                        <select name="comaker_id[]" id="comaker_id" class="form-control selecte" id="selecte" multiple>
                             <?php foreach ($comakers as $comaker) : ?>
                                 <option value="<?php echo $comaker->id ?>"><?php echo ucfirst($comaker->firstname) . ' ' . ucfirst($comaker->lastname) ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
 
-
                     <div class="form-group">
+                        <a href="select_loan.php" class="btn btn-secondary">Cancel</a>
                         <button type="submit" name="loan" class="btn btn-success">Proceed</button>
                     </div>
                 </form>

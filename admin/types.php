@@ -17,7 +17,7 @@ $types = $activeType->index();
     <div class="card shadow">
         <div class="card-header d-flex align-items-center">
             <h4>Loan Types</h4>
-            <a href="<?php echo 'type_create.php' ?>" class="btn btn-primary ml-auto"><i class="fas fa-plus text-light"></i></a>
+            <a href="type_create.php" class="btn btn-success ml-auto">Create Loan Types<i class="ml-2 fas fa-plus text-light"></i></a>
         </div>
         <div class="card-body">
             <div class="table-responsive">

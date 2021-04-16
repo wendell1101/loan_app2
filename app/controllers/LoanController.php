@@ -45,6 +45,13 @@ class Loan extends Connection
         $stmt->execute(['id' => $id]);
         return $stmt->fetch();
     }
+    public function getUsersLoan($user_id)
+    {
+        $sql = "SELECT * FROM loans WHERE user_id=:user_id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute(['user_id' => $user_id]);
+        return $stmt->fetchAll();
+    }
     public function getUser($id)
     {
         $sql = "SELECT * FROM users WHERE id=:id";
@@ -66,9 +73,17 @@ class Loan extends Connection
         $stmt->execute();
         return  $stmt->fetchAll();
     }
-    public function getComakers()
+    public function getUsers()
     {
-        $sql = "SELECT * FROM users where position_id=8";
+        $sql = "SELECT * FROM users";
+        $stmt = $this->conn->query($sql);
+        $stmt->execute();
+        return  $stmt->fetchAll();
+    }
+    public function getOtherUsers()
+    {
+        $id = $_SESSION['id'];
+        $sql = "SELECT * FROM users WHERE id!=$id AND position_id=2";
         $stmt = $this->conn->query($sql);
         $stmt->execute();
         return  $stmt->fetchAll();
@@ -177,7 +192,7 @@ class Loan extends Connection
             $_SESSION['active_loan'] = $this->data;
             $_SESSION['total_amount'] = $total_amount;
             $_SESSION['interest_amount_per_month'] = $percent;
-            $_SESSION['comakers'] = $this->data['position_id'];
+            $_SESSION['comakers'] = $this->data['comaker_id'];
 
             redirect("finalize_loan.php");
         }
@@ -261,35 +276,46 @@ class Loan extends Connection
         //MEM-2021-8
         $membership_number = "MEM" . '-' . date("Y") . '-' . $id;
         $status = "pending";
-        $position_id = json_encode($_SESSION['comakers']);
+        $comakers = $_SESSION['comakers'];
+
 
         // total amount
 
         $amount = $activeLoan['amount'];
-
         $total_amount = $_SESSION['total_amount'];
-        $sql = "INSERT INTO loans (transaction_id, loan_number, membership_number, amount, term, status,
-        position_id, loan_type_id, total_amount, user_id) VALUES(:transaction_id, :loan_number, :membership_number, :amount, :term, :status,
-        :position_id,:loan_type_id, :total_amount, :user_id)";
-        $stmt = $this->conn->prepare($sql);
-        $run = $stmt->execute([
-            'transaction_id' => $transaction_id,
-            'loan_number' => $loan_number,
-            'membership_number' => $membership_number,
-            'amount' => $amount,
-            'term' => $activeLoan['term'],
-            'status' => $status,
-            'position_id' => $position_id,
-            'loan_type_id' => $activeLoan['loan_type_id'],
-            'total_amount' => $total_amount,
-            'user_id' => $id,
-        ]);
-        if ($run) {
-            $lastId = $this->conn->lastInsertId();
-            redirect("loan_detail.php?id=$lastId");
-        } else {
-            echo 'There was an error';
+
+        if ($comakers) {
+            $sql = "INSERT INTO loans (transaction_id, loan_number, membership_number, amount, term, status,
+            loan_type_id, total_amount, user_id, comaker1_id, comaker2_id) VALUES(:transaction_id, :loan_number, :membership_number, :amount, :term, :status
+            ,:loan_type_id, :total_amount, :user_id, :comaker1_id, :comaker2_id)";
+            $stmt = $this->conn->prepare($sql);
+            $saved = $stmt->execute([
+                'transaction_id' => $transaction_id,
+                'loan_number' => $loan_number,
+                'membership_number' => $membership_number,
+                'amount' => $amount,
+                'term' => $activeLoan['term'],
+                'status' => $status,
+                'loan_type_id' => $activeLoan['loan_type_id'],
+                'total_amount' => $total_amount,
+                'user_id' => $id,
+                'comaker1_id' => $comakers[0],
+                'comaker2_id' => $comakers[1],
+            ]);
+            if ($saved) {
+                $lastId = $this->conn->lastInsertId();
+                redirect("loan_detail.php?id=$lastId");
+            }
         }
+
+
+
+        // if ($run) {
+        //     $lastId = $this->conn->lastInsertId();
+        //     redirect("loan_detail.php?id=$lastId");
+        // } else {
+        //     echo 'There was an error';
+        // }
     }
 
     // delete category
@@ -314,6 +340,15 @@ class Loan extends Connection
         $stmt->execute(['id' => $id]);
         $type = $stmt->fetch();
         return $type;
+    }
+    public function getComakers($loan_id)
+    {
+        $activeLoan = $this->getLoan($loan_id);
+        $comaker1 = $activeLoan->comaker1_id;
+        $comaker2 = $activeLoan->comaker2_id;
+        $sql = "SELECT * from users WHERE id=$comaker1 OR id=$comaker2 LIMIT 2";
+        $stmt = $this->conn->query($sql);
+        return $stmt->fetchAll();
     }
 
 

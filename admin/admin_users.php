@@ -27,7 +27,8 @@ if (isset($_POST['active'])) {
     <div class="card shadow">
         <div class="card-header d-flex align-items-center">
             <h4>Users</h4>
-            <a href="admin_user_create.php" class="btn btn-primary ml-auto"><i class="fas fa-plus text-light"></i></a>
+            <a href="admin_user_create.php" class="btn btn-success ml-auto">Create User<i class="ml-2 fas fa-plus text-light"></i></a>
+            <!-- <a href="admin_user_create.php" class="btn btn-primary ml-auto"><i class="fas fa-plus text-light"></i></a> -->
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -46,14 +47,14 @@ if (isset($_POST['active'])) {
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Image</th>
                                 <th scope="col">Name</th>
                                 <th scope="col">Email</th>
                                 <th scope="col">Gender</th>
                                 <th scope="col">Position</th>
                                 <th scope="col">Status</th>
-                                <th scope="col">Membership Fee</th>
-                                <th scope="col">Membership Receipt</th>
+                                <th scope="col">Fee</th>
+                                <th scope="col">Receipt</th>
+                                <th scope="col">Formal Request</th>
                                 <th scope="col">Actions</th>
                             </tr>
                         </thead>
@@ -63,9 +64,6 @@ if (isset($_POST['active'])) {
                             <?php foreach ($users as $key => $singleUser) : ?>
                                 <tr class="align-items-center">
                                     <th scope="row"><?php echo $key + 1 ?></th>
-                                    <td>
-                                        <img class="rounded-circle" width="35" src="https://ui-avatars.com/api/?name=<?php echo $singleUser->firstname . ' ' . $singleUser->lastname ?>" alt="image">
-                                    </td>
                                     <td><a class="text-info" href="admin_user_detail.php?id=<?php echo $singleUser->id ?>"><?php echo ucfirst($singleUser->firstname) . ' ' . ucfirst($singleUser->lastname) ?></a></td>
                                     <td><?php echo $singleUser->email ?></td>
                                     <td><?php echo $singleUser->gender ?></td>
@@ -83,7 +81,8 @@ if (isset($_POST['active'])) {
                                         <?php endif; ?>
                                     </td>
                                     <td><?php echo ($singleUser->paid_membership) ? 'paid' : 'not paid' ?></td>
-                                    <td><a href="membership_receipt.php?id=<?php echo $singleUser->id ?>">Receipt</a></td>
+                                    <td><a href="membership_receipt.php?id=<?php echo $singleUser->id ?>" class="text-info">Receipt</a></td>
+                                    <td><a href="membership_request.php?id=<?php echo $singleUser->id ?>" class="text-info">View</a></td>
                                     <td class="d-flex">
                                         <form action="admin_user_update.php" method="POST">
                                             <input type="hidden" name="id" value="<?php echo $singleUser->id ?>">

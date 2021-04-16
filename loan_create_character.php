@@ -6,7 +6,7 @@ $auth = new Auth();
 $auth->restrict();
 
 $loan = new Loan();
-$comakers = $loan->getComakers();
+$comakers = $loan->getOtherUsers();
 $loan_type_id = $amount = $term = $department_id = '';
 $departments = $loan->getDepartments();
 $loan_type = $loan->getLoanByType('character');
@@ -41,7 +41,7 @@ if (isset($_POST['loan'])) {
 
         <div class="row">
             <div class="col-md-9 mx-auto">
-                <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST" class="shadow p-3">
+                <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST" class="shadow p-3 loan-form">
                     <div class="form-group">
                         <label for="loan_type_id">Loan Type</label>
                         <select name="loan_type_id" id="loan_type_id" required class="form-control" read-only>
@@ -77,14 +77,15 @@ if (isset($_POST['loan'])) {
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="position_id">Choose 2 Comaker</label>
-                        <select name="position_id[]" id="position_id" class="form-control" multiple>
+                        <label for="comaker_id">Choose 2 Comaker</label>
+                        <select name="comaker_id[]" id="comaker_id" class="form-control selecte" id="selecte" multiple>
                             <?php foreach ($comakers as $comaker) : ?>
                                 <option value="<?php echo $comaker->id ?>"><?php echo ucfirst($comaker->firstname) . ' ' . ucfirst($comaker->lastname) ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
                     <div class="form-group">
+                        <a href="select_loan.php" class="btn btn-secondary">Cancel</a>
                         <button type="submit" name="loan" class="btn btn-success">Proceed</button>
                     </div>
                 </form>

@@ -52,6 +52,13 @@ class AdminFixedDeposit extends Connection
         $stmt->execute(['id' => $id]);
         return $stmt->fetch();
     }
+    public function getDepositUser($id)
+    {
+        $sql = "SELECT * FROM users WHERE id=$id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindValue(':id', $id);
+        return $stmt->fetch();
+    }
     public function getPayments($id)
     {
         $sql = "SELECT * FROM payments WHERE loan_id=:id";
@@ -130,6 +137,13 @@ class AdminFixedDeposit extends Connection
         $sql = "SELECT * FROM loan_types WHERE id=:loan_type_id";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute(['loan_type_id' => $loan_type_id]);
+        return $stmt->fetch();
+    }
+    public function getFixedDeposit($id)
+    {
+        $sql = "SELECT * FROM fixed_deposits WHERE id=:id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute(['id' => $id]);
         return $stmt->fetch();
     }
 

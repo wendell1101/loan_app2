@@ -15,7 +15,7 @@ if (isset($_GET['id'])) {
     // $interest_amount = $_SESSION['interest_amount_per_month'];
     $amount_per_month = $activeLoan->amount / $activeLoan->term;
     $amount_per_15th = $amount_per_month / 2;
-    $comakers = $loan->getComakers();
+    $comakers = $loan->getComakers($activeLoan->id);
 } else {
     redirect('loan_create.php');
 }
@@ -70,7 +70,7 @@ if (isset($_GET['id'])) {
                 <span></span><br>
                 <span style="font-weight:500">Expected Payment(per month):</span> PHP <?php echo formatDecimal($amount_per_month) ?><br>
                 <span style="font-weight:500">Expected Payment(per kinsenas):</span> PHP <?php echo formatDecimal($amount_per_15th) ?></span><br>
-                <span style="font-weight:500">Total Amount:</span> PHP <?php echo formatDecimal($activeLoan->total_amount) ?></span><br>
+                <!-- <span style="font-weight:500">Total Amount:</span> PHP <?php echo formatDecimal($activeLoan->total_amount) ?></span><br> -->
                 <?php if ($comakers) : ?>
                     <?php foreach ($comakers as $comaker) : ?>
                         <span style="font-weight:200">Comaker: <?php echo ucfirst($comaker->firstname) . ' ' . ucfirst($comaker->lastname) ?></span><br>

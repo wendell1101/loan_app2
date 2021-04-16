@@ -45,6 +45,9 @@ if (isset($_POST['logout'])) {
             <li>
                 <a href="loans.php">Loans</a>
             </li>
+            <li>
+                <a href="comakers.php">Comakers</a>
+            </li>
 
             <?php if (User::Auth()) : ?>
                 <li>

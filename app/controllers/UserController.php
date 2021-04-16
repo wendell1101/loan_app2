@@ -25,8 +25,8 @@ class UserController extends Connection
             $this->validateEmail();
             $this->validatePassword1();
             $this->validatePassword2();
-            $this->validateGender();
-            $this->validateContactNumber();
+            // $this->validateGender();
+            // $this->validateContactNumber();
             $this->checkIfHasError();
             return $this->errors;
         }
@@ -230,15 +230,18 @@ class UserController extends Connection
             $name_of_spouse = $this->data['name_of_spouse'];
             $fathers_name = $this->data['fathers_name'];
             $mothers_maiden_name = $this->data['mothers_maiden_name'];
+            $beneficiary = $this->data['beneficiary'];
             $paid_membership = 0;
             $active = 0;
-
+            $reason1 = $this->data['reason1'];
+            $reason2 = $this->data['reason2'];
+            $reason3 = $this->data['reason3'];
             $sql = "INSERT INTO users (account_number, firstname, middlename, lastname, home_address, permanent_address, gender, birth_date,
             contact_number,email, password, position_id, sg, employment_status, department_id, name_of_spouse, fathers_name,
-            mothers_maiden_name, paid_membership, active)
+            mothers_maiden_name, beneficiary, paid_membership, active, reason1, reason2, reason3)
             VALUES (:account_number, :firstname, :middlename, :lastname, :home_address, :permanent_address, :gender, :birth_date,
             :contact_number,:email, :password, :position_id, :sg, :employment_status, :department_id, :name_of_spouse, :fathers_name,
-            :mothers_maiden_name, :paid_membership, :active)";
+            :mothers_maiden_name, :beneficiary, :paid_membership, :active, :reason1, :reason2,:reason3)";
             $stmt = $this->conn->prepare($sql);
             $run = $stmt->execute([
                 'account_number' => $account_number,
@@ -259,9 +262,12 @@ class UserController extends Connection
                 'name_of_spouse' => $name_of_spouse,
                 'fathers_name' => $fathers_name,
                 'mothers_maiden_name' => $mothers_maiden_name,
-                'mothers_maiden_name' => $mothers_maiden_name,
+                'beneficiary' => $beneficiary,
                 'paid_membership' => $paid_membership,
                 'active' => $active,
+                'reason1' => $reason1,
+                'reason2' => $reason2,
+                'reason3' => $reason3,
             ]);
 
             $lastId = $this->conn->lastInsertId();
@@ -270,7 +276,7 @@ class UserController extends Connection
                  Please wait for account approval from membership committee to login.');
                 redirect('login.php');
             } else {
-                echo 'error occured';
+                echo 'Something went wrong. Please try again';
             }
         }
     }

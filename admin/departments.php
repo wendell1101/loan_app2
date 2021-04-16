@@ -17,7 +17,8 @@ $departments = $activeDepartment->index();
     <div class="card shadow">
         <div class="card-header d-flex align-items-center">
             <h4>Departments</h4>
-            <a href="<?php echo 'department_create.php' ?>" class="btn btn-primary ml-auto"><i class="fas fa-plus text-light"></i></a>
+            <a href="department_create.php" class="btn btn-success ml-auto">Create Department<i class="ml-2 fas fa-plus text-light"></i></a>
+            <!-- <a href="<?php echo 'department_create.php' ?>" class="btn btn-primary ml-auto"><i class="fas fa-plus text-light"></i></a> -->
         </div>
         <div class="card-body">
             <div class="table-responsive">

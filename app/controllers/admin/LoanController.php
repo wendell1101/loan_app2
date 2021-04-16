@@ -16,7 +16,8 @@ class AdminLoan extends Connection
 
     public function index()
     {
-        $sql = "SELECT * FROM loans";
+        $sql = "SELECT * FROM loans WHERE comaker1_id IS NOT NULL AND comaker2_id IS NOT NULL
+                    AND approved_by_c1=1 AND approved_by_c2=1";
         $stmt = $this->conn->query($sql);
         return $stmt->fetchAll();
     }

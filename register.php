@@ -9,7 +9,7 @@ $departments = $user->getDepartments();
 
 $firstname = $middlename = $lastname = $home_address = $permanent_address = '';
 $gender = $birth_date = $contact_number = $email = $password1 = $password2 = '';
-$position_id = $sg = $employment_status = $department_id = $name_of_spouse = '';
+$position_id = $sg = $employment_status = $department_id = $name_of_spouse = $beneficiary = '';
 $fathers_name = $mothers_maiden_name = '';
 if (isset($_POST['register'])) {
 
@@ -34,6 +34,7 @@ if (isset($_POST['register'])) {
     $name_of_spouse = sanitize($data['name_of_spouse']);
     $fathers_name = sanitize($data['fathers_name']);
     $mothers_maiden_name = sanitize($data['mothers_maiden_name']);
+    $beneficiary = sanitize($data['beneficiary']);
 }
 ?>
 
@@ -206,22 +207,40 @@ if (isset($_POST['register'])) {
                     </div>
                     <h4 class="mt-5">Other Information</h4>
                     <div class="row">
-                        <div class="col">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <input type="text" name="name_of_spouse" id="name_of_spouse" placeholder="Name of Spouse (optional)" class="form-control" value="<?php echo $name_of_spouse ?>">
                             </div>
                         </div>
-                        <div class="col">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <input type="text" name="fathers_name" id="fathers_name" required placeholder="Fathers Name" class="form-control" value="<?php echo $fathers_name ?>">
                             </div>
                         </div>
-                        <div class="col">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <input type="text" name="mothers_maiden_name" required id="mothers_maiden_name" placeholder="Mothers Maiden Name" class="form-control" value="<?php echo $mothers_maiden_name ?>">
                             </div>
                         </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <input type="text" name="beneficiary" required id="beneficiary" placeholder="Name of Beneficiary" class="form-control" value="<?php echo $beneficiary ?>">
+                            </div>
+                        </div>
 
+                    </div>
+                    <h4 class="mt-5">Reasons why you want to be part of the association</h4>
+                    <div class="form-group">
+                        <label for="reason1">Reason 1</label>
+                        <textarea name="reason1" id="reason1" cols="30" rows="2" class="form-control" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="reason2">Reason 2</label>
+                        <textarea name="reason2" id="reason2" cols="30" rows="2" class="form-control" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="reason3">Reason 3</label>
+                        <textarea name="reason3" id="reason3" cols="30" rows="2" class="form-control" required></textarea>
                     </div>
                     <div class="row">
                         <div class="col">

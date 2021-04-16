@@ -69,10 +69,10 @@ if (isset($_POST['finalize_loan'])) {
                     <small>Amount:</small>
                     PHP <?php echo formatDecimal($amount) ?>
                 </p>
-                <p>
+                <!-- <p>
                     <small>Total Amount:</small>
                     PHP <?php echo formatDecimal($total_amount) ?>
-                </p>
+                </p> -->
                 <p>
                     <small>Expected Payment(per month):</small>
                     PHP <?php echo formatDecimal($amount_per_month) ?>

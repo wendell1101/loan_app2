@@ -1,26 +1,29 @@
 <?php
 require_once '../core.php';
-
+$saving = new Savings();
 
 $adminUser = new AdminUser();
 
 $user = '';
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
+    $activeSaving = $saving->getSaving($_GET['id']);
 
-    $user = $adminUser->getUser($_GET['id']);
+    $user = $saving->getUser($activeSaving->user_id);
 
     $fixed_deposit_amount = formatDecimal($adminUser->getUserDeposit($user->id));
     $savings_deposit_amount = formatDecimal($adminUser->getUserSavings($user->id));
     $total_regular_loan_balance = formatDecimal($adminUser->getUserRegularLoans($user->id));
     $total_character_loan_balance = formatDecimal($adminUser->getUserCharacterLoans($user->id));
-    $membership_fee = '200.00';
-    $user_fullname = ucfirst($user->firstname) . ' ' . ucfirst($user->lastname);
 
-    $date = shortDate($user->created_at);
+
+    $payer = ucwords($activeSaving->payment_by);
+
+    $amount = formatDecimal($activeSaving->withdraw_amount);
+    $date = shortDate($activeSaving->created_at);
     // print_r($activePayment);
 } else {
-    redirect('admin_users.php');
+    redirect('payments.php');
 }
 require_once('../tcpdf/tcpdf.php');
 
@@ -70,23 +73,25 @@ $obj_pdf->SetFont('helvetica', '', 12);
 $obj_pdf->AddPage();
 $content = '';
 $content .= '
-<h4>Membership fee: PHP ';
+<h4>Receipt Number: ';
 
-$content .= $membership_fee .= '</h4>
+$content .= $activeSaving->reference_number .= '</h4>
 Date: ';
 $content .= $date
     .= '<br /><br />
 Received from: ';
-$content .= $user_fullname .= '<br><br />
+$content .= $payer .= '<br><br />
 <table border="1" cellspacing="0" cellpadding="5">
 
      <tr>
         <td>Fixed Deposit</td>
         <td>PHP 0.00</td>
         <td></td>
-     </tr><tr>
+     </tr>
+     <tr>
      <td>Savings Deposit</td>
-     <td>PHP 0.00</td>
+     <td>PHP ';
+$content .= $activeSaving->withdraw_amount .= '</td>
      <td></td>
   </tr>
      <tr>
@@ -115,13 +120,9 @@ $content .= $user_fullname .= '<br><br />
         <td></td>
      </tr>
      <tr>
-        <td>Membership Fee</td>
-        <td>PHP 200.00</td>
-        <td></td>
-     </tr>
-     <tr>
         <td>Total</td>
-        <td colspan="2">PHP 200.00 </td>
+        <td colspan="2">PHP ';
+$content .= $amount .= '</td>
      </tr>
 </table/>
 
@@ -130,22 +131,26 @@ $content .= '<br><br>
 <table border=".5" cellspacing="0" cellpadding="5">
     <tr>
         <td>Fixed Deposit</td>
-        <td>PHP 0.00</td>
+        <td>PHP';
+$content .= $fixed_deposit_amount .= '</td>
         <td colspan="2" style="text-align:center;"> Received Payment</td>
     </tr>
     <tr>
         <td>Savings Deposit</td>
-        <td>PHP 0.00</td>
+        <td>PHP ';
+$content .= $savings_deposit_amount .= '</td>
         <td colspan="2" style="text-align:center; border:none">____________</td>
     </tr>
     <tr>
         <td>Regular Loan</td>
-        <td>PHP 0.00 </td>
+        <td>PHP ';
+$content .= $total_regular_loan_balance .= '</td>
         <td colspan="2" style="text-align:center; border:none">Treasurer</td>
     </tr>
     <tr>
         <td>Character Loan</td>
-        <td>PHP 0.00</td>
+        <td>PHP ';
+$content .= $total_character_loan_balance .= '</td>
         <td colspan="2" style="text-align:center">By:</td>
     </tr>
     <tr>

@@ -54,21 +54,15 @@ if (isset($_POST['create'])) {
 
 
                 <div class="form-group">
-                    <label for="payment_amount">Fullname of payer</label>
-                    <input type="text" name="payment_by" id="payment_by" class="form-control
-                    <?php
-                    if (!empty(($payment_by))) {
-                        echo $errors['payment_by'] ? 'is-invalid' : 'is-valid';
-                    } else {
-                        if ($errors['payment_by']) {
-                            echo 'is-invalid';
-                        }
-                    }
-                    ?>
-                    " value="<?php echo $payment_by ?>">
-                    <div class="text-danger">
-                        <small><?php echo $errors['payment_by'] ?? '' ?></small>
-                    </div>
+                    <select class="selectpicker form-control border " name="payment_by" id="payment_by" data-live-search="true" required>
+                        <option value=""> Select Fullname</option>
+                        <?php foreach ($users as $user) : ?>
+                            <option data-tokens="
+                        <?php echo $user->account_number . ' - ' . $user->firstname . ' ' . $user->lastname ?>" value="<?php echo $user->firstname . ' ' . $user->lastname ?>">
+                                <?php echo $user->firstname . ' ' . $user->lastname ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="amount">Payment Amount</label>

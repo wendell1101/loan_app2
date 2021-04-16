@@ -14,7 +14,12 @@ if (isset($_GET['id'])) {
     $loan = $adminLoan->getLoan($_GET['id']);
     $user = $adminLoan->getUser($loan->user_id);
     $type = $adminLoan->getLoanTypeName($loan->loan_type_id);
-    $comakers = json_decode($loan->position_id);
+    $comaker1_id = $loan->comaker1_id;
+    $comaker2_id = $loan->comaker2_id;
+    $comaker1_fullname = ucfirst($adminLoan->getUser($comaker1_id)->firstname)
+        . ' ' . ucfirst($adminLoan->getUser($comaker1_id)->lastname);
+    $comaker2_fullname = ucfirst($adminLoan->getUser($comaker2_id)->firstname)
+        . ' ' . ucfirst($adminLoan->getUser($comaker2_id)->lastname);
 } else {
     redirect('loans.php');
 }
@@ -26,7 +31,7 @@ if (isset($_GET['id'])) {
 <div class="container">
     <div class="card shadow">
         <div class="card-header d-flex align-items-center">
-            <h4>Loans</h4>
+            <h4>Loan Detail</h4>
             <a href="loan_create.php" class="btn btn-primary ml-auto"><i class="fas fa-plus text-light"></i></a>
         </div>
         <div class="card-body">
@@ -60,10 +65,8 @@ if (isset($_GET['id'])) {
                                 <td><?php echo $user->contact_number ?></td>
                                 <td><?php echo $type ?></td>
                                 <td>
-                                    <?php foreach ($comakers as $comaker) : ?>
-                                        <?php $user = $adminLoan->getComaker($comaker); ?>
-                                        <?php echo ucfirst($user->firstname) . ' ' . ucfirst($user->lastname) ?>,<br>
-                                    <?php endforeach ?>
+                                    <span><?php echo $comaker1_fullname ?>,</span><br>
+                                    <span><?php echo $comaker2_fullname ?></span>
                                 </td>
                                 <td>
                                     <?php echo shortDate($loan->created_at) ?>

@@ -150,37 +150,43 @@ class Payment extends Connection
             $payment_by = $this->data['payment_by'];
             $payment_amount = $this->data['payment_amount'];
             $loan_id = $this->data['loan_id'];
+            $activeLoan = $this->getLoan($loan_id);
 
-            $sql = "INSERT INTO payments (reference_number, payment_by, payment_amount, loan_id)
-            VALUES(:reference_number, :payment_by, :payment_amount, :loan_id)";
-            $stmt = $this->conn->prepare($sql);
-
-            $saved = $stmt->execute([
-                'reference_number' => $reference_number,
-                'payment_by' => $payment_by,
-                'payment_amount' => $payment_amount,
-                'loan_id' => $loan_id,
-            ]);
-            $payment = $stmt->fetch();
-
-
-            if ($saved) {
-                $lastId = $this->conn->lastInsertId();
-
-                $activePayment = $this->getPayment($lastId);
-                $activeLoan = $this->getLoan($activePayment->loan_id);
-                $new_amount = $activeLoan->total_amount - $activePayment->payment_amount;
-
-
-                $sql = "UPDATE loans SET total_amount=:new_amount WHERE id=:id";
+            if ($payment_amount > $activeLoan->total_amount) {
+                $this->addError('payment_amount', "Payment amount should not be greater than the loan balance of PHP $activeLoan->total_amount");
+            }
+            if (!array_filter($this->errors)) {
+                $sql = "INSERT INTO payments (reference_number, payment_by, payment_amount, loan_id)
+                VALUES(:reference_number, :payment_by, :payment_amount, :loan_id)";
                 $stmt = $this->conn->prepare($sql);
-                $updated = $stmt->execute([
-                    'new_amount' => $new_amount,
-                    'id' => $activeLoan->id,
+
+                $saved = $stmt->execute([
+                    'reference_number' => $reference_number,
+                    'payment_by' => $payment_by,
+                    'payment_amount' => $payment_amount,
+                    'loan_id' => $loan_id,
                 ]);
-                if ($updated) {
-                    message('success', 'New payment has been created');
-                    redirect('payments.php');
+                $payment = $stmt->fetch();
+
+
+                if ($saved) {
+                    $lastId = $this->conn->lastInsertId();
+
+                    $activePayment = $this->getPayment($lastId);
+                    $activeLoan = $this->getLoan($activePayment->loan_id);
+                    $new_amount = $activeLoan->total_amount - $activePayment->payment_amount;
+
+
+                    $sql = "UPDATE loans SET total_amount=:new_amount WHERE id=:id";
+                    $stmt = $this->conn->prepare($sql);
+                    $updated = $stmt->execute([
+                        'new_amount' => $new_amount,
+                        'id' => $activeLoan->id,
+                    ]);
+                    if ($updated) {
+                        message('success', 'New payment has been created');
+                        redirect('payments.php');
+                    }
                 }
             }
         }
@@ -216,6 +222,14 @@ class Payment extends Connection
         $stmt->execute(['id' => $id]);
         $user = $stmt->fetch();
         return $user;
+    }
+
+    public function getUsers()
+    {
+        $sql = "SELECT * FROM users where active=1 AND paid_membership=1";
+        $stmt = $this->conn->query($sql);
+        $stmt->execute();
+        return  $stmt->fetchAll();
     }
 
     //update category

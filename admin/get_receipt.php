@@ -1,14 +1,40 @@
 <?php
 require_once '../core.php';
 $payment = new Payment();
+
+$adminUser = new AdminUser();
+
+$user = '';
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
     $activePayment = $payment->getPayment($_GET['id']);
     $activeLoan = $payment->getLoan($activePayment->loan_id);
 
-    $balance = formatDecimal($activeLoan->total_amount);
-    $payment_amount = formatDecimal($activePayment->payment_amount);
-    $payment_at = shortDate($activePayment->paid_at);
+    $regular_loan_payment = '0.00';
+    $character_loan_payment = '0.00';
+    $total = '0.00';
+
+    if ($activeLoan->loan_type_id == 1) {
+        $regular_loan_payment = formatDecimal($activePayment->payment_amount);
+        $total = formatDecimal($activePayment->payment_amount);
+    } else if ($activeLoan->loan_type_id == 3) {
+        $character_loan_payment = formatDecimal($activePayment->payment_amount);
+        $total = formatDecimal($activePayment->payment_amount);
+    }
+
+
+    $user = $adminUser->getUser($activeLoan->user_id);
+
+    $fixed_deposit_amount = formatDecimal($adminUser->getUserDeposit($user->id));
+    $savings_deposit_amount = formatDecimal($adminUser->getUserSavings($user->id));
+    $total_regular_loan_balance = formatDecimal($adminUser->getUserRegularLoans($user->id));
+    $total_character_loan_balance = formatDecimal($adminUser->getUserCharacterLoans($user->id));
+
+
+    $payer = ucwords($activePayment->payment_by);
+
+    $amount = formatDecimal($activePayment->payment_amount);
+    $date = shortDate($activePayment->paid_at);
     // print_r($activePayment);
 } else {
     redirect('payments.php');
@@ -45,92 +71,115 @@ class MYPDF extends TCPDF
 }
 
 // create new PDF document
-$pdf = new TCPDF('p', 'pt', [300, 400], true, 'UTF-8', false);
+$obj_pdf = new TCPDF('P', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+$obj_pdf->SetCreator(PDF_CREATOR);
+$obj_pdf->SetTitle("Export HTML Table data to PDF using TCPDF in PHP");
+$obj_pdf->SetHeaderData('', '', PDF_HEADER_TITLE, PDF_HEADER_STRING);
+$obj_pdf->setHeaderFont(array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$obj_pdf->setFooterFont(array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+$obj_pdf->SetDefaultMonospacedFont('helvetica');
+$obj_pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+$obj_pdf->SetMargins(PDF_MARGIN_LEFT, '5', PDF_MARGIN_RIGHT);
+$obj_pdf->setPrintHeader(false);
+$obj_pdf->setPrintFooter(false);
+$obj_pdf->SetAutoPageBreak(TRUE, 10);
+$obj_pdf->SetFont('helvetica', '', 12);
+$obj_pdf->AddPage();
+$content = '';
+$content .= '
+<h4>Receipt Number: ';
 
-//add styling
+$content .= $activePayment->reference_number .= '</h4>
+Date: ';
+$content .= $date
+    .= '<br /><br />
+Received from: ';
+$content .= $payer .= '<br><br />
+<table border="1" cellspacing="0" cellpadding="5">
 
-// set document information
-// $pdf->SetCreator(PDF_CREATOR);
-// $pdf->SetAuthor('Nicola Asuni');
-$pdf->SetTitle('Official Receipt');
-// $pdf->SetSubject('TCPDF Tutorial');
-// $pdf->SetKeywords('TCPDF, PDF, example, test, guide');
+     <tr>
+        <td>Fixed Deposit</td>
+        <td>PHP 0.00</td>
+        <td></td>
+     </tr><tr>
+     <td>Savings Deposit</td>
+     <td> PHP 0.00</td>
+     <td></td>
+  </tr>
+     <tr>
+        <td>Regular Loan Payment</td>
+        <td>PHP ';
+$content .= $regular_loan_payment .= '</td>
+        <td></td>
+     </tr>
+     <tr>
+        <td>Interest</td>
+        <td>PHP 0.00</td>
+        <td></td>
+     </tr>
+     <tr>
+        <td>Character Loan Payment</td>
+        <td>PHP ';
+$content .= $character_loan_payment .= '</td>
+        <td></td>
+     </tr>
+     <tr>
+        <td>Interest</td>
+        <td>PHP 0.00</td>
+        <td></td>
+     </tr>
+     <tr>
+        <td>Total</td>
+        <td colspan="2"> PHP ';
+$content .= $total .= '</td>
+     </tr>
+</table/>
 
-$pdf->SetPrintHeader(false);
-$pdf->SetPrintFooter(false);
+';
+$content .= '<br><br>
+<table border=".5" cellspacing="0" cellpadding="5">
+    <tr>
+        <td>Fixed Deposit</td>
+        <td>PHP';
+$content .= $fixed_deposit_amount .= '</td>
+        <td colspan="2" style="text-align:center;"> Received Payment</td>
+    </tr>
+    <tr>
+        <td>Savings Deposit</td>
+        <td>PHP ';
+$content .= $savings_deposit_amount .= '</td>
+        <td colspan="2" style="text-align:center; border:none">____________</td>
+    </tr>
+    <tr>
+        <td>Regular Loan</td>
+        <td>PHP ';
+$content .= $total_regular_loan_balance .= '</td>
+        <td colspan="2" style="text-align:center; border:none">Treasurer</td>
+    </tr>
+    <tr>
+        <td>Character Loan</td>
+        <td>PHP ';
+$content .= $total_character_loan_balance .= '</td>
+        <td colspan="2" style="text-align:center">By:</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td colspan="2" style="text-align:center">_______________</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td colspan="2" style="text-align:center">Asst. Treasurer</td>
+    </tr>
+
+</table>
+
+';
 
 
-// set default header data
-$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
-
-// set header and footer fonts
-$pdf->setHeaderFont(array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
-$pdf->setFooterFont(array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
-
-// set default monospaced font
-$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
-
-// set margins
-$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
-$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
-
-// set auto page breaks
-$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
-
-// set image scale factor
-$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
-
-// set some language-dependent strings (optional)
-if (@file_exists(dirname(__FILE__) . '/lang/eng.php')) {
-    require_once(dirname(__FILE__) . '/lang/eng.php');
-    $pdf->setLanguageArray($l);
-}
-
-// ---------------------------------------------------------
-
-// set font
-$pdf->SetFont('times', 'R', 12);
-
-// add a page
-$pdf->AddPage();
-
-// set some text to print
-$txt = <<<EOD
-
-FACULTY AND EMPLOYEE ASSOCIATION
-
-OFFICIAL RECEIPT
-
-Reference Number: {$activePayment->reference_number}
-
-Name of Payer: {$activePayment->payment_by}
-
-Payment for :  {$activeLoan->loan_number}
-
-Membership Number :  {$activeLoan->membership_number}
-
-Payment Amount: PHP {$payment_amount}
-
-Current balance: PHP {$balance}
-
-Paid at: {$payment_at}
-
-
-__________________________________
-        Asst. Treasurer
-
-
-
-EOD;
-
-// print a block of text using Write()
-$pdf->Write(0, $txt, '', 0, 'C', true, 0, false, false, 0);
-
-// ---------------------------------------------------------
-
-//Close and output PDF document
-$pdf->Output('official_receipt.pdf', 'I');
+$obj_pdf->writeHTML($content);
+$obj_pdf->Output('official_receipt.pdf', 'I');
 
 //============================================================+
 // END OF FILE

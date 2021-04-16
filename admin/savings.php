@@ -17,7 +17,7 @@ $savings = $saving->index();
     <div class="card shadow">
         <div class="card-header d-flex align-items-center">
             <h4>Savings</h4>
-            <a href="<?php echo 'saving_create.php' ?>" class="btn btn-primary ml-auto"><i class="fas fa-plus text-light"></i></a>
+            <a href="saving_create.php" class="btn btn-success ml-auto">Create Saving Deposit<i class="ml-2 fas fa-plus text-light"></i></a>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -29,7 +29,9 @@ $savings = $saving->index();
                                 <th scope="col">Reference Number</th>
                                 <th scope="col">Payment By</th>
                                 <th scope="col">Amount</th>
+                                <th scope="col">Receipt</th>
                                 <th scope="col">Created At</th>
+                                <th scope="col">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -41,15 +43,21 @@ $savings = $saving->index();
                                     <td><?php echo $deposit->reference_number ?></td>
                                     <td><?php echo ucwords($deposit->payment_by) ?></td>
                                     <td>PHP <?php echo formatDecimal($deposit->amount) ?></td>
+                                    <td>
+                                        <a href="savings_receipt.php?id=<?php echo $deposit->id ?>" class="text-info">
+                                            Receipt
+                                        </a>
+                                    </td>
 
                                     <td><?php echo formatDate($deposit->created_at) ?></td>
+                                    <td><a href="saving_withdraw.php?user_id=<?php echo $deposit->user_id ?>&saving_id=<?php echo $deposit->id ?>" class="text-info">Widthdraw</a></td>
                                 </tr>
                             <?php endforeach; ?>
 
                         </tbody>
                     </table>
                 <?php else : ?>
-                    <h2 class="text-secondary text-center">No Deposit Yet</h2>
+                    <h2 class="text-secondary text-center">No Savings Yet</h2>
                 <?php endif; ?>
             </div>
         </div>

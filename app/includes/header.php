@@ -21,6 +21,8 @@ if (isset($_POST['logout'])) {
     <link rel="icon" href="#" type="image/gif" sizes="16x16">
     <!--fontawesome5 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+    <!--select2-->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
     <!--bootstrap-->
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
@@ -47,7 +49,9 @@ if (isset($_POST['logout'])) {
             <li>
                 <a href="loans.php">Loans</a>
             </li>
-
+            <li>
+                <a href="comakers.php">Comakers</a>
+            </li>
 
             <?php if (User::Auth()) : ?>
                 <li>
@@ -89,6 +93,9 @@ if (isset($_POST['logout'])) {
         </li>
         <li>
             <a href="loans.php">Loans</a>
+        </li>
+        <li>
+            <a href="comakers.php">Comakers</a>
         </li>
 
         <?php if (User::Auth()) : ?>

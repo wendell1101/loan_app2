@@ -28,9 +28,9 @@ require_once 'core.php';
                         <div class="col-md-12 mt-5 text-contact">
                             <h4>Address</h4>
                             <p class="text-title pb-2">
-                                Paseo Uno De Calamba <br>
+                                Paseo Uno <br>
                                 Checkpoint, Brgy. Paciano <br>
-                                Calamba City, Laguna <br>
+                                LSPU Siniloan, Laguna <br>
                             </p>
                         </div>
                     </div>
