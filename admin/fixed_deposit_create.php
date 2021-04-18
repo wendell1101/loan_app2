@@ -66,7 +66,7 @@ if (isset($_POST['create'])) {
                 </div>
                 <div class="form-group">
                     <label for="amount">Payment Amount</label>
-                    <input type="number" name="amount" id="amount" min="1000" max="20000" class="form-control
+                    <input type="number" name="amount" id="amount" class="form-control
                     <?php
                     if (!empty(($amount))) {
                         echo $errors['amount'] ? 'is-invalid' : 'is-valid';

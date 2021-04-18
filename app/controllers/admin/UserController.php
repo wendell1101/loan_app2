@@ -333,7 +333,15 @@ class AdminUser extends Connection
             redirect('admin_users.php');
         }
     }
+    // get loan
 
+    public function getLoan($id)
+    {
+        $sql = "SELECT * FROM loans WHERE id=:id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute(['id' => $id]);
+        return $stmt->fetch();
+    }
     //get positions
     public function getPositions()
     {

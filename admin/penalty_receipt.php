@@ -1,32 +1,40 @@
 <?php
 require_once '../core.php';
-$saving = new Savings();
+$payment = new Payment();
 
 $adminUser = new AdminUser();
 
 $user = '';
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
-    $activeSaving = $saving->getSaving($_GET['id']);
+    $activePayment = $payment->getPayment($_GET['id']);
+    $activeLoan = $payment->getLoan($activePayment->loan_id);
 
-    $user = $saving->getUser($activeSaving->user_id);
+    $regular_loan_payment = '0.00';
+    $character_loan_payment = '0.00';
+    $total = '0.00';
+
+    if ($activeLoan->loan_type_id == 1) {
+        $regular_loan_payment = formatDecimal($activePayment->payment_amount);
+        $total = formatDecimal($activePayment->payment_amount);
+    } else if ($activeLoan->loan_type_id == 3) {
+        $character_loan_payment = formatDecimal($activePayment->payment_amount);
+        $total = formatDecimal($activePayment->payment_amount);
+    }
+
+
+    $user = $adminUser->getUser($activeLoan->user_id);
 
     $fixed_deposit_amount = formatDecimal($adminUser->getUserDeposit($user->id));
     $savings_deposit_amount = formatDecimal($adminUser->getUserSavings($user->id));
     $total_regular_loan_balance = formatDecimal($adminUser->getUserRegularLoans($user->id));
     $total_character_loan_balance = formatDecimal($adminUser->getUserCharacterLoans($user->id));
 
-    $withdraw = '0.00';
 
-    if (!is_null($activeSaving->withdraw_amount)) {
-        $withdraw = $activeSaving->withdraw_amount;
-    }
+    $payer = ucwords($activePayment->payment_by);
 
-
-    $payer = ucwords($activeSaving->payment_by);
-
-    $amount = formatDecimal($activeSaving->amount);
-    $date = shortDate($activeSaving->created_at);
+    $amount = formatDecimal($activePayment->payment_amount);
+    $date = shortDate($activePayment->paid_at);
     // print_r($activePayment);
 } else {
     redirect('payments.php');
@@ -79,101 +87,74 @@ $obj_pdf->SetFont('helvetica', '', 12);
 $obj_pdf->AddPage();
 $content = '';
 $content .= '
-<h4>Receipt Number: ';
+    <p style="text-align:center; font-weight:bold">LSPU-SC FEA Savings and Credit Services</p>
+    <p style="text-align:center">LSPU-Siniloan, Laguna</p><br><br>
 
-$content .= $activeSaving->reference_number .= '</h4>
-Date: ';
-$content .= $date
-    .= '<br /><br />
+
+    <br><br>
+    Receipt Number:';
+$content .= $activePayment->reference_number .= '<br>
+    Date: ';
+$content .= $date .=  '<br /><br />
 Received from: ';
 $content .= $payer .= '<br><br />
 <table border="1" cellspacing="0" cellpadding="5">
 
      <tr>
-        <td>Fixed Deposit</td>
-        <td>PHP 0.00</td>
-        <td></td>
+        <td>Service Charge</td>
+        <td> __________ </td>
+
      </tr>
-     <tr>
-     <td>Savings Deposit</td>
-     <td>PHP ';
-$content .= $activeSaving->amount .= '</td>
-     <td></td>
+    <tr>
+     <td>Penalty</td>
+     <td> __________ </td>
+
   </tr>
+
+
      <tr>
-        <td>Withdraw From Savings</td>
-        <td>PHP ';
-$content .= $withdraw .= '</td>
-        <td></td>
+        <td>Membership fee</td>
+        <td> __________ </td>
+
      </tr>
      <tr>
-        <td>Regular Loan Payment</td>
-        <td>PHP 0.00</td>
-        <td></td>
+        <td>Others</td>
+        <td> __________ </td>
      </tr>
      <tr>
-        <td>Interest</td>
-        <td>PHP 0.00</td>
-        <td></td>
-     </tr>
-     <tr>
-        <td>Character Loan Payment</td>
-        <td>PHP 0.00</td>
-        <td></td>
-     </tr>
-     <tr>
-        <td>Interest</td>
-        <td>PHP 0.00</td>
-        <td></td>
-     </tr>
-     <tr>
-        <td>Total Savings</td>
-        <td colspan="2">PHP ';
-$content .= $amount .= '</td>
+        <td>Total</td>
+        <td> __________ </td>
      </tr>
 </table/>
+<br><br>
+<p>Received Payment: </p><br>
+<span style="margin-left:100px">___________________</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+<span style="margin-right:50px">___________________</span>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<span style="margin-left:100px!important">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Treasurer</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+<span style="margin-right:50px">Asst. Treasurer</span>
 ';
-$content .= '<br><br>
-<table border=".5" cellspacing="0" cellpadding="5">
-    <tr>
-        <td>Fixed Deposit</td>
-        <td>PHP';
-$content .= $fixed_deposit_amount .= '</td>
-        <td colspan="2" style="text-align:center;"> Received Payment</td>
-    </tr>
-    <tr>
-        <td>Savings Deposit</td>
-        <td>PHP ';
-$content .= $savings_deposit_amount .= '</td>
-        <td colspan="2" style="text-align:center; border:none">____________</td>
-    </tr>
-    <tr>
-        <td>Regular Loan</td>
-        <td>PHP ';
-$content .= $total_regular_loan_balance .= '</td>
-        <td colspan="2" style="text-align:center; border:none">Treasurer</td>
-    </tr>
-    <tr>
-        <td>Character Loan</td>
-        <td>PHP ';
-$content .= $total_character_loan_balance .= '</td>
-        <td colspan="2" style="text-align:center">By:</td>
-    </tr>
-    <tr>
-        <td></td>
-        <td></td>
-        <td colspan="2" style="text-align:center">_______________</td>
-    </tr>
-    <tr>
-        <td></td>
-        <td></td>
-        <td colspan="2" style="text-align:center">Asst. Treasurer</td>
-    </tr>
 
-</table>
-
-';
 
 
 $obj_pdf->writeHTML($content);

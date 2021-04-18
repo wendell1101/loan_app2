@@ -47,7 +47,7 @@
                         </li>
                     </ul>
 
-                    <a href="loan_create.php" class="btn btn-success mx-auto btn-lg">Get Started</a>
+                    <a href="select_loan.php" class="btn btn-success mx-auto btn-lg">Get Started</a>
                 </div>
             </div>
         </div>

@@ -37,7 +37,7 @@ if (isset($_POST['loan'])) {
 <div class="wrapper">
     <div class="container">
         <h1 class="mt-5 text-center">Fill up the required information</h1>
-        <p class="mt-5 text-center">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto vitae quaerat perferendis at architecto tempora alias rem sit. Enim, eligendi!</p>
+
 
         <div class="row">
             <div class="col-md-9 mx-auto">

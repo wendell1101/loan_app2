@@ -36,7 +36,6 @@ if (isset($_POST['loan'])) {
 <div class="wrapper">
     <div class="container">
         <h1 class="mt-5 text-center">Choose the best loan for you</h1>
-        <p class="mt-5 text-center">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto vitae quaerat perferendis at architecto tempora alias rem sit. Enim, eligendi!</p>
         <div class="row mt-5">
             <a href="loan_create_regular.php" class="col-md-5 m-auto bg-warning mb-2 d-flex border align-items-center justify-content-center rounded loan-type-box" style="min-height: 200px; margin-bottom: .5rem!important">
                 <div class="text-center">

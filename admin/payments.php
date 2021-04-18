@@ -37,6 +37,7 @@ $loans = $activePayment->getLoans();
                                 <th scope="col">Amount Paid</th>
                                 <th scope="col">Paid at</th>
                                 <th scope="col">Generate Receipt</th>
+                                <th scope="col">Penalty</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -50,6 +51,7 @@ $loans = $activePayment->getLoans();
                                     <td>PHP <?php echo formatDecimal($payment->payment_amount) ?></td>
                                     <td> <?php echo formatDate($payment->paid_at) ?></td>
                                     <td><a href="get_receipt.php?id=<?php echo $payment->id ?>" class="text-info">Get Receipt</a></td>
+                                    <td><a href="penalty_receipt.php?id=<?php echo $payment->id ?>" class="btn btn-danger btn-sm">Add</a></td>
 
 
                                 </tr>

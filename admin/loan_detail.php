@@ -32,7 +32,6 @@ if (isset($_GET['id'])) {
     <div class="card shadow">
         <div class="card-header d-flex align-items-center">
             <h4>Loan Detail</h4>
-            <a href="loan_create.php" class="btn btn-primary ml-auto"><i class="fas fa-plus text-light"></i></a>
         </div>
         <div class="card-body">
             <div class="table-responsive">

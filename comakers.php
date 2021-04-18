@@ -1,6 +1,10 @@
 <?php
 require_once 'path.php';
 require_once 'core.php';
+if (!isset($_SESSION['id'])) {
+    redirect('login.php');
+}
+// require_once 'app/middlewares/AuthMiddleware.php';
 
 $loan = new Loan();
 
