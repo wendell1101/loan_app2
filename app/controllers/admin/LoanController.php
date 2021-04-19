@@ -275,8 +275,11 @@ class AdminLoan extends Connection
 
             $sent = $mail->send();
             if ($sent) {
-                message('success', 'A loan has been updated');
-                header('location: loans.php');
+                message('success', 'A loan has been updated. Email notification has been sent');
+                redirect('loans.php');
+            } else {
+                message('success', 'A loan has been updated but email notification has not been sent due to some problems. Please try again');
+                redirect('loans.php');
             }
         } catch (Exception $e) {
             echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
