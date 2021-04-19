@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once 'app/database/database.php';
 require_once 'app/config/config.php';
 require_once 'app/models/User.php';
@@ -14,4 +15,4 @@ function dump($value) // to be deleted soon
     echo "<pre>", print_r($value, true), "</pre>";
     die();
 }
-session_start();
+
