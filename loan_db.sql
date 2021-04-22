@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 16, 2021 at 06:26 AM
+-- Generation Time: Apr 22, 2021 at 03:43 AM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.2.34
 
@@ -54,19 +54,12 @@ INSERT INTO `departments` (`id`, `name`) VALUES
 
 CREATE TABLE `fixed_deposits` (
   `id` int(11) NOT NULL,
-  `reference_number` varchar(50) NOT NULL,
+  `reference_number` varchar(50) DEFAULT NULL,
   `payment_by` varchar(100) NOT NULL,
   `amount` double NOT NULL,
   `user_id` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `fixed_deposits`
---
-
-INSERT INTO `fixed_deposits` (`id`, `reference_number`, `payment_by`, `amount`, `user_id`, `created_at`) VALUES
-(27, '1618546502143', 'wendell suazo', 10000, 63, '2021-04-16 04:15:02');
 
 -- --------------------------------------------------------
 
@@ -91,6 +84,14 @@ CREATE TABLE `loans` (
   `approved_by_c2` tinyint(1) DEFAULT 0,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `loans`
+--
+
+INSERT INTO `loans` (`id`, `transaction_id`, `loan_number`, `membership_number`, `amount`, `term`, `status`, `loan_type_id`, `total_amount`, `user_id`, `comaker1_id`, `comaker2_id`, `approved_by_c1`, `approved_by_c2`, `created_at`) VALUES
+(60, 'f1b8c7b68fd618', 'LOAN-2021-63', 'MEM-2021-63', 10000, '6', 'active', 1, 700, 63, 66, 67, 1, 1, '2021-04-17 07:02:58'),
+(61, '6de727834ebb67', 'LOAN-2021-63', 'MEM-2021-63', 5000, '5', 'pending', 3, 5500, 63, 66, 67, 0, 0, '2021-04-17 08:05:33');
 
 -- --------------------------------------------------------
 
@@ -134,9 +135,13 @@ INSERT INTO `loan_types` (`id`, `name`, `interest`) VALUES
 CREATE TABLE `payments` (
   `id` int(11) NOT NULL,
   `reference_number` varchar(50) NOT NULL,
-  `payment_by` varchar(50) NOT NULL,
-  `payment_amount` double NOT NULL,
-  `loan_id` int(11) NOT NULL,
+  `payment_by` varchar(50) DEFAULT NULL,
+  `payment_amount` double DEFAULT NULL,
+  `payment_saving` double DEFAULT NULL,
+  `payment_fixed_deposit` double DEFAULT NULL,
+  `payment_saving_withdraw` double DEFAULT NULL,
+  `loan_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
   `paid_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -172,7 +177,7 @@ INSERT INTO `positions` (`id`, `name`) VALUES
 
 CREATE TABLE `savings` (
   `id` int(11) NOT NULL,
-  `reference_number` varchar(50) NOT NULL,
+  `reference_number` varchar(50) DEFAULT NULL,
   `payment_by` varchar(100) NOT NULL,
   `amount` double NOT NULL,
   `user_id` int(11) NOT NULL,
@@ -221,11 +226,10 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `account_number`, `firstname`, `middlename`, `lastname`, `home_address`, `permanent_address`, `gender`, `birth_date`, `contact_number`, `email`, `password`, `position_id`, `sg`, `employment_status`, `department_id`, `name_of_spouse`, `fathers_name`, `mothers_maiden_name`, `beneficiary`, `paid_membership`, `active`, `reason1`, `reason2`, `reason3`, `created_at`) VALUES
 (61, '1618534842192', 'micaella', 'middlename', 'gadaza', '123 main st.', '123 main st.', 'female', '1999-01-13', '099588278272', 'admin@gmail.com', '21232f297a57a5a743894a0e4a801fc3', 1, 123, 'regular', 4, '', 'johnny doe sr.', 'melissa Yveth', 'melissa Yveth', 1, 1, 'asdafsdafsa', 'sdafsafa', 'dafdsaf', '2021-04-16 01:00:42'),
-(63, '1618535620256', 'wendell', 'chan', 'suazo', '123 main st.', '123 main st.', 'male', '2021-04-20', '09959768531', 'wendellchansuazo11@gmail.com', '5f4dcc3b5aa765d61d8327deb882cf99', 5, 123, 'regular', 6, '', 'enrico suazo', 'chuchie chan', 'chuchie chan', 1, 1, 'akjhfdjadfahfdajfh', 'hjahsdjfahfdsja', 'sajdhfajfhsajsjfs', '2021-04-16 01:13:40'),
-(64, '16185362403329', 'spongebob', 'middlename', 'squarepants', '123 main st.', '123 main st.', 'male', '2021-04-14', '090987218371', 'test@gmail.com', '5f4dcc3b5aa765d61d8327deb882cf99', 2, 123, 'regular', 5, '', 'enrico suazo', 'chuchie chan', 'chuchie chan', 1, 1, 'jsadfhjafkajfkajfakfjk', 'ajdskfjakfkdsalkdaslf', 'asdfkalsfkldsafks', '2021-04-16 01:24:00'),
-(65, '1618536444348', 'julia', 'vergara', 'de jesus', 'Cheriffer', '123 main st.', 'female', '2021-04-06', '973287482', 'julia@gmail.com', '5f4dcc3b5aa765d61d8327deb882cf99', 6, 123, 'regular', 5, 'julia de jesus', 'enrico suazo', 'chuchie chan', 'chuchie chan', 1, 1, 'ads', 'adsfafas', 'dafas', '2021-04-16 01:27:24'),
+(63, '1618535620256', 'wendell', 'chan', 'suazo', '123 main st.', '123 main st.', 'male', '2021-04-20', '09959768531', 'wendellchansuazo11@gmail.com', '5f4dcc3b5aa765d61d8327deb882cf99', 3, 123, 'regular', 6, '', 'enrico suazo', 'chuchie chan', 'chuchie chan', 1, 1, 'akjhfdjadfahfdajfh', 'hjahsdjfahfdsja', 'sajdhfajfhsajsjfs', '2021-04-16 01:13:40'),
 (66, '16185373881784', 'tom', 'adsfaf', 'cruise', '123 main st.', '123 main st.', 'male', '2021-04-21', '090349843234', 'tom@gmail.com', '5f4dcc3b5aa765d61d8327deb882cf99', 2, 1231, 'regular', 8, '', 'enrico suazo', 'chuchie chan', 'julia de jesus', 1, 1, 'adsdsafadf', 'adfdasfdaf', 'asdfasfsa', '2021-04-16 01:43:08'),
-(67, '16185463592127', 'john', 'middlename', 'cena', 'Cheriffer', '123 main st.', 'female', '2021-04-13', '090283924823', 'test1@gmail.com', '5f4dcc3b5aa765d61d8327deb882cf99', 2, 123, 'regular', 7, '', 'johnny doe sr.', 'melissa Yveth', 'melissa Yveth', 1, 1, 'aaaaaaaaaaaaaaaaa', 'bbbbbbbbbbbbb', 'ccccccccccccccc', '2021-04-16 04:12:39');
+(67, '16185463592127', 'john', 'middlename', 'cena', 'Cheriffer', '123 main st.', 'female', '2021-04-13', '090283924823', 'test1@gmail.com', '5f4dcc3b5aa765d61d8327deb882cf99', 2, 123, 'regular', 7, '', 'johnny doe sr.', 'melissa Yveth', 'melissa Yveth', 1, 1, 'aaaaaaaaaaaaaaaaa', 'bbbbbbbbbbbbb', 'ccccccccccccccc', '2021-04-16 04:12:39'),
+(68, '1618795938415', 'jerald', 'segubiense', 'lim', '123 main st.', '123 main st.', 'male', '2021-04-14', '099821321321', 'jerald@gmail.com', '5f4dcc3b5aa765d61d8327deb882cf99', 2, 123, 'regular', 9, '', 'johnny doe sr.', 'melissa Yveth', 'melissa Yveth', 0, 0, 'aaaaaaaaaaaaaaaaafa', 'faddddddddddfafsa', 'adfdafdafafd', '2021-04-19 01:32:18');
 
 --
 -- Indexes for dumped tables
@@ -305,13 +309,13 @@ ALTER TABLE `departments`
 -- AUTO_INCREMENT for table `fixed_deposits`
 --
 ALTER TABLE `fixed_deposits`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `loans`
 --
 ALTER TABLE `loans`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 
 --
 -- AUTO_INCREMENT for table `loan_comakers`
@@ -329,7 +333,7 @@ ALTER TABLE `loan_types`
 -- AUTO_INCREMENT for table `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=92;
 
 --
 -- AUTO_INCREMENT for table `positions`
@@ -341,13 +345,13 @@ ALTER TABLE `positions`
 -- AUTO_INCREMENT for table `savings`
 --
 ALTER TABLE `savings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
 
 --
 -- Constraints for dumped tables
