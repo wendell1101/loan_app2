@@ -12,7 +12,16 @@ class Savings extends Connection
     public function index()
     {
         $userId = $_SESSION['id'];
-        $sql = "SELECT * FROM savings";
+        $sql = "SELECT * FROM savings WHERE amount !=0";
+        $stmt = $this->conn->query($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    public function getFixedDeposits()
+    {
+
+        $sql = "SELECT * FROM fixed_deposits";
         $stmt = $this->conn->query($sql);
         $stmt->execute();
         return $stmt->fetchAll();
@@ -114,19 +123,43 @@ class Savings extends Connection
     {
         // dump($this->data);
         if (!array_filter($this->errors)) {
-
             $amount = $this->data['amount'];
             $payment_by = $this->data['payment_by'];
-            $user_id = $this->data['user_id'];
+            // $user_id = $this->data['user_id'];
             $saving_id = $this->data['saving_id'];
             $saving = $this->getSaving($saving_id);
-
+            if ($saving->amount < $amount) {
+                $this->addError('amount', 'Amount should not be greater than' . $saving->amount);
+            }
+            $user_id = $saving->user_id;
             $new_amount = $saving->amount - $amount;
-            $sql = "UPDATE savings SET amount=$new_amount, withdraw_amount=$amount WHERE user_id=$user_id AND id=$saving_id";
-            $run = $this->conn->query($sql);
-            if ($run) {
-                message('success', 'Withdrawal of saving done. User saving Updated');
-                redirect('savings.php');
+            $payment_saving_withdraw = $amount;
+            if (!array_filter($this->errors)) {
+                // insert new payment
+
+                $rand1 = rand(1, 10);
+                $rand2 = rand(1, 45);
+                $rand3 = rand(1, 100);
+                $rand4 = rand(1, 99);
+                $reference_number = time() . rand($rand1 * $rand2, $rand3 * $rand4);
+                $sql = "INSERT INTO payments (reference_number, payment_by, payment_saving_withdraw, user_id)
+                VALUES(:reference_number, :payment_by, :payment_saving_withdraw, :user_id)";
+                $stmt = $this->conn->prepare($sql);
+                $saved = $stmt->execute([
+                    'reference_number' => $reference_number,
+                    'payment_by' => $payment_by,
+                    'payment_saving_withdraw' => $payment_saving_withdraw,
+                    'user_id' => $user_id,
+                ]);
+                if ($saved) {
+                    //update saving
+                    $sql = "UPDATE savings SET amount=$new_amount, withdraw_amount=$amount WHERE user_id=$user_id AND id=$saving_id";
+                    $run = $this->conn->query($sql);
+                    if ($run) {
+                        message('success', 'Withdrawal of saving done. User saving Updated');
+                        redirect('payments.php');
+                    }
+                }
             }
         }
     }

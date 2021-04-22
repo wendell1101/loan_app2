@@ -17,7 +17,7 @@ $fixedDeposits = $fixedDeposit->index();
     <div class="card shadow">
         <div class="card-header d-flex align-items-center">
             <h4>Fixed Deposits</h4>
-            <a href="fixed_deposit_create.php" class="btn btn-success ml-auto">Create Fixed Deposit<i class="ml-2 fas fa-plus text-light"></i></a>
+            <!-- <a href="fixed_deposit_create.php" class="btn btn-success ml-auto">Create Fixed Deposit<i class="ml-2 fas fa-plus text-light"></i></a> -->
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -29,7 +29,7 @@ $fixedDeposits = $fixedDeposit->index();
                                 <th scope="col">Reference Number</th>
                                 <th scope="col">Payment By</th>
                                 <th scope="col">Amount</th>
-                                <th scope="col">Receipt</th>
+                                <!-- <th scope="col">Receipt</th> -->
                                 <th scope="col">Created At</th>
                             </tr>
                         </thead>
@@ -42,9 +42,9 @@ $fixedDeposits = $fixedDeposit->index();
                                     <td><?php echo $deposit->reference_number ?></td>
                                     <td><?php echo ucwords($deposit->payment_by) ?></td>
                                     <td>PHP <?php echo formatDecimal($deposit->amount) ?></td>
-                                    <td>
+                                    <!-- <td>
                                         <a href="fixed_deposit_receipt.php?id=<?php echo $deposit->id ?>" class="text-info">Receipt</a>
-                                    </td>
+                                    </td> -->
 
                                     <td><?php echo formatDate($deposit->created_at) ?></td>
                                 </tr>

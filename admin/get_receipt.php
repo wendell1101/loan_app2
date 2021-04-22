@@ -8,22 +8,41 @@ $user = '';
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
     $activePayment = $payment->getPayment($_GET['id']);
-    $activeLoan = $payment->getLoan($activePayment->loan_id);
-
+    if (!is_null($activePayment->user_id)) {
+        $user = $adminUser->getUser($activePayment->user_id);
+    }
+    $payment_fixed_deposit = '0.00';
+    $payment_saving = '0.00';
+    $payment_saving_withdraw = '0.00';
+    if ($activePayment->payment_fixed_deposit != 0) {
+        $payment_fixed_deposit = $activePayment->payment_fixed_deposit;
+    }
+    if ($activePayment->payment_saving != 0) {
+        $payment_saving = $activePayment->payment_saving;
+    }
+    if ($activePayment->payment_saving_withdraw != 0) {
+        $payment_saving_withdraw = $activePayment->payment_saving_withdraw;
+    }
+    $activeLoan = '';
     $regular_loan_payment = '0.00';
     $character_loan_payment = '0.00';
     $total = '0.00';
-
-    if ($activeLoan->loan_type_id == 1) {
-        $regular_loan_payment = formatDecimal($activePayment->payment_amount);
-        $total = formatDecimal($activePayment->payment_amount);
-    } else if ($activeLoan->loan_type_id == 3) {
-        $character_loan_payment = formatDecimal($activePayment->payment_amount);
-        $total = formatDecimal($activePayment->payment_amount);
+    if (!is_null($activePayment->loan_id)) {
+        $activeLoan = $payment->getLoan($activePayment->loan_id);
+        $user = $adminUser->getUser($activeLoan->user_id);
+        if ($activeLoan->loan_type_id == 1) {
+            $regular_loan_payment = formatDecimal($activePayment->payment_amount);
+            $total = $activePayment->payment_fixed_deposit + $activePayment->payment_saving + $activePayment->payment_amount;
+            $total = formatDecimal($total);
+        } else if ($activeLoan->loan_type_id == 3) {
+            $character_loan_payment = formatDecimal($activePayment->payment_amount);
+            $total = $activePayment->payment_fixed_deposit + $activePayment->payment_saving + $activePayment->payment_amount;
+            $total = formatDecimal($total);
+        }
     }
+    $total = $activePayment->payment_fixed_deposit + $activePayment->payment_saving + $regular_loan_payment + $character_loan_payment + $payment_saving_withdraw;
+    $total = formatDecimal($total);
 
-
-    $user = $adminUser->getUser($activeLoan->user_id);
 
     $fixed_deposit_amount = formatDecimal($adminUser->getUserDeposit($user->id));
     $savings_deposit_amount = formatDecimal($adminUser->getUserSavings($user->id));
@@ -99,11 +118,13 @@ $content .= $payer .= '<br><br />
 
      <tr>
         <td>Fixed Deposit</td>
-        <td>PHP 0.00</td>
+        <td>PHP ';
+$content .= $payment_fixed_deposit .= '</td>
         <td></td>
      </tr><tr>
      <td>Savings Deposit</td>
-     <td> PHP 0.00</td>
+     <td> PHP ';
+$content .= $payment_saving .= '</td>
      <td></td>
   </tr>
      <tr>
@@ -126,6 +147,12 @@ $content .= $character_loan_payment .= '</td>
      <tr>
         <td>Interest</td>
         <td>PHP 0.00</td>
+        <td></td>
+     </tr>
+     <tr>
+        <td>Withdraw</td>
+        <td>PHP ';
+$content .= $payment_saving_withdraw .= '</td>
         <td></td>
      </tr>
      <tr>

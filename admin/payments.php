@@ -12,6 +12,7 @@ $activePayment = new Payment();
 $payments = $activePayment->index();
 
 $loans = $activePayment->getLoans();
+$savings = $activePayment->getSavings();
 
 
 ?>
@@ -19,11 +20,25 @@ $loans = $activePayment->getLoans();
 
 <div class="container">
     <div class="card shadow">
-        <div class="card-header d-flex align-items-center">
-            <h4>Payments</h4>
-            <?php if ($loans) : ?>
-                <a href="<?php echo 'payment_create.php' ?>" class="btn btn-primary ml-auto"><i class="fas fa-plus text-light"></i></a>
-            <?php endif ?>
+        <div class="card-header">
+            <div class="row">
+                <div class="col">
+                    <h4>Payments</h4>
+                </div>
+                <div class="col d-flex align-items-end">
+                    <?php if ($loans) : ?>
+                        <a href="<?php echo 'payment_create_loan.php' ?>" class="btn btn-primary ml-auto mr-2">Pay for Loan<i class="ml-2 fas fa-plus text-light"></i></a>
+                    <?php endif ?>
+                    <a href="<?php echo 'payment_create.php' ?>" class="btn btn-primary ml-auto mr-2">Cash in<i class="ml-2 fas fa-plus text-light"></i></a>
+
+                    <?php if ($savings) : ?>
+                        <a href="<?php echo 'payment_withdraw.php' ?>" class="btn btn-primary ml-auto mr-2">Cash out<i class="ml-2 fas fa-plus text-light"></i></a>
+                    <?php endif ?>
+
+                </div>
+            </div>
+
+
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -34,10 +49,13 @@ $loans = $activePayment->getLoans();
                                 <th scope="col">#</th>
                                 <th scope="col">Reference number</th>
                                 <th scope="col">Payment By</th>
-                                <th scope="col">Amount Paid</th>
+                                <th scope="col">Loan Amount Paid</th>
+                                <th scope="col">Fixed Deposit Amount Paid</th>
+                                <th scope="col">Saving Amount Paid</th>
+                                <th scope="col">Withdraw Amount Paid</th>
                                 <th scope="col">Paid at</th>
                                 <th scope="col">Generate Receipt</th>
-                                <th scope="col">Penalty</th>
+                                <th scope="col">Loan Penalty</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -49,9 +67,16 @@ $loans = $activePayment->getLoans();
                                     <td><?php echo $payment->reference_number ?></td>
                                     <td><?php echo $payment->payment_by ?></td>
                                     <td>PHP <?php echo formatDecimal($payment->payment_amount) ?></td>
+                                    <td>PHP <?php echo formatDecimal($payment->payment_fixed_deposit) ?></td>
+                                    <td>PHP <?php echo formatDecimal($payment->payment_saving) ?></td>
+                                    <td>PHP <?php echo formatDecimal($payment->payment_saving_withdraw) ?></td>
                                     <td> <?php echo formatDate($payment->paid_at) ?></td>
                                     <td><a href="get_receipt.php?id=<?php echo $payment->id ?>" class="text-info">Get Receipt</a></td>
-                                    <td><a href="penalty_receipt.php?id=<?php echo $payment->id ?>" class="btn btn-danger btn-sm">Add</a></td>
+                                    <?php if (!is_null($payment->loan_id)) : ?>
+                                        <td><a href="penalty_receipt.php?id=<?php echo $payment->id ?>" class="text-info">View</a></td>
+                                    <?php else : ?>
+                                        <td><span class="text-muted">None</span></td>
+                                    <?php endif ?>
 
 
                                 </tr>

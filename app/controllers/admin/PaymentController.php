@@ -11,7 +11,7 @@ class Payment extends Connection
 
     public function index()
     {
-        $sql = "SELECT * FROM payments";
+        $sql = "SELECT * FROM payments ORDER BY id DESC";
         $stmt = $this->conn->query($sql);
 
         return $stmt->fetchAll();
@@ -39,6 +39,15 @@ class Payment extends Connection
         } else {
             return 'admin';
         }
+    }
+
+    //get savings
+    public function getSavings()
+    {
+        $sql = "SELECT * FROM savings WHERE amount !=0";
+        $stmt = $this->conn->query($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
     }
 
     // get specific interest
@@ -109,7 +118,7 @@ class Payment extends Connection
                 return;
             }
             $this->validateLoan();
-            $this->validatePayerName();
+            // $this->validatePayerName();
             $this->validatePaymentAmount();
             return $this->errors;
         }
@@ -146,24 +155,34 @@ class Payment extends Connection
     private function checkIfHasError()
     {
         if (!array_filter($this->errors)) {
-            $reference_number = time() . rand(10 * 45, 100 * 98);
-            $payment_by = $this->data['payment_by'];
+            $rand1 = rand(1, 10);
+            $rand2 = rand(1, 45);
+            $rand3 = rand(1, 100);
+            $rand4 = rand(1, 99);
+            $reference_number = time() . rand($rand1 * $rand2, $rand3 * $rand4);
+
             $payment_amount = $this->data['payment_amount'];
             $loan_id = $this->data['loan_id'];
+            $user_id = $this->data['user_id'];
+
+            $activeUser = $this->getUser($user_id);
+            // dump($activeUser);
+            $payment_by = $activeUser->firstname . ' ' . $activeUser->lastname;
             $activeLoan = $this->getLoan($loan_id);
 
             if ($payment_amount > $activeLoan->total_amount) {
                 $this->addError('payment_amount', "Payment amount should not be greater than the loan balance of PHP $activeLoan->total_amount");
             }
             if (!array_filter($this->errors)) {
-                $sql = "INSERT INTO payments (reference_number, payment_by, payment_amount, loan_id)
-                VALUES(:reference_number, :payment_by, :payment_amount, :loan_id)";
+                $sql = "INSERT INTO payments (reference_number, payment_by, payment_amount, user_id, loan_id)
+                VALUES(:reference_number, :payment_by, :payment_amount, :user_id, :loan_id)";
                 $stmt = $this->conn->prepare($sql);
 
                 $saved = $stmt->execute([
                     'reference_number' => $reference_number,
                     'payment_by' => $payment_by,
                     'payment_amount' => $payment_amount,
+                    'user_id' => $user_id,
                     'loan_id' => $loan_id,
                 ]);
                 $payment = $stmt->fetch();
@@ -192,7 +211,68 @@ class Payment extends Connection
         }
     }
 
+    public function createPayment($data)
+    {
+        $rand1 = rand(1, 10);
+        $rand2 = rand(1, 45);
+        $rand3 = rand(1, 100);
+        $rand4 = rand(1, 99);
+        $reference_number = time() . rand($rand1 * $rand2, $rand3 * $rand4);
+        $payment_saving = $data['payment_saving'];
+        $payment_fixed_deposit = $data['payment_fixed_deposit'];
+        $payment_by = $data['payment_by'];
+        $user_id = $data['user_id'];
 
+        $sql = "INSERT INTO payments (reference_number, payment_by, payment_saving, payment_fixed_deposit, user_id)
+        VALUES(:reference_number, :payment_by, :payment_saving, :payment_fixed_deposit, :user_id)";
+        $stmt = $this->conn->prepare($sql);
+
+        $saved = $stmt->execute([
+            'reference_number' => $reference_number,
+            'payment_by' => $payment_by,
+            'payment_saving' => $payment_saving,
+            'payment_fixed_deposit' => $payment_fixed_deposit,
+            'user_id' => $user_id,
+        ]);
+        if ($saved) {
+            $lastId = $this->conn->lastInsertId();
+            // create savings
+            $activePayment = $this->getPayment($lastId);
+            $reference_number = $activePayment->reference_number;
+            $payment_by = $activePayment->payment_by;
+            $payment_saving = $activePayment->payment_saving;
+            $payment_fixed_deposit = $activePayment->payment_fixed_deposit;
+            $user_id = $activePayment->user_id;
+            $sql = "INSERT INTO savings (reference_number, payment_by, amount, user_id)
+            VALUES(:reference_number, :payment_by, :amount, :id)";
+            $stmt = $this->conn->prepare($sql);
+            $run_savings = $stmt->execute([
+                'reference_number' => $reference_number,
+                'payment_by' => $payment_by,
+                'amount' => $payment_saving,
+                'id' => $user_id,
+            ]);
+            // create fixed deposit
+
+            $sql = "INSERT INTO fixed_deposits (reference_number, payment_by, amount, user_id)
+            VALUES(:reference_number, :payment_by, :amount, :id)";
+            $stmt = $this->conn->prepare($sql);
+            $run_deposits = $stmt->execute([
+                'reference_number' => $reference_number,
+                'payment_by' => $payment_by,
+                'amount' => $payment_fixed_deposit,
+                'id' => $user_id,
+            ]);
+            if ($run_savings && $run_deposits) {
+                message('success', 'New payment has been created');
+                redirect('payments.php');
+            }
+        }
+        // if ($run) {
+        //     message('success', 'New payment has been created');
+        //     redirect('payments.php');
+        // }
+    }
     // delete category
     public function delete($id)
     {

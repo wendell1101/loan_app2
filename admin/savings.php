@@ -17,7 +17,7 @@ $savings = $saving->index();
     <div class="card shadow">
         <div class="card-header d-flex align-items-center">
             <h4>Savings</h4>
-            <a href="saving_create.php" class="btn btn-success ml-auto">Create Saving Deposit<i class="ml-2 fas fa-plus text-light"></i></a>
+            <!-- <a href="saving_create.php" class="btn btn-success ml-auto">Create Saving Deposit<i class="ml-2 fas fa-plus text-light"></i></a> -->
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -29,9 +29,9 @@ $savings = $saving->index();
                                 <th scope="col">Reference Number</th>
                                 <th scope="col">Payment By</th>
                                 <th scope="col">Amount</th>
-                                <th scope="col">Receipt</th>
+                                <!-- <th scope="col">Receipt</th> -->
                                 <th scope="col">Created At</th>
-                                <th scope="col">Action</th>
+                                <!-- <th scope="col">Action</th> -->
                             </tr>
                         </thead>
                         <tbody>
@@ -43,14 +43,14 @@ $savings = $saving->index();
                                     <td><?php echo $deposit->reference_number ?></td>
                                     <td><?php echo ucwords($deposit->payment_by) ?></td>
                                     <td>PHP <?php echo formatDecimal($deposit->amount) ?></td>
-                                    <td>
+                                    <!-- <td>
                                         <a href="savings_receipt.php?id=<?php echo $deposit->id ?>" class="text-info">
                                             Receipt
                                         </a>
-                                    </td>
+                                    </td> -->
 
                                     <td><?php echo formatDate($deposit->created_at) ?></td>
-                                    <td><a href="saving_withdraw.php?user_id=<?php echo $deposit->user_id ?>&saving_id=<?php echo $deposit->id ?>" class="text-info">Widthdraw</a></td>
+                                    <!-- <td><a href="saving_withdraw.php?user_id=<?php echo $deposit->user_id ?>&saving_id=<?php echo $deposit->id ?>" class="text-info">Widthdraw</a></td> -->
                                 </tr>
                             <?php endforeach; ?>
 

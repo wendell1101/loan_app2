@@ -12,7 +12,7 @@ class AdminFixedDeposit extends Connection
     public function index()
     {
         $userId = $_SESSION['id'];
-        $sql = "SELECT * FROM fixed_deposits";
+        $sql = "SELECT * FROM fixed_deposits WHERE amount !=0";
         $stmt = $this->conn->query($sql);
         $stmt->execute();
         return $stmt->fetchAll();
