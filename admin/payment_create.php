@@ -37,9 +37,9 @@ if (isset($_POST['create'])) {
     $payment_fixed_deposit = sanitize($data['payment_fixed_deposit']);
     $payment_saving = sanitize($data['payment_saving']);
 }
-if (empty($loans)) {
-    redirect('payments.php');
-}
+// if (empty($loans)) {
+//     redirect('payments.php');
+// }
 
 
 ?>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 22, 2021 at 03:43 AM
+-- Generation Time: Apr 22, 2021 at 01:19 PM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.2.34
 
@@ -84,14 +84,6 @@ CREATE TABLE `loans` (
   `approved_by_c2` tinyint(1) DEFAULT 0,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `loans`
---
-
-INSERT INTO `loans` (`id`, `transaction_id`, `loan_number`, `membership_number`, `amount`, `term`, `status`, `loan_type_id`, `total_amount`, `user_id`, `comaker1_id`, `comaker2_id`, `approved_by_c1`, `approved_by_c2`, `created_at`) VALUES
-(60, 'f1b8c7b68fd618', 'LOAN-2021-63', 'MEM-2021-63', 10000, '6', 'active', 1, 700, 63, 66, 67, 1, 1, '2021-04-17 07:02:58'),
-(61, '6de727834ebb67', 'LOAN-2021-63', 'MEM-2021-63', 5000, '5', 'pending', 3, 5500, 63, 66, 67, 0, 0, '2021-04-17 08:05:33');
 
 -- --------------------------------------------------------
 
@@ -309,7 +301,7 @@ ALTER TABLE `departments`
 -- AUTO_INCREMENT for table `fixed_deposits`
 --
 ALTER TABLE `fixed_deposits`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT for table `loans`
@@ -333,7 +325,7 @@ ALTER TABLE `loan_types`
 -- AUTO_INCREMENT for table `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=92;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=96;
 
 --
 -- AUTO_INCREMENT for table `positions`
@@ -345,7 +337,7 @@ ALTER TABLE `positions`
 -- AUTO_INCREMENT for table `savings`
 --
 ALTER TABLE `savings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `users`

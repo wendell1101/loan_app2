@@ -22,10 +22,10 @@ $savings = $activePayment->getSavings();
     <div class="card shadow">
         <div class="card-header">
             <div class="row">
-                <div class="col">
+                <div>
                     <h4>Payments</h4>
                 </div>
-                <div class="col d-flex align-items-end">
+                <div class="ml-auto">
                     <?php if ($loans) : ?>
                         <a href="<?php echo 'payment_create_loan.php' ?>" class="btn btn-primary ml-auto mr-2">Pay for Loan<i class="ml-2 fas fa-plus text-light"></i></a>
                     <?php endif ?>
@@ -34,8 +34,9 @@ $savings = $activePayment->getSavings();
                     <?php if ($savings) : ?>
                         <a href="<?php echo 'payment_withdraw.php' ?>" class="btn btn-primary ml-auto mr-2">Cash out<i class="ml-2 fas fa-plus text-light"></i></a>
                     <?php endif ?>
-
                 </div>
+
+
             </div>
 
 
