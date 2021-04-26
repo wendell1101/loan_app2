@@ -52,7 +52,7 @@ $activeSaving = $saving->getSaving($_GET['saving_id']);
                 </div>
 
 
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <select class="selectpicker form-control border " name="payment_by" id="payment_by" data-live-search="true" required>
                         <option value=""> Select Fullname</option>
                         <?php foreach ($users as $user) : ?>
@@ -62,7 +62,7 @@ $activeSaving = $saving->getSaving($_GET['saving_id']);
                             </option>
                         <?php endforeach; ?>
                     </select>
-                </div>
+                </div> -->
                 <div class="form-group">
                     <label for="amount">Amount</label>
                     <input type="number" name="amount" id="amount" class="form-control

@@ -163,7 +163,8 @@ class Payment extends Connection
 
             $payment_amount = $this->data['payment_amount'];
             $loan_id = $this->data['loan_id'];
-            $user_id = $this->data['user_id'];
+            $activeLoan = $this->getLoan($loan_id);
+            $user_id = $activeLoan->user_id;
 
             $activeUser = $this->getUser($user_id);
             // dump($activeUser);
@@ -220,8 +221,12 @@ class Payment extends Connection
         $reference_number = time() . rand($rand1 * $rand2, $rand3 * $rand4);
         $payment_saving = $data['payment_saving'];
         $payment_fixed_deposit = $data['payment_fixed_deposit'];
-        $payment_by = $data['payment_by'];
+        // $payment_by = $data['payment_by'];
+
         $user_id = $data['user_id'];
+        $activeUser = $this->getUser($user_id);
+        $payment_by = $activeUser->firstname . ' ' . $activeUser->lastname;
+
 
         $sql = "INSERT INTO payments (reference_number, payment_by, payment_saving, payment_fixed_deposit, user_id)
         VALUES(:reference_number, :payment_by, :payment_saving, :payment_fixed_deposit, :user_id)";

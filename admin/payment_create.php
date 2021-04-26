@@ -55,23 +55,11 @@ if (isset($_POST['create'])) {
         </div>
         <div class="card-body">
             <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST">
-                <div class="form-group">
-                    <label for="">Select Name of Payer</label>
-                    <select class="selectpicker form-control border " name="payment_by" id="payment_by" data-live-search="true" required>
-                        <option value=""> Select Fullname</option>
-                        <?php foreach ($users as $user) : ?>
-                            <option data-tokens="
-                        <?php echo $user->account_number . ' - ' . $user->firstname . ' ' . $user->lastname ?>" value="<?php echo $user->firstname . ' ' . $user->lastname ?>">
-                                <?php echo $user->firstname . ' ' . $user->lastname ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
 
 
                 <!-- saving amount -->
                 <div class="form-group">
-                    <h3 style="font-size: 1.5rem" class="mt-2 mb-2"> Cash in</h3>
+                    <h3 style="font-size: 1.5rem" class="mt-2 mb-2">Deposit</h3>
                 </div>
 
                 <div class="form-group">

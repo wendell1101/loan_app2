@@ -83,7 +83,7 @@ class Loan extends Connection
     public function getOtherUsers()
     {
         $id = $_SESSION['id'];
-        $sql = "SELECT * FROM users WHERE id!=$id AND position_id=2";
+        $sql = "SELECT * FROM users WHERE id!=$id AND position_id=2 AND active=1 AND paid_membership=1";
         $stmt = $this->conn->query($sql);
         $stmt->execute();
         return  $stmt->fetchAll();

@@ -16,6 +16,9 @@ $errors = [];
 $loan_id = $payment_by = $payment_amount = '';
 $loans = $payment->getLoans();
 
+// $amount_per_month = $amount / $activeLoan['term'];
+// $amount_per_15th = $amount_per_month / 2;
+
 if (isset($_POST['create'])) {
     // dump($_POST);
     $payment->create($_POST);
@@ -62,8 +65,11 @@ if (empty($loans)) {
                         <option value="null"> Select loan</option>
                         <?php foreach ($loans as $loan) : ?>
                             <option data-tokens="
-                        <?php echo $loan->transaction_id . ' - ' . $loan->loan_number . ' - PHP' . formatDecimal($loan->total_amount); ?>" value="<?php echo $loan->id ?>">
-                                <?php echo $payment->getUser($loan->user_id)->firstname . ' ' . $payment->getUser($loan->user_id)->lastname . ' - ' . $loan->loan_number . ' - (PHP' . formatDecimal($loan->total_amount) . ')'; ?>
+                            <?php echo ucfirst($payment->getUser($loan->user_id)->firstname) . ' ' . ucfirst($payment->getUser($loan->user_id)->lastname) . ' - '
+                                . 'Type: ' . strtoupper($payment->getLoanTypeName($loan->loan_type_id)) . ' - ' . $loan->loan_number . ' - Total Amount: PHP' . '<b>' . formatDecimal($loan->total_amount) . '</b>'; ?>" value="<?php echo $loan->id ?>">
+                                <?php echo ucfirst($payment->getUser($loan->user_id)->firstname) . ' ' . ucfirst($payment->getUser($loan->user_id)->lastname) . ' - '
+                                    . 'Type: ' . strtoupper($payment->getLoanTypeName($loan->loan_type_id)) . '- Total Amount W/ Interest: PHP' .  formatDecimal($loan->total_amount) .
+                                    ' ** Per Month: PHP ' . formatDecimal($loan->total_amount / $loan->term) . ' ** Per/Kinsenas: PHP ' . formatDecimal(($loan->total_amount / $loan->term) / 2); ?>
                             </option>
                         <?php endforeach; ?>
                     </select>
@@ -73,9 +79,10 @@ if (empty($loans)) {
                 </div>
 
 
+
                 <div class="form-group">
-                    <label for="payment_amount">Loan Amount</label>
-                    <input type="number" name="payment_amount" id="payment_amount" class="form-control
+                    <label for="payment_amount">Loan Payment w/ Interest</label>
+                    <input type="number" name="payment_amount" id="payment_amount" step=".01" class="form-control
                     <?php
                     if (!empty(($payment_amount))) {
                         echo $errors['payment_amount'] ? 'is-invalid' : 'is-valid';
@@ -90,17 +97,8 @@ if (empty($loans)) {
                         <small><?php echo $errors['payment_amount'] ?? '' ?></small>
                     </div>
                 </div>
-                <div class="form-group">
-                    <select class="selectpicker form-control border " name="user_id" id="payment_by" data-live-search="true" required>
-                        <option value=""> Select Fullname</option>
-                        <?php foreach ($users as $user) : ?>
-                            <option data-tokens="
-                        <?php echo $user->account_number . ' - ' . $user->firstname . ' ' . $user->lastname ?>" value="<?php echo $user->id ?>">
-                                <?php echo $user->firstname . ' ' . $user->lastname ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
+
+
                 <div class="form-group d-flex justify-content-end align-items-center mt-2">
                     <a href="payments.php" class="btn btn-secondary mr-2">Cancel</a>
                     <button type="submit" name="create" class="btn btn-primary">Create</button>

@@ -40,6 +40,7 @@ $loans = $adminLoan->index();
                                 <th scope="col">Interest Rate</th>
                                 <th scope="col">Total Balance</th>
                                 <th scope="col">Status</th>
+                                <th scope="col">Created At</th>
                                 <th scope="col">Loan Form</th>
                                 <th scope="col">Actions</th>
                             </tr>
@@ -62,6 +63,9 @@ $loans = $adminLoan->index();
                                     <td>PHP <?php echo formatDecimal($singleLoan->total_amount) ?></td>
                                     <td>
                                         <?php echo $singleLoan->status ?>
+                                    </td>
+                                    <td>
+                                        <?php echo formatDate($singleLoan->created_at) ?>
                                     </td>
                                     <td>
                                         <a href="loan_form.php?id=<?php echo $singleLoan->id ?>" class="text-info">View</a>

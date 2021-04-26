@@ -32,7 +32,8 @@ if (isset($_GET['id'])) {
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col">Reference Number</th>
+                                        <th scope="col">Check Balance</th>
+                                        <th scope="col">Receipt Number</th>
                                         <th scope="col">Payment By</th>
                                         <th scope="col">Amount</th>
                                         <th scope="col">Paid At</th>
@@ -46,6 +47,7 @@ if (isset($_GET['id'])) {
                                     <?php foreach ($payments as $key => $activePayment) : ?>
                                         <tr>
                                             <th scope="row"><?php echo $key + 1 ?></th>
+                                            <td> <a href="profile.php?id=<?php echo $_SESSION['id'] ?>">View Account Detail</a></td>
                                             <td> <?php echo $activePayment->reference_number ?></td>
                                             <td> <?php echo $activePayment->payment_by ?></td>
                                             <td>PHP <?php echo formatDecimal($activePayment->payment_amount) ?></td>

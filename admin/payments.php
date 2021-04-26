@@ -29,11 +29,9 @@ $savings = $activePayment->getSavings();
                     <?php if ($loans) : ?>
                         <a href="<?php echo 'payment_create_loan.php' ?>" class="btn btn-primary ml-auto mr-2">Pay for Loan<i class="ml-2 fas fa-plus text-light"></i></a>
                     <?php endif ?>
-                    <a href="<?php echo 'payment_create.php' ?>" class="btn btn-primary ml-auto mr-2">Cash in<i class="ml-2 fas fa-plus text-light"></i></a>
+                    <a href="<?php echo 'payment_create.php' ?>" class="btn btn-primary ml-auto mr-2">Deposit<i class="ml-2 fas fa-plus text-light"></i></a>
 
-                    <?php if ($savings) : ?>
-                        <a href="<?php echo 'payment_withdraw.php' ?>" class="btn btn-primary ml-auto mr-2">Cash out<i class="ml-2 fas fa-plus text-light"></i></a>
-                    <?php endif ?>
+
                 </div>
 
 
@@ -53,7 +51,6 @@ $savings = $activePayment->getSavings();
                                 <th scope="col">Loan Amount Paid</th>
                                 <th scope="col">Fixed Deposit Amount Paid</th>
                                 <th scope="col">Saving Amount Paid</th>
-                                <th scope="col">Withdraw Amount Paid</th>
                                 <th scope="col">Paid at</th>
                                 <th scope="col">Generate Receipt</th>
                                 <th scope="col">Loan Penalty</th>
@@ -70,9 +67,13 @@ $savings = $activePayment->getSavings();
                                     <td>PHP <?php echo formatDecimal($payment->payment_amount) ?></td>
                                     <td>PHP <?php echo formatDecimal($payment->payment_fixed_deposit) ?></td>
                                     <td>PHP <?php echo formatDecimal($payment->payment_saving) ?></td>
-                                    <td>PHP <?php echo formatDecimal($payment->payment_saving_withdraw) ?></td>
                                     <td> <?php echo formatDate($payment->paid_at) ?></td>
-                                    <td><a href="get_receipt.php?id=<?php echo $payment->id ?>" class="text-info">Get Receipt</a></td>
+                                    <?php if (!is_null($payment->payment_saving) || !is_null($payment->payment_fixed_deposit)) : ?>
+                                        <td><a href="deposit_receipt.php?id=<?php echo $payment->id ?>" class="text-info">Deposit Receipt</a></td>
+                                    <?php elseif (!is_null($payment->payment_amount)) : ?>
+                                        <td><a href="loan_payment_receipt.php?id=<?php echo $payment->id ?>" class="text-info">Loan Receipt</a></td>
+                                    <?php endif ?>
+
                                     <?php if (!is_null($payment->loan_id)) : ?>
                                         <td><a href="penalty_receipt.php?id=<?php echo $payment->id ?>" class="text-info">View</a></td>
                                     <?php else : ?>
