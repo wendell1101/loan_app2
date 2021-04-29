@@ -13,7 +13,7 @@ if (isset($_GET['id'])) {
     $date2 = shortDate($activeVoucher->created_at);
     $voucher_amount = formatDecimal($activeVoucher->amount);
     $member =  ucfirst($voucher->getUser($activeVoucher->user_id)->firstname) . ' ' . ucfirst($voucher->getUser($activeVoucher->user_id)->lastname);
-
+    $care_of = ucfirst($voucher->getUser($activeVoucher->care_of)->firstname) . ' ' . ucfirst($voucher->getUser($activeVoucher->care_of)->lastname);
     $output = '';
     $output .= '
 <h4>Receipt Number: ';
@@ -24,6 +24,8 @@ Date: ';
         .= '<br /><br />
 Member: ';
     $output .= $member .= '<br><br />
+Care of: ';
+    $output .= $care_of .= '<br><br />
 
 <table border="1" cellspacing="0" cellpadding="5">
 

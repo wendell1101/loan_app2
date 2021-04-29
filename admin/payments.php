@@ -112,7 +112,7 @@ $total = 0;
                                         <?php if (!$payment->has_penalty) : ?>
                                             <td><span class="text-muted">none</span></td>
                                         <?php else : ?>
-                                            <td><a href="penalty_receipt.php?id=<?php echo $payment->id ?>" class="text-info">View</a></td>
+                                            <td><a href="penalty_receipt.php?id=<?php echo $payment->id ?>" class="text-info">Penalty Receipt</a></td>
                                         <?php endif; ?>
 
                                     <?php else : ?>

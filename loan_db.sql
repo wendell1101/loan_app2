@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 22, 2021 at 01:19 PM
+-- Generation Time: Apr 29, 2021 at 01:10 PM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.2.34
 
@@ -73,10 +73,15 @@ CREATE TABLE `loans` (
   `loan_number` varchar(50) NOT NULL,
   `membership_number` varchar(50) NOT NULL,
   `amount` double NOT NULL,
+  `amount_per_kinsenas` double NOT NULL,
+  `amount_per_month` double NOT NULL,
+  `interest_amount` double NOT NULL,
+  `interest_amount_per_kinsenas` double NOT NULL,
+  `interest_amount_per_month` double NOT NULL,
+  `total_amount` double NOT NULL,
   `term` varchar(50) NOT NULL,
   `status` varchar(50) NOT NULL DEFAULT 'pending',
   `loan_type_id` int(11) NOT NULL,
-  `total_amount` double NOT NULL,
   `user_id` int(11) NOT NULL,
   `comaker1_id` int(11) DEFAULT NULL,
   `comaker2_id` int(11) DEFAULT NULL,
@@ -96,6 +101,22 @@ CREATE TABLE `loan_comakers` (
   `loan_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `loan_penalties`
+--
+
+CREATE TABLE `loan_penalties` (
+  `id` int(11) NOT NULL,
+  `reason` varchar(255) NOT NULL,
+  `amount` double NOT NULL,
+  `service_fee` double DEFAULT NULL,
+  `loan_id` int(11) NOT NULL,
+  `payment_id` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -134,6 +155,7 @@ CREATE TABLE `payments` (
   `payment_saving_withdraw` double DEFAULT NULL,
   `loan_id` int(11) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
+  `has_penalty` tinyint(1) DEFAULT 0,
   `paid_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -218,10 +240,49 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `account_number`, `firstname`, `middlename`, `lastname`, `home_address`, `permanent_address`, `gender`, `birth_date`, `contact_number`, `email`, `password`, `position_id`, `sg`, `employment_status`, `department_id`, `name_of_spouse`, `fathers_name`, `mothers_maiden_name`, `beneficiary`, `paid_membership`, `active`, `reason1`, `reason2`, `reason3`, `created_at`) VALUES
 (61, '1618534842192', 'micaella', 'middlename', 'gadaza', '123 main st.', '123 main st.', 'female', '1999-01-13', '099588278272', 'admin@gmail.com', '21232f297a57a5a743894a0e4a801fc3', 1, 123, 'regular', 4, '', 'johnny doe sr.', 'melissa Yveth', 'melissa Yveth', 1, 1, 'asdafsdafsa', 'sdafsafa', 'dafdsaf', '2021-04-16 01:00:42'),
-(63, '1618535620256', 'wendell', 'chan', 'suazo', '123 main st.', '123 main st.', 'male', '2021-04-20', '09959768531', 'wendellchansuazo11@gmail.com', '5f4dcc3b5aa765d61d8327deb882cf99', 3, 123, 'regular', 6, '', 'enrico suazo', 'chuchie chan', 'chuchie chan', 1, 1, 'akjhfdjadfahfdajfh', 'hjahsdjfahfdsja', 'sajdhfajfhsajsjfs', '2021-04-16 01:13:40'),
+(63, '1618535620256', 'wendell', 'chan', 'suazo', '123 main st.', '123 main st.', 'male', '2021-04-20', '09959768531', 'wendellchansuazo11@gmail.com', '5f4dcc3b5aa765d61d8327deb882cf99', 2, 123, 'regular', 6, '', 'enrico suazo', 'chuchie chan', 'chuchie chan', 1, 1, 'akjhfdjadfahfdajfh', 'hjahsdjfahfdsja', 'sajdhfajfhsajsjfs', '2021-04-16 01:13:40'),
 (66, '16185373881784', 'tom', 'adsfaf', 'cruise', '123 main st.', '123 main st.', 'male', '2021-04-21', '090349843234', 'tom@gmail.com', '5f4dcc3b5aa765d61d8327deb882cf99', 2, 1231, 'regular', 8, '', 'enrico suazo', 'chuchie chan', 'julia de jesus', 1, 1, 'adsdsafadf', 'adfdasfdaf', 'asdfasfsa', '2021-04-16 01:43:08'),
 (67, '16185463592127', 'john', 'middlename', 'cena', 'Cheriffer', '123 main st.', 'female', '2021-04-13', '090283924823', 'test1@gmail.com', '5f4dcc3b5aa765d61d8327deb882cf99', 2, 123, 'regular', 7, '', 'johnny doe sr.', 'melissa Yveth', 'melissa Yveth', 1, 1, 'aaaaaaaaaaaaaaaaa', 'bbbbbbbbbbbbb', 'ccccccccccccccc', '2021-04-16 04:12:39'),
-(68, '1618795938415', 'jerald', 'segubiense', 'lim', '123 main st.', '123 main st.', 'male', '2021-04-14', '099821321321', 'jerald@gmail.com', '5f4dcc3b5aa765d61d8327deb882cf99', 2, 123, 'regular', 9, '', 'johnny doe sr.', 'melissa Yveth', 'melissa Yveth', 0, 0, 'aaaaaaaaaaaaaaaaafa', 'faddddddddddfafsa', 'adfdafdafafd', '2021-04-19 01:32:18');
+(68, '1618795938415', 'jerald', 'segubiense', 'lim', '123 main st.', '123 main st.', 'male', '2021-04-14', '099821321321', 'jerald@gmail.com', '5f4dcc3b5aa765d61d8327deb882cf99', 2, 123, 'regular', 9, '', 'johnny doe sr.', 'melissa Yveth', 'melissa Yveth', 1, 1, 'aaaaaaaaaaaaaaaaafa', 'faddddddddddfafsa', 'adfdafdafafd', '2021-04-19 01:32:18');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `vouchers`
+--
+
+CREATE TABLE `vouchers` (
+  `id` int(11) NOT NULL,
+  `receipt_number` varchar(255) NOT NULL,
+  `voucher_category_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `amount` double NOT NULL,
+  `care_of` int(11) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `voucher_categories`
+--
+
+CREATE TABLE `voucher_categories` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `voucher_categories`
+--
+
+INSERT INTO `voucher_categories` (`id`, `name`) VALUES
+(3, 'FEA EXPENSES'),
+(4, 'SUPPORT TO FEA MEMBER'),
+(5, 'REGULAR LOAN'),
+(6, 'CHARACTER LOAN'),
+(7, 'SAVINGS WITHDRAW'),
+(8, 'FIXED DEPOSIT WITHDRAW');
 
 --
 -- Indexes for dumped tables
@@ -252,6 +313,12 @@ ALTER TABLE `loans`
 -- Indexes for table `loan_comakers`
 --
 ALTER TABLE `loan_comakers`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `loan_penalties`
+--
+ALTER TABLE `loan_penalties`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -288,6 +355,18 @@ ALTER TABLE `users`
   ADD KEY `users_department_id_foreign` (`department_id`);
 
 --
+-- Indexes for table `vouchers`
+--
+ALTER TABLE `vouchers`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `voucher_categories`
+--
+ALTER TABLE `voucher_categories`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -301,19 +380,25 @@ ALTER TABLE `departments`
 -- AUTO_INCREMENT for table `fixed_deposits`
 --
 ALTER TABLE `fixed_deposits`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- AUTO_INCREMENT for table `loans`
 --
 ALTER TABLE `loans`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
 
 --
 -- AUTO_INCREMENT for table `loan_comakers`
 --
 ALTER TABLE `loan_comakers`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT for table `loan_penalties`
+--
+ALTER TABLE `loan_penalties`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `loan_types`
@@ -325,7 +410,7 @@ ALTER TABLE `loan_types`
 -- AUTO_INCREMENT for table `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=96;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=121;
 
 --
 -- AUTO_INCREMENT for table `positions`
@@ -337,13 +422,25 @@ ALTER TABLE `positions`
 -- AUTO_INCREMENT for table `savings`
 --
 ALTER TABLE `savings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
+
+--
+-- AUTO_INCREMENT for table `vouchers`
+--
+ALTER TABLE `vouchers`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `voucher_categories`
+--
+ALTER TABLE `voucher_categories`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- Constraints for dumped tables
