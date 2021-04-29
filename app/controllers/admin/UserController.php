@@ -77,6 +77,16 @@ class AdminUser extends Connection
         }
         return $total;
     }
+    public function getUserLoansObj($id)
+    {
+        $status = 'active';
+        $type = 1;
+        $sql = "SELECT * FROM loans WHERE user_id=:id AND status=:status";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute(['id' => $id, 'status' => $status]);
+        $loans = $stmt->fetchAll();
+        return $loans;
+    }
     public function getUserCharacterLoans($id)
     {
         $status = 'active';
@@ -90,6 +100,15 @@ class AdminUser extends Connection
             $total += $loan->total_amount;
         }
         return $total;
+    }
+
+    public function getLoanTypeName($id)
+    {
+        $sql = "SELECT * FROM loan_types WHERE id=$id";
+        $stmt = $this->conn->query($sql);
+        $stmt->execute();
+        $type = $stmt->fetch();
+        return  $type->name;
     }
     public function create($data)
     {

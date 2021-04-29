@@ -20,6 +20,9 @@ if (isset($_GET['id'])) {
     $total_savings = $adminUser->getUserSavings($_GET['id']);
     $total_regular_loan_balance = formatDecimal($adminUser->getUserRegularLoans($_GET['id']));
     $total_character_loan_balance = formatDecimal($adminUser->getUserCharacterLoans($_GET['id']));
+
+    $user_loans = $adminUser->getUserLoansObj($_GET['id']);
+    // dump($user_loans);
 } else {
     redirect('admin_users.php');
 }
@@ -38,12 +41,17 @@ if (isset($_GET['id'])) {
             <div class="row">
                 <div class="col-md-6 border-bottom mb-2">
                     <h2 class="font-weight-normal mb-2 mb-3">Account Information</h2>
-                    <p><small class="mr-2">Fixed Deposit:</small><b>PHP <?php echo formatDecimal($total_amount) ?></b></p>
-                    <p><small class="mr-2">Savings:</small><b>PHP <?php echo formatDecimal($total_savings) ?></b></p>
-                    <p><small class="mr-2">Regular Loan Balance:</small><b>PHP <?php echo $total_regular_loan_balance ?></b></p>
-                    <p><small class="mr-2">Character Loan Balance:</small><b>PHP <?php echo $total_character_loan_balance ?></b></p>
+                    <p><small class="mr-2">Total Fixed Deposit:</small><b>PHP <?php echo formatDecimal($total_amount) ?></b></p>
+                    <p><small class="mr-2">Total Savings:</small><b>PHP <?php echo formatDecimal($total_savings) ?></b></p>
+
+
+                    <p><small class="mr-2">Total Regular Loan Balance W/ Interest:</small><b>PHP <?php echo $total_regular_loan_balance ?></b></p>
+                    <p><small class="mr-2">Total Character Loan Balance W/ Interest:</small><b>PHP <?php echo $total_character_loan_balance ?></b></p>
+
+
                     <p><small class="mr-2">Account Number:</small><b><?php echo $user->account_number ?></b></p>
                     <p><small class="mr-2">Email:</small><b><?php echo $user->email ?></b></p>
+
 
                 </div>
                 <div class="col-md-6 border-bottom mb-2">
@@ -57,6 +65,35 @@ if (isset($_GET['id'])) {
                 </div>
 
 
+            </div>
+            <div class="row mt-2">
+                <div class="col">
+                    <!-- loop user loans -->
+                    <?php if (!empty($user_loans)) : ?>
+                        <span class="font-weight-bold">Current User Loans:</span><br>
+                        <ul class="list-group mb-2">
+                            <?php foreach ($user_loans as $key => $u_loan) : ?>
+                                <li class="list-group-item" style="list-style-type:disc">
+
+                                    <p>
+                                    <div><?php echo $key + 1 ?>.
+                                        <small class="mr-2">Transaction ID:</small>
+                                        <b><?php echo $u_loan->transaction_id ?> </b><br>
+                                        <small>*Type:</small> <b><?php echo strtoupper($adminUser->getLoanTypeName($u_loan->loan_type_id)) ?></b><br>
+                                        <small>*Principal Amount:</small> <b>PHP <?php echo formatDecimal($u_loan->amount) ?></b><br>
+                                        <small>*Payment per month:</small> <b>PHP <?php echo formatDecimal($u_loan->amount_per_month) ?></b><br>
+                                        <small>*Payment per kinsenas:</small> <b>PHP <?php echo formatDecimal($u_loan->amount_per_kinsenas) ?></b><br>
+                                        <small>*Interest per month:</small> <b>PHP <?php echo formatDecimal($u_loan->interest_amount_per_month) ?></b><br>
+                                        <small>*Interest per kinsenas:</small> <b>PHP <?php echo formatDecimal($u_loan->interest_amount_per_kinsenas) ?></b><br>
+                                        <small>*Total Current Balance:</small> <b>PHP <?php echo formatDecimal($u_loan->total_amount) ?></b>
+                                    </div>
+                                    </p>
+                                </li>
+                            <?php endforeach ?>
+                            <hr>
+                        </ul>
+                    <?php endif ?>
+                </div>
             </div>
             <div class="row mt-4">
                 <div class="col-md-6 border-bottom mb-2">

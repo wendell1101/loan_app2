@@ -250,7 +250,7 @@ class Loan extends Connection
 
         return $loanable_amount;
     }
-    // save loan
+
     public function getComaker1()
     {
         $sql = "SELECT * FROM users WHERE position_id=8";
@@ -277,27 +277,42 @@ class Loan extends Connection
         $membership_number = "MEM" . '-' . date("Y") . '-' . $id;
         $status = "pending";
         $comakers = $_SESSION['comakers'];
-
-
-        // total amount
-
+        $term = $activeLoan['term'];
         $amount = $activeLoan['amount'];
+        $amount_per_month = $amount / $term;
+        $amount_per_kinsenas = $amount_per_month / 2;
+        $interest_amount = $_SESSION['interest_amount_per_month'] * $activeLoan['term'];
+
+        $interest_amount_per_month = $_SESSION['interest_amount_per_month'];
+        $interest_amount_per_kinsenas = $interest_amount_per_month / 2;
+
+
+
         $total_amount = $_SESSION['total_amount'];
 
         if ($comakers) {
-            $sql = "INSERT INTO loans (transaction_id, loan_number, membership_number, amount, term, status,
-            loan_type_id, total_amount, user_id, comaker1_id, comaker2_id) VALUES(:transaction_id, :loan_number, :membership_number, :amount, :term, :status
-            ,:loan_type_id, :total_amount, :user_id, :comaker1_id, :comaker2_id)";
+            $sql = "INSERT INTO loans (transaction_id, loan_number, membership_number, amount,
+            amount_per_kinsenas, amount_per_month, interest_amount, interest_amount_per_kinsenas,
+            interest_amount_per_month, total_amount, term, status,
+            loan_type_id, user_id, comaker1_id, comaker2_id) VALUES(:transaction_id, :loan_number, :membership_number, :amount,
+            :amount_per_kinsenas, :amount_per_month, :interest_amount, :interest_amount_per_kinsenas,
+            :interest_amount_per_month, :total_amount, :term, :status,
+            :loan_type_id, :user_id, :comaker1_id, :comaker2_id)";
             $stmt = $this->conn->prepare($sql);
             $saved = $stmt->execute([
                 'transaction_id' => $transaction_id,
                 'loan_number' => $loan_number,
                 'membership_number' => $membership_number,
                 'amount' => $amount,
+                'amount_per_kinsenas' => $amount_per_kinsenas,
+                'amount_per_month' => $amount_per_month,
+                'interest_amount' => $interest_amount,
+                'interest_amount_per_kinsenas' => $interest_amount_per_kinsenas,
+                'interest_amount_per_month' => $interest_amount_per_month,
+                'total_amount' => $total_amount,
                 'term' => $activeLoan['term'],
                 'status' => $status,
                 'loan_type_id' => $activeLoan['loan_type_id'],
-                'total_amount' => $total_amount,
                 'user_id' => $id,
                 'comaker1_id' => $comakers[0],
                 'comaker2_id' => $comakers[1],

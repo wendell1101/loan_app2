@@ -10,32 +10,85 @@ if (isset($_GET['id'])) {
     $activePayment = $payment->getPayment($_GET['id']);
     $activeLoan = $payment->getLoan($activePayment->loan_id);
 
-    $regular_loan_payment = '0.00';
-    $character_loan_payment = '0.00';
-    $total = '0.00';
-
-    if ($activeLoan->loan_type_id == 1) {
-        $regular_loan_payment = formatDecimal($activePayment->payment_amount);
-        $total = formatDecimal($activePayment->payment_amount);
-    } else if ($activeLoan->loan_type_id == 3) {
-        $character_loan_payment = formatDecimal($activePayment->payment_amount);
-        $total = formatDecimal($activePayment->payment_amount);
-    }
 
 
     $user = $adminUser->getUser($activeLoan->user_id);
-
-    $fixed_deposit_amount = formatDecimal($adminUser->getUserDeposit($user->id));
-    $savings_deposit_amount = formatDecimal($adminUser->getUserSavings($user->id));
-    $total_regular_loan_balance = formatDecimal($adminUser->getUserRegularLoans($user->id));
-    $total_character_loan_balance = formatDecimal($adminUser->getUserCharacterLoans($user->id));
-
-
+    $activePenalty = $payment->getPenalty($activeLoan->id, $activePayment->id);
+    $reason = strtoupper($activePenalty->reason);
     $payer = ucwords($activePayment->payment_by);
 
-    $amount = formatDecimal($activePayment->payment_amount);
-    $date = shortDate($activePayment->paid_at);
+    $service_fee = formatDecimal($activePenalty->service_fee);
+    // dump($service_fee);
+    $amount = formatDecimal($activePenalty->amount);
+    $totalAmount = formatDecimal($activePenalty->amount + $activePenalty->service_fee);
+
+    $date = shortDate($activePenalty->created_at);
     // print_r($activePayment);
+
+    $output = '';
+    $output .= '
+    <p style="text-align:center; font-weight:bold">LSPU-SC FEA Savings and Credit Services</p>
+    <p style="text-align:center">LSPU-Siniloan, Laguna</p><br><br>
+
+
+    <br><br>
+    Receipt Number:';
+    $output .= $activePayment->reference_number .= '<br>
+    Date: ';
+    $output .= $date .=  '<br /><br />
+Received from: ';
+    $output .= $payer .= '<br><br />
+    Reason for penalty: ';
+    $output .= $reason .= '<br><br />
+<table border="1" cellspacing="0" cellpadding="5">
+
+     <tr>
+        <td>Service Charge</td>
+        <td> PHP ';
+    $output .= $service_fee .= ' </td>
+
+     </tr>
+    <tr>
+     <td>Penalty Amount</td>
+     <td> PHP ';
+    $output .= $amount .= '</td>
+
+  </tr>
+     <tr>
+        <td>Total Penalty Fee Paid</td>
+        <td> PHP ';
+    $output .= $totalAmount .= ' </td>
+     </tr>
+</table/>
+<br><br>
+<p>Received Payment: </p><br>
+<span style="margin-left:100px">___________________</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+<span style="margin-right:50px">___________________</span>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<span style="margin-left:100px!important">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Treasurer</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+<span style="margin-right:50px">Asst. Treasurer</span>
+<br><br>
+';
 } else {
     redirect('payments.php');
 }
@@ -86,74 +139,10 @@ $obj_pdf->SetAutoPageBreak(TRUE, 10);
 $obj_pdf->SetFont('helvetica', '', 12);
 $obj_pdf->AddPage();
 $content = '';
-$content .= '
-    <p style="text-align:center; font-weight:bold">LSPU-SC FEA Savings and Credit Services</p>
-    <p style="text-align:center">LSPU-Siniloan, Laguna</p><br><br>
+$content .= $output;
+$content .= '<br><hr><br><br>';
+$content .= $output;
 
-
-    <br><br>
-    Receipt Number:';
-$content .= $activePayment->reference_number .= '<br>
-    Date: ';
-$content .= $date .=  '<br /><br />
-Received from: ';
-$content .= $payer .= '<br><br />
-<table border="1" cellspacing="0" cellpadding="5">
-
-     <tr>
-        <td>Service Charge</td>
-        <td> __________ </td>
-
-     </tr>
-    <tr>
-     <td>Penalty</td>
-     <td> __________ </td>
-
-  </tr>
-
-
-     <tr>
-        <td>Membership fee</td>
-        <td> __________ </td>
-
-     </tr>
-     <tr>
-        <td>Others</td>
-        <td> __________ </td>
-     </tr>
-     <tr>
-        <td>Total</td>
-        <td> __________ </td>
-     </tr>
-</table/>
-<br><br>
-<p>Received Payment: </p><br>
-<span style="margin-left:100px">___________________</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-
-<span style="margin-right:50px">___________________</span>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<span style="margin-left:100px!important">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Treasurer</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-
-
-<span style="margin-right:50px">Asst. Treasurer</span>
-';
 
 
 

@@ -54,7 +54,7 @@ if (isset($_POST['loan'])) {
                     </div>
                     <div class="form-group">
                         <label for="amount">Amount</label>
-                        <input type="number" name="amount" id="amount" max="60000" required class="form-control
+                        <input type="number" name="amount" id="amount" max="<?php echo $loanable_amount ?>" required class="form-control
                         <?php
                         if (!empty(($amount))) {
                             echo $errors['amount'] ? 'is-invalid' : 'is-valid';
@@ -68,6 +68,7 @@ if (isset($_POST['loan'])) {
                         <div class="text-danger">
                             <small><?php echo $errors['amount'] ?? '' ?></small>
                         </div>
+                        <small class="text-primary">Maximum Loanable Amount: PHP <?php echo formatDecimal($loanable_amount) ?></small>
                     </div>
                     <div class="form-group">
                         <label for="term"> Term</label>

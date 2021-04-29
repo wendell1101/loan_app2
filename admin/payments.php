@@ -14,6 +14,11 @@ $payments = $activePayment->index();
 $loans = $activePayment->getLoans();
 $savings = $activePayment->getSavings();
 
+$penalty_amount = 0;
+$service_charge = 0;
+$membership_fee = 0;
+$total = 0;
+
 
 ?>
 
@@ -51,9 +56,14 @@ $savings = $activePayment->getSavings();
                                 <th scope="col">Loan Amount Paid</th>
                                 <th scope="col">Fixed Deposit Amount Paid</th>
                                 <th scope="col">Saving Amount Paid</th>
-                                <th scope="col">Paid at</th>
+                                <th scope="col">Penalty Amount </th>
+                                <th scope="col">Service Charge</th>
+                                <th scope="col">Membership Fee</th>
+                                <th scope="col">Total</th>
                                 <th scope="col">Generate Receipt</th>
-                                <th scope="col">Loan Penalty</th>
+                                <th scope="col">Penalty Receipt</th>
+                                <th scope="col">Add Penalty</th>
+                                <th scope="col">Paid at</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -67,7 +77,31 @@ $savings = $activePayment->getSavings();
                                     <td>PHP <?php echo formatDecimal($payment->payment_amount) ?></td>
                                     <td>PHP <?php echo formatDecimal($payment->payment_fixed_deposit) ?></td>
                                     <td>PHP <?php echo formatDecimal($payment->payment_saving) ?></td>
-                                    <td> <?php echo formatDate($payment->paid_at) ?></td>
+
+                                    <?php if ($payment->has_penalty) : ?>
+                                        <?php $penalty_amount = $activePayment->getPenalty($payment->loan_id, $payment->id)->amount ?>
+                                        <td>PHP <?php echo formatDecimal($penalty_amount) ?></td>
+                                    <?php else : ?>
+                                        <td>PHP 0.00</td>
+                                    <?php endif; ?>
+                                    <!-- service fee -->
+                                    <?php if ($payment->has_penalty) : ?>
+                                        <?php $service_charge = $activePayment->getPenalty($payment->loan_id, $payment->id)->service_fee ?>
+                                        <td>PHP <?php echo formatDecimal($activePayment->getPenalty($payment->loan_id, $payment->id)->service_fee) ?></td>
+                                    <?php else : ?>
+                                        <td>PHP 0.00</td>
+                                    <?php endif; ?>
+                                    <!-- membership fee -->
+                                    <td>PHP 0.00</td>
+                                    <?php
+                                    $total  = $payment->payment_amount + $payment->payment_fixed_deposit + $payment->payment_saving
+                                        + $penalty_amount + $service_charge + $membership_fee;
+                                    ?>
+                                    <td>PHP <?php echo formatDecimal($total) ?></td>
+
+
+
+
                                     <?php if (!is_null($payment->payment_saving) || !is_null($payment->payment_fixed_deposit)) : ?>
                                         <td><a href="deposit_receipt.php?id=<?php echo $payment->id ?>" class="text-info">Deposit Receipt</a></td>
                                     <?php elseif (!is_null($payment->payment_amount)) : ?>
@@ -75,12 +109,32 @@ $savings = $activePayment->getSavings();
                                     <?php endif ?>
 
                                     <?php if (!is_null($payment->loan_id)) : ?>
-                                        <td><a href="penalty_receipt.php?id=<?php echo $payment->id ?>" class="text-info">View</a></td>
+                                        <?php if (!$payment->has_penalty) : ?>
+                                            <td><span class="text-muted">none</span></td>
+                                        <?php else : ?>
+                                            <td><a href="penalty_receipt.php?id=<?php echo $payment->id ?>" class="text-info">View</a></td>
+                                        <?php endif; ?>
+
                                     <?php else : ?>
-                                        <td><span class="text-muted">None</span></td>
+                                        <td><span class="text-muted">N/A</span></td>
                                     <?php endif ?>
 
+                                    <?php if (!is_null($payment->loan_id)) : ?>
+                                        <?php if (!$payment->has_penalty) : ?>
+                                            <td>
+                                                <a href="penalty_create.php?loan_id=<?php echo $payment->loan_id ?>&payment_id=<?php echo $payment->id ?>" class="btn btn-danger btn-sm">add</a>
+                                            </td>
+                                        <?php else : ?>
+                                            <td>
+                                                <span class="text-muted text-center">has penalty</span>
+                                            </td>
 
+                                        <?php endif; ?>
+                                    <?php else : ?>
+                                        <td><span class="text-muted">N/A</span></td>
+                                    <?php endif ?>
+
+                                    <td> <?php echo formatDate($payment->paid_at) ?></td>
                                 </tr>
                             <?php endforeach; ?>
 

@@ -1,86 +1,50 @@
 <?php
 require_once '../core.php';
-
+$voucher = new Voucher();
 
 $adminUser = new AdminUser();
 
 $user = '';
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
+    $activeVoucher = $voucher->getVoucher($_GET['id']);
+    // dump($activeVoucher);
+    $date = shortDate($activeVoucher->created_at);
+    $date2 = shortDate($activeVoucher->created_at);
+    $voucher_amount = formatDecimal($activeVoucher->amount);
+    $member =  ucfirst($voucher->getUser($activeVoucher->user_id)->firstname) . ' ' . ucfirst($voucher->getUser($activeVoucher->user_id)->lastname);
 
-    $user = $adminUser->getUser($_GET['id']);
-
-    $fixed_deposit_amount = formatDecimal($adminUser->getUserDeposit($user->id));
-    $savings_deposit_amount = formatDecimal($adminUser->getUserSavings($user->id));
-    $total_regular_loan_balance = formatDecimal($adminUser->getUserRegularLoans($user->id));
-    $total_character_loan_balance = formatDecimal($adminUser->getUserCharacterLoans($user->id));
-    $membership_fee = '200.00';
-    $user_fullname = ucfirst($user->firstname) . ' ' . ucfirst($user->lastname);
-
-    $date = shortDate($user->created_at);
-
-    //output
     $output = '';
     $output .= '
-<h4>Membership fee: PHP ';
+<h4>Receipt Number: ';
 
-    $output .= $membership_fee .= '</h4>
+    $output .= $activeVoucher->receipt_number .= '</h4>
 Date: ';
     $output .= $date
         .= '<br /><br />
-Received from: ';
-    $output .= $user_fullname .= '<br><br />
+Member: ';
+    $output .= $member .= '<br><br />
+
 <table border="1" cellspacing="0" cellpadding="5">
+
      <tr>
-        <td>Membership Fee</td>
-        <td>PHP 200.00</td>
+        <td>Voucher Amount</td>
+        <td>PHP ';
+    $output .= $activeVoucher->amount .= '</td>
         <td></td>
      </tr>
+
      <tr>
         <td>Total</td>
-        <td colspan="2">PHP 200.00 </td>
+        <td colspan="2"> PHP ';
+    $output .= $voucher_amount .= '</td>
      </tr>
-</table/>
+</table/><br><br>
 
-';
-    $output .= '<br><br>
-<table border=".5" cellspacing="0" cellpadding="5">
-    <tr>
-        <td>Fixed Deposit</td>
-        <td>PHP 0.00</td>
-        <td colspan="2" style="text-align:center;"> Received Payment</td>
-    </tr>
-    <tr>
-        <td>Savings Deposit</td>
-        <td>PHP 0.00</td>
-        <td colspan="2" style="text-align:center; border:none">____________</td>
-    </tr>
-    <tr>
-        <td>Regular Loan</td>
-        <td>PHP 0.00 </td>
-        <td colspan="2" style="text-align:center; border:none">Treasurer</td>
-    </tr>
-    <tr>
-        <td>Character Loan</td>
-        <td>PHP 0.00</td>
-        <td colspan="2" style="text-align:center">By:</td>
-    </tr>
-    <tr>
-        <td></td>
-        <td></td>
-        <td colspan="2" style="text-align:center">_______________</td>
-    </tr>
-    <tr>
-        <td></td>
-        <td></td>
-        <td colspan="2" style="text-align:center">Asst. Treasurer</td>
-    </tr>
-
-</table>
 
 ';
 } else {
-    redirect('admin_users.php');
+    redirect('vouchers.php');
 }
 require_once('../tcpdf/tcpdf.php');
 
@@ -129,10 +93,21 @@ $obj_pdf->SetAutoPageBreak(TRUE, 10);
 $obj_pdf->SetFont('helvetica', '', 12);
 $obj_pdf->AddPage();
 $content = '';
+
 $content .= $output;
-$content .= '<br><br><hr>';
-$content .= '<br><br>';
+$content .= '
+<br><br><br>
+<br><br><br>
+
+';
 $content .= $output;
+
+
+
+
+
+
+
 
 
 

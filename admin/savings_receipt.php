@@ -27,7 +27,72 @@ if (isset($_GET['id'])) {
 
     $amount = formatDecimal($activeSaving->amount);
     $date = shortDate($activeSaving->created_at);
-    // print_r($activePayment);
+
+    $output = '';
+    $output .= '
+<h4>Receipt Number: ';
+
+    $output .= $activeSaving->reference_number .= '</h4>
+Date: ';
+    $output .= $date
+        .= '<br /><br />
+Received from: ';
+    $output .= $payer .= '<br><br />
+
+<table border="1" cellspacing="0" cellpadding="5">
+
+
+     <tr>
+        <td>Withdraw From Savings</td>
+        <td>PHP ';
+    $output .= $withdraw .= '</td>
+        <td></td>
+     </tr>
+
+</table/>
+
+';
+    $output .= '<br><br>
+Current Balance: <br><br>
+<table border=".5" cellspacing="0" cellpadding="5">
+    <tr>
+        <td>Fixed Deposit</td>
+        <td>PHP';
+    $output .= $fixed_deposit_amount .= '</td>
+        <td colspan="2" style="text-align:center;"> Received Payment</td>
+    </tr>
+    <tr>
+        <td>Savings Deposit</td>
+        <td>PHP ';
+    $output .= $savings_deposit_amount .= '</td>
+        <td colspan="2" style="text-align:center; border:none">____________</td>
+    </tr>
+    <tr>
+        <td>Regular Loan</td>
+        <td>PHP ';
+    $output .= $total_regular_loan_balance .= '</td>
+        <td colspan="2" style="text-align:center; border:none">Treasurer</td>
+    </tr>
+    <tr>
+        <td>Character Loan</td>
+        <td>PHP ';
+    $output .= $total_character_loan_balance .= '</td>
+        <td colspan="2" style="text-align:center">By:</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td colspan="2" style="text-align:center">_______________</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td colspan="2" style="text-align:center">Asst. Treasurer</td>
+    </tr>
+
+</table>
+
+';
 } else {
     redirect('payments.php');
 }
@@ -78,79 +143,9 @@ $obj_pdf->SetAutoPageBreak(TRUE, 10);
 $obj_pdf->SetFont('helvetica', '', 12);
 $obj_pdf->AddPage();
 $content = '';
-$content .= '
-<h4>Receipt Number: ';
-
-$content .= $activeSaving->reference_number .= '</h4>
-Date: ';
-$content .= $date
-    .= '<br /><br />
-Received from: ';
-$content .= $payer .= '<br><br />
-<table border="1" cellspacing="0" cellpadding="5">
-
-     <tr>
-     <td>Savings Deposit</td>
-     <td>PHP ';
-$content .= $activeSaving->amount .= '</td>
-     <td></td>
-  </tr>
-     <tr>
-        <td>Withdraw From Savings</td>
-        <td>PHP ';
-$content .= $withdraw .= '</td>
-        <td></td>
-     </tr>
-
-     <tr>
-        <td>Total Savings</td>
-        <td colspan="2">PHP ';
-$content .= $amount .= '</td>
-     </tr>
-</table/>
-
-';
-$content .= '<br><br>
-Current Balance: <br><br>
-<table border=".5" cellspacing="0" cellpadding="5">
-    <tr>
-        <td>Fixed Deposit</td>
-        <td>PHP';
-$content .= $fixed_deposit_amount .= '</td>
-        <td colspan="2" style="text-align:center;"> Received Payment</td>
-    </tr>
-    <tr>
-        <td>Savings Deposit</td>
-        <td>PHP ';
-$content .= $savings_deposit_amount .= '</td>
-        <td colspan="2" style="text-align:center; border:none">____________</td>
-    </tr>
-    <tr>
-        <td>Regular Loan</td>
-        <td>PHP ';
-$content .= $total_regular_loan_balance .= '</td>
-        <td colspan="2" style="text-align:center; border:none">Treasurer</td>
-    </tr>
-    <tr>
-        <td>Character Loan</td>
-        <td>PHP ';
-$content .= $total_character_loan_balance .= '</td>
-        <td colspan="2" style="text-align:center">By:</td>
-    </tr>
-    <tr>
-        <td></td>
-        <td></td>
-        <td colspan="2" style="text-align:center">_______________</td>
-    </tr>
-    <tr>
-        <td></td>
-        <td></td>
-        <td colspan="2" style="text-align:center">Asst. Treasurer</td>
-    </tr>
-
-</table>
-
-';
+$content .= $output;
+$content .= '<br><br><br><hr>';
+$content .= $output;
 
 
 $obj_pdf->writeHTML($content);

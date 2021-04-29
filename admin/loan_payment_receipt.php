@@ -54,7 +54,82 @@ if (isset($_GET['id'])) {
 
     $amount = formatDecimal($activePayment->payment_amount);
     $date = shortDate($activePayment->paid_at);
-    // print_r($activePayment);
+
+    $output = '';
+    $output .= '
+<h4>Receipt Number: ';
+
+    $output .= $activePayment->reference_number .= '</h4>
+Date: ';
+    $output .= $date
+        .= '<br /><br />
+Received from: ';
+    $output .= $payer .= '<br><br />
+Amount paid: <br><br>
+<table border="1" cellspacing="0" cellpadding="5">
+
+     <tr>
+        <td>Regular Loan Payment With Interest</td>
+        <td>PHP ';
+    $output .= $regular_loan_payment .= '</td>
+        <td></td>
+     </tr>
+     <tr>
+        <td>Character Loan Payment With Interest</td>
+        <td>PHP ';
+    $output .= $character_loan_payment .= '</td>
+        <td></td>
+     </tr>
+
+     <tr>
+        <td>Total</td>
+        <td colspan="2"> PHP ';
+    $output .= $total .= '</td>
+     </tr>
+</table/>
+
+';
+    $output .= '<br>
+Current Balance: <br>
+<table border=".5" cellspacing="0" cellpadding="5">
+    <tr>
+        <td>Fixed Deposit</td>
+        <td>PHP';
+    $output .= $fixed_deposit_amount .= '</td>
+        <td colspan="2" style="text-align:center;"> Received Payment</td>
+    </tr>
+    <tr>
+        <td>Savings Deposit</td>
+        <td>PHP ';
+    $output .= $savings_deposit_amount .= '</td>
+        <td colspan="2" style="text-align:center; border:none">____________</td>
+    </tr>
+    <tr>
+        <td>Regular Loan</td>
+        <td>PHP ';
+    $output .= $total_regular_loan_balance .= '</td>
+        <td colspan="2" style="text-align:center; border:none">Treasurer</td>
+    </tr>
+    <tr>
+        <td>Character Loan</td>
+        <td>PHP ';
+    $output .= $total_character_loan_balance .= '</td>
+        <td colspan="2" style="text-align:center">By:</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td colspan="2" style="text-align:center">_______________</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td colspan="2" style="text-align:center">Asst. Treasurer</td>
+    </tr>
+
+</table>
+
+';
 } else {
     redirect('payments.php');
 }
@@ -105,80 +180,10 @@ $obj_pdf->SetAutoPageBreak(TRUE, 10);
 $obj_pdf->SetFont('helvetica', '', 12);
 $obj_pdf->AddPage();
 $content = '';
-$content .= '
-<h4>Receipt Number: ';
+$content .= $output;
+$content .= '<br><hr><br>';
+$content .= $output;
 
-$content .= $activePayment->reference_number .= '</h4>
-Date: ';
-$content .= $date
-    .= '<br /><br />
-Received from: ';
-$content .= $payer .= '<br><br />
-Amount paid: <br><br>
-<table border="1" cellspacing="0" cellpadding="5">
-
-     <tr>
-        <td>Regular Loan Payment With Interest</td>
-        <td>PHP ';
-$content .= $regular_loan_payment .= '</td>
-        <td></td>
-     </tr>
-     <tr>
-        <td>Character Loan Payment With Interest</td>
-        <td>PHP ';
-$content .= $character_loan_payment .= '</td>
-        <td></td>
-     </tr>
-
-     <tr>
-        <td>Total</td>
-        <td colspan="2"> PHP ';
-$content .= $total .= '</td>
-     </tr>
-</table/>
-
-';
-$content .= '<br><br>
-Current Balance: <br><br>
-<table border=".5" cellspacing="0" cellpadding="5">
-    <tr>
-        <td>Fixed Deposit</td>
-        <td>PHP';
-$content .= $fixed_deposit_amount .= '</td>
-        <td colspan="2" style="text-align:center;"> Received Payment</td>
-    </tr>
-    <tr>
-        <td>Savings Deposit</td>
-        <td>PHP ';
-$content .= $savings_deposit_amount .= '</td>
-        <td colspan="2" style="text-align:center; border:none">____________</td>
-    </tr>
-    <tr>
-        <td>Regular Loan</td>
-        <td>PHP ';
-$content .= $total_regular_loan_balance .= '</td>
-        <td colspan="2" style="text-align:center; border:none">Treasurer</td>
-    </tr>
-    <tr>
-        <td>Character Loan</td>
-        <td>PHP ';
-$content .= $total_character_loan_balance .= '</td>
-        <td colspan="2" style="text-align:center">By:</td>
-    </tr>
-    <tr>
-        <td></td>
-        <td></td>
-        <td colspan="2" style="text-align:center">_______________</td>
-    </tr>
-    <tr>
-        <td></td>
-        <td></td>
-        <td colspan="2" style="text-align:center">Asst. Treasurer</td>
-    </tr>
-
-</table>
-
-';
 
 
 $obj_pdf->writeHTML($content);

@@ -194,13 +194,13 @@ class Payment extends Connection
 
                     $activePayment = $this->getPayment($lastId);
                     $activeLoan = $this->getLoan($activePayment->loan_id);
-                    $new_amount = $activeLoan->total_amount - $activePayment->payment_amount;
+                    $new_total_amount = $activeLoan->total_amount - $activePayment->payment_amount;
 
 
-                    $sql = "UPDATE loans SET total_amount=:new_amount WHERE id=:id";
+                    $sql = "UPDATE loans SET total_amount=:new_total_amount WHERE id=:id";
                     $stmt = $this->conn->prepare($sql);
                     $updated = $stmt->execute([
-                        'new_amount' => $new_amount,
+                        'new_total_amount' => $new_total_amount,
                         'id' => $activeLoan->id,
                     ]);
                     if ($updated) {
@@ -343,5 +343,43 @@ class Payment extends Connection
         } else {
             echo 'error occured';
         }
+    }
+
+    //create penalty
+    public function createPenalty($data)
+    {
+        $reason = $data['reason'];
+        $amount = $data['amount'];
+        $service_fee = $data['service_fee'];
+        $loan_id = $data['loan_id'];
+        $payment_id = $data['payment_id'];
+        $sql = "INSERT INTO loan_penalties (reason, amount, service_fee, loan_id, payment_id)
+        VALUES (:reason, :amount, :service_fee, :loan_id, :payment_id)";
+        $stmt = $this->conn->prepare($sql);
+        $run = $stmt->execute([
+            'reason' => $reason,
+            'amount' => $amount,
+            'service_fee' => $service_fee,
+            'loan_id' => $loan_id,
+            'payment_id' => $payment_id,
+        ]);
+
+
+        if ($run) {
+            //update payment has_penalty
+            $sql = "UPDATE payments SET has_penalty=1 WHERE id=$payment_id";
+            $updated = $this->conn->query($sql);
+            if ($updated) {
+                message('success', 'A penalty has been issued successfully');
+                redirect('payments.php');
+            }
+        }
+    }
+
+    public function getPenalty($loan_id, $payment_id)
+    {
+        $sql = "SELECT * FROM loan_penalties WHERE loan_id=$loan_id AND payment_id=$payment_id";
+        $stmt = $this->conn->query($sql);
+        return $stmt->fetch();
     }
 }
