@@ -18,7 +18,7 @@ class Payment extends Connection
     }
     public function getLoans()
     {
-        $sql = "SELECT * FROM loans WHERE status='active'";
+        $sql = "SELECT * FROM loans WHERE status='approved'";
         $stmt = $this->conn->query($sql);
 
         return $stmt->fetchAll();

@@ -59,7 +59,10 @@ $loans = $adminLoan->index();
                                     </td>
 
                                     <td>PHP <?php echo formatDecimal($singleLoan->amount) ?></td>
-                                    <td><?php echo formatDecimal($adminLoan->getInterest($singleLoan->loan_type_id)->interest) ?> %</td>
+                                    <?php
+                                    $interest = $adminLoan->getInterest($singleLoan->loan_type_id)->interest;
+                                    ?>
+                                    <td><?php echo $interest ?> %</td>
                                     <td>PHP <?php echo formatDecimal($singleLoan->total_amount) ?></td>
                                     <td>
                                         <?php echo $singleLoan->status ?>

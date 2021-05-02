@@ -40,22 +40,22 @@ if (isset($_GET['id'])) {
                 <div class="track">
                     <?php if ($activeLoan->status === 'pending') : ?>
                         <div class="step active"> <span class="icon"> <i class="far fa-clock"></i> </span> <span class="text">Pending</span> </div>
-                        <div class="step"> <span class="icon"><i class="far fa-calendar-check"></i> </span> <span class="text"> Active</span> </div>
+                        <div class="step"> <span class="icon"><i class="far fa-calendar-check"></i> </span> <span class="text"> Approved</span> </div>
                         <div class="step"> <span class="icon"> <i class="fas fa-check"></i> </span> <span class="text"> Paid</span> </div>
                         <div class="step"> <span class="icon"> <i class="far fa-window-close"></i> </span> <span class="text">Cancelled</span> </div>
-                    <?php elseif ($activeLoan->status === 'active') : ?>
+                    <?php elseif ($activeLoan->status === 'approved') : ?>
                         <div class="step active"> <span class="icon"> <i class="far fa-clock"></i> </span> <span class="text">Pending</span> </div>
-                        <div class="step active"> <span class="icon"> <i class="far fa-calendar-check"></i> </span> <span class="text"> Active</span> </div>
+                        <div class="step active"> <span class="icon"> <i class="far fa-calendar-check"></i> </span> <span class="text"> Approved</span> </div>
                         <div class="step"> <span class="icon"> <i class="fas fa-check"></i> </span> <span class="text"> Paid</span> </div>
                         <div class="step"> <span class="icon"> <i class="far fa-window-close"></i> </span> <span class="text">Cancelled</span> </div>
                     <?php elseif ($activeLoan->status === 'paid') : ?>
                         <div class="step active"> <span class="icon"> <i class="far fa-clock"></i> </span> <span class="text">Pending</span> </div>
-                        <div class="step active"> <span class="icon"> <i class="far fa-calendar-check"></i> </span> <span class="text"> Active</span> </div>
+                        <div class="step active"> <span class="icon"> <i class="far fa-calendar-check"></i> </span> <span class="text"> Approved</span> </div>
                         <div class="step active"> <span class="icon"> <i class="fas fa-check"></i> </span> <span class="text"> Paid</span> </div>
                         <div class="step"> <span class="icon"> <i class="far fa-window-close"></i> </span> <span class="text">Cancelled</span> </div>
                     <?php elseif ($activeLoan->status == 'cancelled') : ?>
                         <div class="step active"> <span class="icon"> <i class="far fa-clock"></i> </span> <span class="text">Pending</span> </div>
-                        <div class="step active"> <span class="icon"> <i class="far fa-calendar-check"></i> </span> <span class="text"> Active</span> </div>
+                        <div class="step active"> <span class="icon"> <i class="far fa-calendar-check"></i> </span> <span class="text"> Approved</span> </div>
                         <div class="step active"> <span class="icon"> <i class="fas fa-check"></i> </span> <span class="text"> Paid</span> </div>
                         <div class="step active"> <span class="icon"> <i class="far fa-window-close"></i> </span> <span class="text">Cancelled</span> </div>
                     <?php endif; ?>

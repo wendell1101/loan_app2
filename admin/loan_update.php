@@ -44,7 +44,7 @@ if (isset($_POST['update'])) {
                     <label for="status">Status</label>
                     <select name="status" id="status" class="form-control">
                         <option value="pending" class="text-center" <?php echo ($activeLoan->status === 'pending') ? "selected" : '' ?>>Pending</option>
-                        <option value="active" <?php echo ($activeLoan->status === 'active') ? "selected" : '' ?> class="text-center">Active</option>
+                        <option value="approved" <?php echo ($activeLoan->status === 'approved') ? "selected" : '' ?> class="text-center">Approved</option>
                         <option value="paid" <?php echo ($activeLoan->status === 'paid') ? "selected" : '' ?> class="text-center">Paid</option>
                         <option value="cancelled" <?php echo ($activeLoan->status === 'cancelled') ? "selected" : '' ?> class="text-center">Cancelled</option>
                     </select>

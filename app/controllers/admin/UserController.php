@@ -65,7 +65,7 @@ class AdminUser extends Connection
     }
     public function getUserRegularLoans($id)
     {
-        $status = 'active';
+        $status = 'approved';
         $type = 1;
         $sql = "SELECT * FROM loans WHERE user_id=:id AND status=:status AND loan_type_id=:type";
         $stmt = $this->conn->prepare($sql);
@@ -79,7 +79,7 @@ class AdminUser extends Connection
     }
     public function getUserLoansObj($id)
     {
-        $status = 'active';
+        $status = 'approved';
         $type = 1;
         $sql = "SELECT * FROM loans WHERE user_id=:id AND status=:status";
         $stmt = $this->conn->prepare($sql);
@@ -89,7 +89,7 @@ class AdminUser extends Connection
     }
     public function getUserCharacterLoans($id)
     {
-        $status = 'active';
+        $status = 'approved';
         $type = 3;
         $sql = "SELECT * FROM loans WHERE user_id=:id AND status=:status AND loan_type_id=:type";
         $stmt = $this->conn->prepare($sql);

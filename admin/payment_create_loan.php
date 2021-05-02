@@ -71,7 +71,7 @@ if (empty($loans)) {
                                 . '**Interest Amount : PHP ' . formatDecimal($loan->interest_amount) . '** Monthly Interest: PHP ' . formatDecimal($loan->interest_amount_per_month)
                                 . '** Interest per kinsenas: PHP ' . formatDecimal($loan->interest_amount_per_kinsenas)
                             ?>
-                            ">
+                            " value="<?php echo $loan->id ?>">
                                 <?php echo ucfirst($payment->getUser($loan->user_id)->firstname) . ' ' . ucfirst($payment->getUser($loan->user_id)->lastname) . ' - '
                                     . 'Type: ' . strtoupper($payment->getLoanTypeName($loan->loan_type_id)) . ' - Amount: PHP' .  formatDecimal($loan->amount) .
                                     ' ** Per Month: PHP ' . formatDecimal($loan->amount_per_month) . ' ** Per/Kinsenas: PHP ' . formatDecimal($loan->amount_per_kinsenas)
@@ -90,20 +90,8 @@ if (empty($loans)) {
 
                 <div class="form-group">
                     <label for="payment_amount">Loan Payment(per month/per kinsenas)</label>
-                    <input type="number" name="payment_amount" id="payment_amount" step=".01" class="form-control
-                    <?php
-                    if (!empty(($payment_amount))) {
-                        echo $errors['payment_amount'] ? 'is-invalid' : 'is-valid';
-                    } else {
-                        if ($errors['payment_amount']) {
-                            echo 'is-invalid';
-                        }
-                    }
-                    ?>
-                    " value="<?php echo $payment_amount ?>">
-                    <div class="text-danger">
-                        <small><?php echo $errors['payment_amount'] ?? '' ?></small>
-                    </div>
+                    <input type="number" name="payment_amount" id="payment_amount" step=".01" class="form-control">
+
                 </div>
 
                 <!-- interest amount -->
