@@ -83,6 +83,7 @@ if (isset($_GET['id'])) {
                                         <small>*Principal Amount:</small> <b>PHP <?php echo formatDecimal($u_loan->amount) ?></b><br>
                                         <small>*Payment per month:</small> <b>PHP <?php echo formatDecimal($u_loan->amount_per_month) ?></b><br>
                                         <small>*Payment per kinsenas:</small> <b>PHP <?php echo formatDecimal($u_loan->amount_per_kinsenas) ?></b><br>
+                                        <small>*Principal Interest Amount:</small> <b>PHP <?php echo formatDecimal($u_loan->interest_amount) ?></b><br>
                                         <small>*Interest per month:</small> <b>PHP <?php echo formatDecimal($u_loan->interest_amount_per_month) ?></b><br>
                                         <small>*Interest per kinsenas:</small> <b>PHP <?php echo formatDecimal($u_loan->interest_amount_per_kinsenas) ?></b><br>
                                         <small>*Total Current Balance:</small> <b>PHP <?php echo formatDecimal($u_loan->total_amount) ?></b>

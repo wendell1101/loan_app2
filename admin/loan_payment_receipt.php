@@ -7,6 +7,7 @@ $adminUser = new AdminUser();
 $user = '';
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
+    $interest_amount = 0;
     $activePayment = $payment->getPayment($_GET['id']);
     if (!is_null($activePayment->user_id)) {
         $user = $adminUser->getUser($activePayment->user_id);
@@ -40,8 +41,7 @@ if (isset($_GET['id'])) {
             $total = formatDecimal($total);
         }
     }
-    $total = $activePayment->payment_fixed_deposit + $activePayment->payment_saving + $regular_loan_payment + $character_loan_payment + $payment_saving_withdraw;
-    $total = formatDecimal($total);
+
 
 
     $fixed_deposit_amount = formatDecimal($adminUser->getUserDeposit($user->id));
@@ -55,6 +55,20 @@ if (isset($_GET['id'])) {
     $amount = formatDecimal($activePayment->payment_amount);
     $date = shortDate($activePayment->paid_at);
 
+    $regular_interest_amount = formatDecimal(0);
+    $character_interest_amount = formatDecimal(0);
+    if (!is_null($activePayment->loan_type_id) && $activePayment->loan_type_id == 1) {
+        $regular_interest_amount = formatDecimal($activePayment->interest_amount);
+        $character_interest_amount = formatDecimal(0);
+    } else if (!is_null($activePayment->loan_type_id) && $activePayment->loan_type_id == 3) {
+        $character_interest_amount = formatDecimal($activePayment->interest_amount);
+        $regular_interest_amount = formatDecimal(0);
+    }
+
+    $total = $activePayment->payment_fixed_deposit + $activePayment->payment_saving + $regular_loan_payment + $character_loan_payment
+        + $payment_saving_withdraw + $regular_interest_amount + $character_interest_amount;
+    $total = formatDecimal($total);
+
     $output = '';
     $output .= '
 <h4>Receipt Number: ';
@@ -65,21 +79,33 @@ Date: ';
         .= '<br /><br />
 Received from: ';
     $output .= $payer .= '<br><br />
-Amount paid: <br><br>
+Amount Paid: <br>
 <table border="1" cellspacing="0" cellpadding="5">
 
      <tr>
-        <td>Regular Loan Payment With Interest</td>
+        <td>Regular Loan Payment</td>
         <td>PHP ';
     $output .= $regular_loan_payment .= '</td>
         <td></td>
      </tr>
      <tr>
-        <td>Character Loan Payment With Interest</td>
+        <td>Regular Loan Interest</td>
+        <td>PHP ';
+    $output .= $regular_interest_amount .= '</td>
+        <td></td>
+     </tr>
+     <tr>
+        <td>Character Loan Payment </td>
         <td>PHP ';
     $output .= $character_loan_payment .= '</td>
         <td></td>
      </tr>
+     <tr>
+     <td>Character Loan Interest</td>
+     <td>PHP ';
+    $output .= $character_interest_amount .= '</td>
+     <td></td>
+  </tr>
 
      <tr>
         <td>Total</td>

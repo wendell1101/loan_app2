@@ -14,6 +14,10 @@ $payments = $activePayment->index();
 $loans = $activePayment->getLoans();
 $savings = $activePayment->getSavings();
 
+$regular_loan_paid = 0;
+$character_loan_paid = 0;
+$regular_loan_interest_paid = 0;
+$character_loan_interest_paid = 0;
 $penalty_amount = 0;
 $service_charge = 0;
 $membership_fee = 0;
@@ -53,7 +57,10 @@ $total = 0;
                                 <th scope="col">#</th>
                                 <th scope="col">Reference number</th>
                                 <th scope="col">Payment By</th>
-                                <th scope="col">Loan Amount Paid</th>
+                                <th scope="col">Regular Loan Paid</th>
+                                <th scope="col">Character Loan Paid</th>
+                                <th scope="col">Regular Loan Interest Paid</th>
+                                <th scope="col">Character Loan Interest Paid</th>
                                 <th scope="col">Fixed Deposit Amount Paid</th>
                                 <th scope="col">Saving Amount Paid</th>
                                 <th scope="col">Penalty Amount </th>
@@ -74,7 +81,26 @@ $total = 0;
                                     <th scope="row"><?php echo $key + 1 ?></th>
                                     <td><?php echo $payment->reference_number ?></td>
                                     <td><?php echo $payment->payment_by ?></td>
-                                    <td>PHP <?php echo formatDecimal($payment->payment_amount) ?></td>
+                                    <!-- check if regular loan or character loan paid -->
+                                    <?php
+                                    if (!is_null($payment->loan_type_id) && $payment->loan_type_id == 1) {
+                                        // regular
+                                        $regular_loan_paid = $payment->payment_amount;
+                                        $regular_loan_interest_paid = $payment->interest_amount;
+                                        $character_loan_paid = 0;
+                                        $character_loan_interest_paid = 0;
+                                    } else if (!is_null($payment->loan_type_id) && $payment->loan_type_id == 3) {
+                                        // regular
+                                        $character_loan_paid = $payment->payment_amount;
+                                        $character_loan_interest_paid = $payment->interest_amount;
+                                        $regular_loan_paid = 0;
+                                        $regular_loan_interest_paid = 0;
+                                    }
+                                    ?>
+                                    <td>PHP <?php echo formatDecimal($regular_loan_paid) ?></td>
+                                    <td>PHP <?php echo formatDecimal($character_loan_paid) ?></td>
+                                    <td>PHP <?php echo formatDecimal($regular_loan_interest_paid) ?></td>
+                                    <td>PHP <?php echo formatDecimal($character_loan_interest_paid) ?></td>
                                     <td>PHP <?php echo formatDecimal($payment->payment_fixed_deposit) ?></td>
                                     <td>PHP <?php echo formatDecimal($payment->payment_saving) ?></td>
 
@@ -94,7 +120,7 @@ $total = 0;
                                     <!-- membership fee -->
                                     <td>PHP 0.00</td>
                                     <?php
-                                    $total  = $payment->payment_amount + $payment->payment_fixed_deposit + $payment->payment_saving
+                                    $total  = $regular_loan_paid + $regular_loan_interest_paid + $character_loan_paid + $character_loan_interest_paid + $payment->payment_fixed_deposit + $payment->payment_saving
                                         + $penalty_amount + $service_charge + $membership_fee;
                                     ?>
                                     <td>PHP <?php echo formatDecimal($total) ?></td>

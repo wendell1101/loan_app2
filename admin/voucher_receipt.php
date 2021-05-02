@@ -16,15 +16,15 @@ if (isset($_GET['id'])) {
     $care_of = ucfirst($voucher->getUser($activeVoucher->care_of)->firstname) . ' ' . ucfirst($voucher->getUser($activeVoucher->care_of)->lastname);
     $output = '';
     $output .= '
-<h4>Receipt Number: ';
+<h4>Voucher Number: ';
 
     $output .= $activeVoucher->receipt_number .= '</h4>
 Date: ';
     $output .= $date
         .= '<br /><br />
-Member: ';
+Received by: ';
     $output .= $member .= '<br><br />
-Care of: ';
+Release by: ';
     $output .= $care_of .= '<br><br />
 
 <table border="1" cellspacing="0" cellpadding="5">
@@ -42,7 +42,34 @@ Care of: ';
     $output .= $voucher_amount .= '</td>
      </tr>
 </table/><br><br>
+<br><br>
 
+<span style="margin-left:100px">___________________</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+<span style="margin-right:50px">___________________</span>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<span style="margin-left:100px!important">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Treasurer</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+<span style="margin-right:50px">Asst. Treasurer</span>
+<br><br>
 
 ';
 } else {

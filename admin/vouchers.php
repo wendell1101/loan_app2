@@ -27,7 +27,7 @@ $vouchers = $activeVoucher->index();
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Receipt Number</th>
+                                <th scope="col">Voucher Number</th>
                                 <th scope="col">Category</th>
                                 <th scope="col">Member</th>
                                 <th scope="col">Amount</th>

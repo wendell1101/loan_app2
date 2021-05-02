@@ -164,7 +164,10 @@ class Payment extends Connection
             $payment_amount = $this->data['payment_amount'];
             $loan_id = $this->data['loan_id'];
             $activeLoan = $this->getLoan($loan_id);
+            $loan_type_id = $activeLoan->loan_type_id;
+            $interest_amount = $this->data['interest_amount'];
             $user_id = $activeLoan->user_id;
+
 
             $activeUser = $this->getUser($user_id);
             // dump($activeUser);
@@ -175,14 +178,16 @@ class Payment extends Connection
                 $this->addError('payment_amount', "Payment amount should not be greater than the loan balance of PHP $activeLoan->total_amount");
             }
             if (!array_filter($this->errors)) {
-                $sql = "INSERT INTO payments (reference_number, payment_by, payment_amount, user_id, loan_id)
-                VALUES(:reference_number, :payment_by, :payment_amount, :user_id, :loan_id)";
+                $sql = "INSERT INTO payments (reference_number, payment_by, payment_amount, loan_type_id, interest_amount, user_id, loan_id)
+                VALUES(:reference_number, :payment_by, :payment_amount, :loan_type_id, :interest_amount, :user_id, :loan_id)";
                 $stmt = $this->conn->prepare($sql);
 
                 $saved = $stmt->execute([
                     'reference_number' => $reference_number,
                     'payment_by' => $payment_by,
                     'payment_amount' => $payment_amount,
+                    'loan_type_id' => $loan_type_id,
+                    'interest_amount' => $interest_amount,
                     'user_id' => $user_id,
                     'loan_id' => $loan_id,
                 ]);
@@ -194,7 +199,8 @@ class Payment extends Connection
 
                     $activePayment = $this->getPayment($lastId);
                     $activeLoan = $this->getLoan($activePayment->loan_id);
-                    $new_total_amount = $activeLoan->total_amount - $activePayment->payment_amount;
+                    $total = $activePayment->payment_amount + $interest_amount;
+                    $new_total_amount = $activeLoan->total_amount - $total;
 
 
                     $sql = "UPDATE loans SET total_amount=:new_total_amount WHERE id=:id";

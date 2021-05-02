@@ -66,10 +66,18 @@ if (empty($loans)) {
                         <?php foreach ($loans as $loan) : ?>
                             <option data-tokens="
                             <?php echo ucfirst($payment->getUser($loan->user_id)->firstname) . ' ' . ucfirst($payment->getUser($loan->user_id)->lastname) . ' - '
-                                . 'Type: ' . strtoupper($payment->getLoanTypeName($loan->loan_type_id)) . ' - ' . $loan->loan_number . ' - Total Amount: PHP' . '<b>' . formatDecimal($loan->total_amount) . '</b>'; ?>" value="<?php echo $loan->id ?>">
+                                . strtoupper($payment->getLoanTypeName($loan->loan_type_id)) . ' - Amount: PHP' .  formatDecimal($loan->amount) .
+                                ' ** Per Month: PHP ' . formatDecimal($loan->amount_per_month) . ' ** Per/Kinsenas: PHP ' . formatDecimal($loan->amount_per_kinsenas)
+                                . '**Interest Amount : PHP ' . formatDecimal($loan->interest_amount) . '** Monthly Interest: PHP ' . formatDecimal($loan->interest_amount_per_month)
+                                . '** Interest per kinsenas: PHP ' . formatDecimal($loan->interest_amount_per_kinsenas)
+                            ?>
+                            ">
                                 <?php echo ucfirst($payment->getUser($loan->user_id)->firstname) . ' ' . ucfirst($payment->getUser($loan->user_id)->lastname) . ' - '
-                                    . 'Type: ' . strtoupper($payment->getLoanTypeName($loan->loan_type_id)) . '- Total Amount W/ Interest: PHP' .  formatDecimal($loan->total_amount) .
-                                    ' ** Per Month: PHP ' . formatDecimal($loan->amount_per_month + $loan->interest_amount_per_month) . ' ** Per/Kinsenas: PHP ' . formatDecimal(($loan->amount_per_kinsenas + $loan->interest_amount_per_kinsenas)); ?>
+                                    . 'Type: ' . strtoupper($payment->getLoanTypeName($loan->loan_type_id)) . ' - Amount: PHP' .  formatDecimal($loan->amount) .
+                                    ' ** Per Month: PHP ' . formatDecimal($loan->amount_per_month) . ' ** Per/Kinsenas: PHP ' . formatDecimal($loan->amount_per_kinsenas)
+                                    . '**Interest Amount : PHP ' . formatDecimal($loan->interest_amount) . '** Monthly Interest: PHP ' . formatDecimal($loan->interest_amount_per_month)
+                                    . '** Interest per kinsenas: PHP ' . formatDecimal($loan->interest_amount_per_kinsenas)
+                                ?>
                             </option>
                         <?php endforeach; ?>
                     </select>
@@ -81,7 +89,7 @@ if (empty($loans)) {
 
 
                 <div class="form-group">
-                    <label for="payment_amount">Loan Payment W/ Interest(per month/per kinsenas)</label>
+                    <label for="payment_amount">Loan Payment(per month/per kinsenas)</label>
                     <input type="number" name="payment_amount" id="payment_amount" step=".01" class="form-control
                     <?php
                     if (!empty(($payment_amount))) {
@@ -96,6 +104,12 @@ if (empty($loans)) {
                     <div class="text-danger">
                         <small><?php echo $errors['payment_amount'] ?? '' ?></small>
                     </div>
+                </div>
+
+                <!-- interest amount -->
+                <div class="form-group">
+                    <label for="interest_amount">Interest Payment(per month/per kinsenas)</label>
+                    <input type="number" name="interest_amount" id="interest_amount" step="0.1" class="form-control">
                 </div>
 
 

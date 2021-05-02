@@ -21,6 +21,13 @@
 <!-- jQuery UI 1.11.4 -->
 <script src="../assets/admin/js/jquery-ui.min.js"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+
+<!-- axios and vue -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js" integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ==" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="../assets/js/init-vue.js?id=<?php time() ?>"></script> -->
+
+
 <script>
     $.widget.bridge('uibutton', $.ui.button)
 </script>

@@ -98,6 +98,30 @@
                         </p>
                     </a>
                 </li>
+                <!-- Voucher -->
+                <li class="nav-item menu-open
+            <?php echo (strpos(CURRENT_URL, 'admin/categor') !== false) ? 'active' : '' ?>
+            ">
+                    <a href="<?php echo BASE_URL . 'admin/categories_voucher.php' ?>" class=" nav-link d-flex align-items-center">
+                        <i class="nav-icon fa fa-list-alt"></i>
+                        <p>
+                            Voucher Categories
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item menu-open
+            <?php echo (strpos(CURRENT_URL, 'admin/voucher') !== false) ? 'active' : '' ?>
+            ">
+                    <a href="<?php echo BASE_URL . 'admin/vouchers.php' ?>" class=" nav-link d-flex align-items-center">
+                        <i class="nav-icon">
+                            <img src="../assets/img/voucher_icon.svg" alt="" width="20px" height="25px">
+                        </i>
+                        <p>
+                            Petty Cash Vouchers
+                        </p>
+                    </a>
+                </li>
+
             <?php endif ?>
 
             <?php if ($_SESSION['position_id'] == 3) : ?>
@@ -278,6 +302,29 @@
                         </p>
                     </a>
                 </li>
+                <!-- Voucher -->
+                <li class="nav-item menu-open
+            <?php echo (strpos(CURRENT_URL, 'admin/categor') !== false) ? 'active' : '' ?>
+            ">
+                    <a href="<?php echo BASE_URL . 'admin/categories_voucher.php' ?>" class=" nav-link d-flex align-items-center">
+                        <i class="nav-icon fa fa-list-alt"></i>
+                        <p>
+                            Voucher Categories
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item menu-open
+            <?php echo (strpos(CURRENT_URL, 'admin/voucher') !== false) ? 'active' : '' ?>
+            ">
+                    <a href="<?php echo BASE_URL . 'admin/vouchers.php' ?>" class=" nav-link d-flex align-items-center">
+                        <i class="nav-icon">
+                            <img src="../assets/img/voucher_icon.svg" alt="" width="20px" height="25px">
+                        </i>
+                        <p>
+                            Petty Cash Vouchers
+                        </p>
+                    </a>
+                </li>
 
             <?php endif; ?>
 
@@ -328,35 +375,6 @@
                     </a>
                 </li>
             <?php endif; ?>
-
-
-
-
-            <!-- Voucher -->
-            <li class="nav-item menu-open
-            <?php echo (strpos(CURRENT_URL, 'admin/categor') !== false) ? 'active' : '' ?>
-            ">
-                <a href="<?php echo BASE_URL . 'admin/categories_voucher.php' ?>" class=" nav-link d-flex align-items-center">
-                    <i class="nav-icon fa fa-list-alt"></i>
-                    <p>
-                        Voucher Categories
-                    </p>
-                </a>
-            </li>
-            <li class="nav-item menu-open
-            <?php echo (strpos(CURRENT_URL, 'admin/voucher') !== false) ? 'active' : '' ?>
-            ">
-                <a href="<?php echo BASE_URL . 'admin/vouchers.php' ?>" class=" nav-link d-flex align-items-center">
-                    <i class="nav-icon">
-                        <img src="../assets/img/voucher_icon.svg" alt="" width="20px" height="25px">
-                    </i>
-                    <p>
-                        Petty Cash Vouchers
-                    </p>
-                </a>
-            </li>
-
-
 
 
         </ul>
