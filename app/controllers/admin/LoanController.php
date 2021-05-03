@@ -217,7 +217,7 @@ class AdminLoan extends Connection
         $status = $this->data['status'];
 
 
-        $sql = "UPDATE loans SET status=:status WHERE id=:id";
+        $sql = "UPDATE loans SET status=:status, approved_at=now() WHERE id=:id";
         $stmt = $this->conn->prepare($sql);
         $updated = $stmt->execute([
             'status' => $status,

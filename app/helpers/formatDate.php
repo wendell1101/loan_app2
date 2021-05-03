@@ -10,3 +10,9 @@ function shortDate($date)
     $d = new DateTime($date);
     return $d->format("F j \, Y ");
 }
+
+function defaultDate($date)
+{
+    $d = new DateTime($date);
+    return $d->format("F j \, Y");
+}
