@@ -9,6 +9,8 @@ if (isset($_GET['id'])) {
     $id = $_GET['id'];
     $activeVoucher = $voucher->getVoucher($_GET['id']);
     // dump($activeVoucher);
+    $ref = $activeVoucher->receipt_number;
+
     $date = shortDate($activeVoucher->created_at);
     $date2 = shortDate($activeVoucher->created_at);
     $voucher_amount = formatDecimal($activeVoucher->amount);
@@ -141,7 +143,7 @@ $content .= $output;
 
 
 $obj_pdf->writeHTML($content);
-$obj_pdf->Output('official_receipt.pdf', 'I');
+$obj_pdf->Output($ref . '.pdf', 'I');
 
 //============================================================+
 // END OF FILE

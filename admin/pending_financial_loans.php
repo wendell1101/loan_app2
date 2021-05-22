@@ -18,14 +18,14 @@ $auth->restrict();
 $adminLoan = new AdminLoan();
 
 
-$loans = $adminLoan->index();
+$loans = $adminLoan->getPendingLoans();
 ?>
 
 
 <div class="container">
     <div class="card shadow">
         <div class="card-header d-flex align-items-center">
-            <h4>Approved Loans by comakers, financial committees and president </h4>
+            <h4>Approved Loans by comakers </h4>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -39,7 +39,7 @@ $loans = $adminLoan->index();
                                 <th scope="col">Amount</th>
                                 <th scope="col">Interest Rate</th>
                                 <th scope="col">Total Balance</th>
-                                <th scope="col">Status</th>
+                                <th scope="col">Approved</th>
                                 <th scope="col">Created At</th>
                                 <th scope="col">Loan Form</th>
                                 <th scope="col">Actions</th>
@@ -64,8 +64,12 @@ $loans = $adminLoan->index();
                                     ?>
                                     <td><?php echo $interest ?> %</td>
                                     <td>PHP <?php echo formatDecimal($singleLoan->total_amount) ?></td>
-                                    <td>
-                                        <?php echo $singleLoan->status ?>
+                                    <td class="text-center">
+                                        <?php if ($adminLoan->checkIfActiveFinancialCommitteeHasApproved($singleLoan->id) != 0) : ?>
+                                            <i class="fas fa-check text-success"></i>
+                                        <?php else : ?>
+                                            <i class="fas fa-times text-danger"></i>
+                                        <?php endif ?>
                                     </td>
                                     <td>
                                         <?php echo formatDate($singleLoan->created_at) ?>
@@ -75,13 +79,13 @@ $loans = $adminLoan->index();
                                     </td>
 
                                     <td class="d-flex">
-                                        <form action="loan_update.php" method="POST">
+                                        <form action="pending_financial_update.php" method="POST">
                                             <input type="hidden" name="id" value="<?php echo $singleLoan->id ?>">
                                             <button type="submit" class="text-warning mr-3" style="border:none; background:none">
                                                 <i class="fas fa-pen"></i>
                                             </button>
                                         </form>
-                                        <form action="loan_delete.php" method="POST">
+                                        <form action="pending_financial_delete.php" method="POST">
                                             <input type="hidden" name="id" value="<?php echo $singleLoan->id ?>">
                                             <button type="submit" style="border:none; background:none">
                                                 <i class="fas fa-trash text-danger"></i>

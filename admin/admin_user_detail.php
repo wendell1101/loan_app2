@@ -37,7 +37,7 @@ if (isset($_GET['id'])) {
 
         </div>
         <div class="card-body">
-            <a href="admin_users.php"><i class="fas fa-arrow-circle-left text-success mb-2" style="font-size: 1.5rem"></i></a>
+            <!-- <a href="admin_users.php"><i class="fas fa-arrow-circle-left text-success mb-2" style="font-size: 1.5rem"></i></a> -->
             <div class="row">
                 <div class="col-md-6 border-bottom mb-2">
                     <h2 class="font-weight-normal mb-2 mb-3">Account Information</h2>

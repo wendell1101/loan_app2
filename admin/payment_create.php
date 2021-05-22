@@ -74,7 +74,7 @@ if (isset($_POST['create'])) {
                         }
                     }
                     ?>
-                    " name="user_id" id="user_id" data-live-search="true" <?php echo $loans ? '' : 'required' ?>>
+                    " name="user_id" id="user_id" data-live-search="true" <?php echo $loans ? '' : 'required' ?> required>
                         <option value=""> Select User's Account Number</option>
                         <?php foreach ($users as $user) : ?>
                             <option data-tokens="

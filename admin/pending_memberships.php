@@ -13,7 +13,8 @@ $auth->restrict();
 $adminUser = new AdminUser();
 
 
-$users = $adminUser->index('');
+$users = $adminUser->getPendingMemberships();
+// dump($users);
 //sort by status
 $active = '';
 if (isset($_POST['active'])) {
@@ -27,7 +28,7 @@ if (isset($_POST['active'])) {
     <div class="card shadow">
         <div class="card-header d-flex align-items-center">
             <h4>Users</h4>
-            <a href="admin_user_create.php" class="btn btn-success ml-auto">Create User<i class="ml-2 fas fa-plus text-light"></i></a>
+            <!-- <a href="admin_user_create.php" class="btn btn-success ml-auto">Create User<i class="ml-2 fas fa-plus text-light"></i></a> -->
             <!-- <a href="admin_user_create.php" class="btn btn-primary ml-auto"><i class="fas fa-plus text-light"></i></a> -->
         </div>
         <div class="card-body">
@@ -51,7 +52,7 @@ if (isset($_POST['active'])) {
                                 <th scope="col">Email</th>
                                 <th scope="col">Gender</th>
                                 <th scope="col">Position</th>
-                                <th scope="col">Status</th>
+                                <th scope="col">Approved</th>
                                 <th scope="col">Fee</th>
                                 <th scope="col">Receipt</th>
                                 <th scope="col">Formal Request</th>
@@ -73,24 +74,24 @@ if (isset($_POST['active'])) {
                                             <?php echo $adminUser->getPosition($singleUser->position_id) ?>
                                         </span>
                                     </td>
-                                    <td>
-                                        <?php if ($singleUser->active) : ?>
-                                            <span class="text-success">approved</span>
+                                    <td class="text-center">
+                                        <?php if ($adminUser->checkIfActiveMembershipCommitteeHasApproved($singleUser->id) != 0) : ?>
+                                            <i class="fas fa-check text-success"></i>
                                         <?php else : ?>
-                                            <span class="text-danger">pending</span>
-                                        <?php endif; ?>
+                                            <i class="fas fa-times text-danger"></i>
+                                        <?php endif ?>
                                     </td>
                                     <td><?php echo ($singleUser->paid_membership) ? 'paid' : 'not paid' ?></td>
                                     <td><a href="membership_receipt.php?id=<?php echo $singleUser->id ?>" class="text-info">Receipt</a></td>
                                     <td><a href="membership_request.php?id=<?php echo $singleUser->id ?>" class="text-info">View</a></td>
                                     <td class="d-flex">
-                                        <form action="admin_user_update.php" method="POST">
+                                        <form action="pending_membership_update.php" method="POST">
                                             <input type="hidden" name="id" value="<?php echo $singleUser->id ?>">
                                             <button type="submit" class="text-warning mr-3" style="border:none; background:none">
                                                 <i class="fas fa-pen"></i>
                                             </button>
                                         </form>
-                                        <form action="admin_user_delete.php" method="POST">
+                                        <form action="pending_membership_delete.php" method="POST">
                                             <input type="hidden" name="id" value="<?php echo $singleUser->id ?>">
                                             <button type="submit" style="border:none; background:none">
                                                 <i class="fas fa-trash text-danger"></i>

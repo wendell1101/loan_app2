@@ -61,10 +61,11 @@ if (isset($_POST['penalty'])) {
                     <label for="amount">Penalty Amount</label>
                     <input type="number" name="amount" id="amount" step=".01" class="form-control" required>
                 </div>
-                <div class="form-group">
+                <input type="hidden" name="service_fee" value="0">
+                <!-- <div class="form-group">
                     <label for="service_fee">Service Fee</label>
                     <input type="number" name="service_fee" id="service_fee" step=".01" class="form-control" required>
-                </div>
+                </div> -->
 
                 <div class="form-group d-flex justify-content-end align-items-center mt-2">
                     <a href="payments.php" class="btn btn-secondary mr-2">Cancel</a>

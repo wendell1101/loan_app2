@@ -98,21 +98,21 @@ to borrow again for a period of one (1) fiscal year if I failed to pay my obliga
 </p><br>
 
 ';
-$content .= '
-<div style="text-align:center">
-<p>
-_____________________<br>
-<span>Signature of Borrower
-</p><br>
-<span style="text-indent:0">
-__________________________________<br><br>
-Signature over printed name of Co-Maker<br><br>
-</span><br>
-<span>
-__________________________________<br><br>
-Signature over printed name of Co-Maker	</span><br><br><br>
-</div>
-';
+// $content .= '
+// <div style="text-align:center">
+// <p>
+// _____________________<br>
+// <span>Signature of Borrower
+// </p><br>
+// <span style="text-indent:0">
+// __________________________________<br><br>
+// Signature over printed name of Co-Maker<br><br>
+// </span><br>
+// <span>
+// __________________________________<br><br>
+// Signature over printed name of Co-Maker	</span><br><br><br>
+// </div>
+// ';
 
 
 $obj_pdf->writeHTML($content);

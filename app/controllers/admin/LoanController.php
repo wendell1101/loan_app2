@@ -17,7 +17,8 @@ class AdminLoan extends Connection
     public function index()
     {
         $sql = "SELECT * FROM loans WHERE comaker1_id IS NOT NULL AND comaker2_id IS NOT NULL
-                    AND approved_by_c1=1 AND approved_by_c2=1";
+                    AND approved_by_c1=1 AND approved_by_c2=1 AND approved_by_f1 IS NOT NULL
+                    AND approved_by_f2 IS NOT NULL AND approved_by_f3 IS NOT NULL AND approved_by_president=1";
         $stmt = $this->conn->query($sql);
         return $stmt->fetchAll();
     }
@@ -283,6 +284,118 @@ class AdminLoan extends Connection
             }
         } catch (Exception $e) {
             echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+        }
+    }
+
+
+    //pending loans
+
+    public function getPendingLoans()
+    {
+        $u_id = $_SESSION['id'];
+        $sql = "SELECT * FROM loans WHERE approved_by_f1 IS NULL OR approved_by_f2 IS NULL OR approved_by_f3 IS NULL AND approved_by_president=0";
+        $stmt = $this->conn->query($sql);
+        $loans = $stmt->fetchAll();
+        return $loans;
+    }
+    public function updateLoanByFinancialCommittee($data)
+    {
+        $loan_id = $data['id'];
+        $activeLoan = $this->getLoan($loan_id);
+        $u_id = $_SESSION['id'];
+
+        if ($data['approved'] == 1) {
+
+            // pag null ang approved_by_f1 lagyan ng laman
+            if (is_null($activeLoan->approved_by_f1)) {
+                $sql = "UPDATE loans SET approved_by_f1=$u_id WHERE id=$loan_id";
+                $run = $stmt = $this->conn->query($sql);
+            } else if (is_null($activeLoan->approved_by_f2)) {
+                $sql = "UPDATE loans SET approved_by_f2=$u_id WHERE id=$loan_id";
+                $run = $stmt = $this->conn->query($sql);
+            } else if (is_null($activeLoan->approved_by_f3)) {
+                $sql = "UPDATE loans SET approved_by_f3=$u_id WHERE id=$loan_id";
+                $run = $stmt = $this->conn->query($sql);
+            }
+        } else if ($data['approved'] == 0) {
+            if (!is_null($activeLoan->approved_by_f1) && $activeLoan->approved_by_f1 == $u_id) {
+                $sql = "UPDATE loans SET approved_by_f1=NULL WHERE id=$loan_id";
+                $run = $stmt = $this->conn->query($sql);
+            } else if (!is_null($activeLoan->approved_by_f2) && $activeLoan->approved_by_f2 == $u_id) {
+                $sql = "UPDATE loans SET approved_by_f2=NULL WHERE id=$loan_id";
+                $run = $stmt = $this->conn->query($sql);
+            } else if (!is_null($activeLoan->approved_by_f3) && $activeLoan->approved_by_f3 == $u_id) {
+                $sql = "UPDATE loans SET approved_by_f3=NULL WHERE id=$loan_id";
+                $run = $stmt = $this->conn->query($sql);
+            }
+        }
+        if ($run) {
+            message('success', 'A loan status has been updated');
+            redirect('pending_financial_loans.php');
+        }
+    }
+
+    public function checkIfActiveFinancialCommitteeHasApproved($id)
+    {
+        $user_id = $_SESSION['id'];
+
+        $sql = "SELECT * FROM loans WHERE (approved_by_f1=$user_id OR approved_by_f2=$user_id OR approved_by_f3=$user_id) AND id=$id";
+        $stmt =  $this->conn->query($sql);
+        return $stmt->rowCount();
+    }
+
+    public function deleteFromFinancialCommittee($id)
+    {
+        $sql = "DELETE FROM loans WHERE id=:id";
+        $stmt = $this->conn->prepare($sql);
+        $deleted = $stmt->execute(['id' => $id]);
+        if ($deleted) {
+            message('success', 'A loan has been deleted');
+            redirect('pending_financial_loans.php');
+        } else {
+            message('danger', 'A loan cannot be deleted because of associated data');
+            redirect('pending_financial_loans.php');
+        }
+    }
+    public function deleteLoanFromPresident($id)
+    {
+        $sql = "DELETE FROM loans WHERE id=:id";
+        $stmt = $this->conn->prepare($sql);
+        $deleted = $stmt->execute(['id' => $id]);
+        if ($deleted) {
+            message('success', 'A loan has been deleted');
+            redirect('pending_president_loans.php');
+        } else {
+            message('danger', 'A loan cannot be deleted because of associated data');
+            redirect('pending_president_loans.php');
+        }
+    }
+
+
+    public function getPresidentPendingLoans()
+    {
+        $u_id = $_SESSION['id'];
+        $sql = "SELECT * FROM loans WHERE approved_by_f1 IS NOT NULL AND approved_by_f2 IS NOT NULL AND approved_by_f3 IS NOT NULL AND approved_by_president=0";
+        $stmt = $this->conn->query($sql);
+        $loans = $stmt->fetchAll();
+        return $loans;
+    }
+
+    public function updateLoanByPresident($data)
+    {
+        $loan_id = $data['id'];
+        $activeLoan = $this->getLoan($loan_id);
+        $u_id = $_SESSION['id'];
+        if ($data['approved'] == 1) {
+            $sql = "UPDATE loans SET approved_by_president=1 WHERE id=$loan_id";
+            $run = $this->conn->query($sql);
+        } else if ($data['approved'] == 0) {
+            $sql = "UPDATE loans SET approved_by_president=0 WHERE id=$loan_id";
+            $run = $this->conn->query($sql);
+        }
+        if ($run) {
+            message('success', 'A loan status has been updated by president');
+            redirect('pending_president_loans.php');
         }
     }
 }

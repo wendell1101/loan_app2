@@ -59,9 +59,9 @@
                             <?php elseif ($_SESSION['position_id'] === 5) : ?>
                                 <h1 class="m-0 text-white" style="text-shadow: 1px 3px 5px #333;">Assistant Treasurer Administration</h1>
                             <?php elseif ($_SESSION['position_id'] === 6) : ?>
-                                <h1 class="m-0 text-white" style="text-shadow: 1px 3px 5px #333;">Membership Commitee Administration</h1>
+                                <h1 class="m-0 text-white" style="text-shadow: 1px 3px 5px #333;">Membership Committee Administration</h1>
                             <?php elseif ($_SESSION['position_id'] === 7) : ?>
-                                <h1 class="m-0 text-white" style="text-shadow: 1px 3px 5px #333;">Financial Commitee Administration</h1>
+                                <h1 class="m-0 text-white" style="text-shadow: 1px 3px 5px #333;">Financial Committee Administration</h1>
                             <?php endif ?>
                         </div><!-- /.col -->
                         <div class="col-sm-6">

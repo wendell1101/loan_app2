@@ -59,7 +59,7 @@
             <div class="row">
                 <div class="col-md-8 mx-auto text-white text-center">
                     <h1 class="text-success mb-5">Why choose us?</h1>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem, minus excepturi itaque reprehenderit beatae doloribus. Laudantium, veniam quae magni velit ab deserunt adipisci laboriosam maxime obcaecati quo eum error a minus soluta sequi laborum, tempora molestias quibusdam minima praesentium aliquid.</p>
+                    <p>Our unique system enables us to go through the entire market of lenders in order to find the best possible loan for you, saving you time and money. The best part? It’s always 100% free, with zero obligation. It’s no wonder why our customers come back to use FEA again.</p>
                 </div>
             </div>
         </div>

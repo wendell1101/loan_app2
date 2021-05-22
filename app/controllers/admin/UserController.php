@@ -1,4 +1,9 @@
 <?php
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
 class AdminUser extends Connection
 {
     private $data;
@@ -12,7 +17,7 @@ class AdminUser extends Connection
     public function index($status)
     {
         if ($status === '' || $status === 'all') {
-            $sql = "SELECT * FROM users";
+            $sql = "SELECT * FROM users WHERE approved_by_m1 IS NOT NULL AND approved_by_m2 IS NOT NULL AND approved_by_m3 IS NOT NULL AND approved_by_president=1";
             $stmt = $this->conn->query($sql);
             $stmt->execute();
             return $stmt->fetchAll();
@@ -24,6 +29,97 @@ class AdminUser extends Connection
         }
     }
 
+    public function getMembershipApprovals()
+    {
+        $sql = "SELECT * FROM membership_approval";
+        $stmt = $this->conn->query($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+    //get users for membership comittee approval
+    public function getPendingMemberships()
+    {
+        $u_id = $_SESSION['id'];
+        $sql = "SELECT * FROM users WHERE approved_by_m1 IS NULL OR approved_by_m2 IS NULL OR approved_by_m3 IS NULL AND approved_by_president=0";
+        $stmt = $this->conn->query($sql);
+        $users = $stmt->fetchAll();
+        return $users;
+    }
+    //get users for president approval
+    public function getPresidentPendingMemberships()
+    {
+        $u_id = $_SESSION['id'];
+        $sql = "SELECT * FROM users WHERE approved_by_m1 IS NOT NULL AND approved_by_m2 IS NOT NULL AND approved_by_m3 IS NOT NULL AND approved_by_president=0";
+        $stmt = $this->conn->query($sql);
+        $users = $stmt->fetchAll();
+        return $users;
+    }
+
+    public function updateByMembershipCommittee($data)
+    {
+        $user_id = $data['id'];
+        $activeUser = $this->getUser($user_id);
+        $active_user_id = $activeUser->id;
+        $u_id = $_SESSION['id'];
+
+        if ($data['approved'] == 1) {
+
+            // pag null ang approved_by_m1 lagyan ng laman
+            if (is_null($activeUser->approved_by_m1)) {
+                $sql = "UPDATE users SET approved_by_m1=$u_id WHERE id=$user_id";
+                $run = $stmt = $this->conn->query($sql);
+            } else if (is_null($activeUser->approved_by_m2)) {
+                $sql = "UPDATE users SET approved_by_m2=$u_id WHERE id=$user_id";
+                $run = $stmt = $this->conn->query($sql);
+            } else if (is_null($activeUser->approved_by_m3)) {
+                $sql = "UPDATE users SET approved_by_m3=$u_id WHERE id=$user_id";
+                $run = $stmt = $this->conn->query($sql);
+            }
+        } else if ($data['approved'] == 0) {
+            if (!is_null($activeUser->approved_by_m1) && $activeUser->approved_by_m1 == $u_id) {
+                $sql = "UPDATE users SET approved_by_m1=NULL WHERE id=$user_id";
+                $run = $stmt = $this->conn->query($sql);
+            } else if (!is_null($activeUser->approved_by_m2) && $activeUser->approved_by_m2 == $u_id) {
+                $sql = "UPDATE users SET approved_by_m2=NULL WHERE id=$user_id";
+                $run = $stmt = $this->conn->query($sql);
+            } else if (!is_null($activeUser->approved_by_m3) && $activeUser->approved_by_m3 == $u_id) {
+                $sql = "UPDATE users SET approved_by_m3=NULL WHERE id=$user_id";
+                $run = $stmt = $this->conn->query($sql);
+            }
+        }
+        if ($run) {
+            message('success', 'A member status has been updated');
+            redirect('pending_memberships.php');
+        }
+    }
+    public function updateMemberByPresident($data)
+    {
+        $user_id = $data['id'];
+        $activeUser = $this->getUser($user_id);
+        $active_user_id = $activeUser->id;
+        $u_id = $_SESSION['id'];
+        if ($data['approved'] == 1) {
+            $sql = "UPDATE users SET approved_by_president=1 WHERE id=$user_id";
+            $run = $this->conn->query($sql);
+        } else if ($data['approved'] == 0) {
+            $sql = "UPDATE users SET approved_by_president=0 WHERE id=$user_id";
+            $run = $this->conn->query($sql);
+        }
+        if ($run) {
+            message('success', 'A member status has been updated');
+            redirect('pending_memberships_president.php');
+        }
+    }
+
+    // check if current user has approve the member
+    public function checkIfActiveMembershipCommitteeHasApproved($id)
+    {
+        $user_id = $_SESSION['id'];
+
+        $sql = "SELECT * FROM users WHERE (approved_by_m1=$user_id OR approved_by_m2=$user_id OR approved_by_m3=$user_id) AND id=$id";
+        $stmt =  $this->conn->query($sql);
+        return $stmt->rowCount();
+    }
     public function getData()
     {
         return $this->data;
@@ -330,7 +426,7 @@ class AdminUser extends Connection
 
                 $lastId = $this->conn->lastInsertId();
                 if ($run) {
-                    message('success', 'A new user has been created');
+                    message('success', 'A new user has been created and moved to the membership committee');
                     redirect('admin_users.php');
                 }
             }
@@ -348,10 +444,38 @@ class AdminUser extends Connection
             message('success', 'A user has been deleted');
             redirect('admin_users.php');
         } else {
-            message('danger', 'A user cannot be deleted because of associated reservation');
+            message('danger', 'A user cannot be deleted because of associated data');
             redirect('admin_users.php');
         }
     }
+    public function deleteFromMembershipCommittee($id)
+    {
+        $sql = "DELETE FROM users WHERE id=:id";
+        $stmt = $this->conn->prepare($sql);
+        $deleted = $stmt->execute(['id' => $id]);
+        if ($deleted) {
+            message('success', 'A user has been deleted');
+            redirect('pending_memberships.php');
+        } else {
+            message('danger', 'A user cannot be deleted because of associated data');
+            redirect('pending_memberships.php');
+        }
+    }
+    public function deleteMemberFromPresident($id)
+    {
+        $sql = "DELETE FROM users WHERE id=:id";
+        $stmt = $this->conn->prepare($sql);
+        $deleted = $stmt->execute(['id' => $id]);
+        if ($deleted) {
+            message('success', 'A user has been deleted');
+            redirect('pending_memberships_president.php');
+        } else {
+            message('danger', 'A user cannot be deleted because of associated data');
+            redirect('pending_memberships_president.php');
+        }
+    }
+
+
     // get loan
 
     public function getLoan($id)
@@ -399,14 +523,71 @@ class AdminUser extends Connection
         $active = $this->data['active'];
         $position_id = $this->data['position_id'];
         $paid_membership = $this->data['paid_membership'];
+        $activeUser = $this->getUser($id);
 
         $sql = "UPDATE users SET paid_membership=$paid_membership, active=$active, position_id=$position_id WHERE id=$id";
         $updated = $this->conn->query($sql);
         if ($updated) {
-            message('success', 'A user has been updated');
-            redirect('admin_users.php');
+            if ($active == 1) {
+                $this->send_mail($activeUser);
+            } else {
+                message('success', 'A user has been updated');
+                redirect('admin_users.php');
+            }
         } else {
             echo 'error occured';
+        }
+    }
+
+    //send mail
+    private function send_mail($user)
+    {
+        //send email
+
+        // Load Composer's autoloader
+        require '../mail/Exception.php';
+        require '../mail/PHPMailer.php';
+        require '../mail/SMTP.php';
+        // Instantiation and passing `true` enables exceptions
+        $mail = new PHPMailer();
+        try {
+
+            //Server settings
+            // $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      // Enable verbose debug output
+            $mail->isSMTP();                                            // Send using SMTP
+            $mail->Host       = 'smtp.gmail.com';                    // Set the SMTP server to send through
+            $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
+            $mail->Username   = EMAIL;                     // SMTP username
+            $mail->Password   = PASS;                               // SMTP password
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
+            $mail->Port       = 587;                                    // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
+
+            //Recipients
+            $mail->setFrom('fea@gmail.com', 'Faculty and Employee Association');
+            $mail->addAddress($user->email);     // Add a recipient
+
+
+            // Content
+            $mail->isHTML(true);                                  // Set email format to HTML
+            $mail->Subject = 'Membership Update';
+            $mail->Body    = "
+                <h3>Good day $user->firstname $user->lastname! </h3>
+                <h4>Your membership status has been approved. </h4>
+                <p>Thank you for trusting us. </p><br><br>
+
+            ";
+            $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+
+            $sent = $mail->send();
+            if ($sent) {
+                message('success', 'A user has been updated. Email notification has been sent');
+                redirect('admin_users.php');
+            } else {
+                message('success', 'A loan has been updated but email notification has not been sent due to some problems. Please try again');
+                redirect('admin_users.php');
+            }
+        } catch (Exception $e) {
+            echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
         }
     }
 }

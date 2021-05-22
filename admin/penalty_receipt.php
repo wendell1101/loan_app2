@@ -22,6 +22,8 @@ if (isset($_GET['id'])) {
     $amount = formatDecimal($activePenalty->amount);
     $totalAmount = formatDecimal($activePenalty->amount + $activePenalty->service_fee);
 
+    $ref = $activePayment->reference_number;
+
     $date = shortDate($activePenalty->created_at);
     // print_r($activePayment);
 
@@ -42,12 +44,7 @@ Received from: ';
     $output .= $reason .= '<br><br />
 <table border="1" cellspacing="0" cellpadding="5">
 
-     <tr>
-        <td>Service Charge</td>
-        <td> PHP ';
-    $output .= $service_fee .= ' </td>
 
-     </tr>
     <tr>
      <td>Penalty Amount</td>
      <td> PHP ';
@@ -147,7 +144,7 @@ $content .= $output;
 
 
 $obj_pdf->writeHTML($content);
-$obj_pdf->Output('official_receipt.pdf', 'I');
+$obj_pdf->Output($ref . '.pdf', 'I');
 
 //============================================================+
 // END OF FILE

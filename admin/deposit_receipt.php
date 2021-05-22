@@ -55,6 +55,8 @@ if (isset($_GET['id'])) {
     $amount = formatDecimal($activePayment->payment_amount);
     $date = shortDate($activePayment->paid_at);
 
+    $ref = $activePayment->reference_number;
+
     //output
     $output = '';
     $output .= '
@@ -188,7 +190,7 @@ $content .= $output;
 
 
 $obj_pdf->writeHTML($content);
-$obj_pdf->Output('official_receipt.pdf', 'I');
+$obj_pdf->Output($ref . '.pdf', 'I');
 
 //============================================================+
 // END OF FILE

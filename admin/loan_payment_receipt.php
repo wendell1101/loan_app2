@@ -49,6 +49,8 @@ if (isset($_GET['id'])) {
     $total_regular_loan_balance = formatDecimal($adminUser->getUserRegularLoans($user->id));
     $total_character_loan_balance = formatDecimal($adminUser->getUserCharacterLoans($user->id));
 
+    $ref = $activePayment->reference_number;
+
 
     $payer = ucwords($activePayment->payment_by);
 
@@ -213,7 +215,7 @@ $content .= $output;
 
 
 $obj_pdf->writeHTML($content);
-$obj_pdf->Output('official_receipt.pdf', 'I');
+$obj_pdf->Output($ref . '.pdf', 'I');
 
 //============================================================+
 // END OF FILE

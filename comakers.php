@@ -83,8 +83,8 @@ if ($activeLoan) {
                     <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST">
                         <div class="form-group">
                             <input type="hidden" name="loan_id" value="<?php echo $activeLoan->id ?>">
-                            <input type="radio" name="approve" id="approve" value="1" checked> Approve
-                            <input type="radio" name="approve" id="approve" value="0"> Disapprove
+                            <input type="radio" name="approve" id="approve" value="1" checked> Agree
+                            <input type="radio" name="approve" id="approve" value="0"> Disagree
                             <button type="submit" name="comaker_approval" class="btn btn-success btn-sm">Submit</button>
                         </div>
 

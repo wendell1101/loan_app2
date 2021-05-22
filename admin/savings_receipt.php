@@ -18,6 +18,8 @@ if (isset($_GET['id'])) {
 
     $withdraw = '0.00';
 
+    $ref = $activeSaving->reference_number;
+
     if (!is_null($activeSaving->withdraw_amount)) {
         $withdraw = $activeSaving->withdraw_amount;
     }
@@ -149,7 +151,7 @@ $content .= $output;
 
 
 $obj_pdf->writeHTML($content);
-$obj_pdf->Output('official_receipt.pdf', 'I');
+$obj_pdf->Output($ref . '.pdf', 'I');
 
 //============================================================+
 // END OF FILE

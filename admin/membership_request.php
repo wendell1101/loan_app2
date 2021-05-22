@@ -116,28 +116,29 @@ $content .= $reason3 .= '</u> </p>
 <u>';
 $content .= $user_fullname .= '</u>
 <p>Signature over Printed Name</p>
-<br>
-<p style="text-align:center">Recommending Approval:</p><br>
-<span style="margin-left:100px">___________________</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br> ';
+// $content .= '
+// <p style="text-align:center">Recommending Approval:</p><br>
+// <span style="margin-left:100px">___________________</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-<span style="margin-right:50px">___________________</span>
-<p style="text-align:center">___________________</p>
-<p style="text-align:center">Approved:</p><br><br>
+// <span style="margin-right:50px">___________________</span>
+// <p style="text-align:center">___________________</p>
+// <p style="text-align:center">Approved:</p><br><br>
 
-<p style="font-weight:bold; text-align:center">JOSEFINA T. DE JESUS, Ed.D.</p>
-<p style="text-align:center">LSPU SC - FEA President</p>
-
-
+// <p style="font-weight:bold; text-align:center">JOSEFINA T. DE JESUS, Ed.D.</p>
+// <p style="text-align:center">LSPU SC - FEA President</p>
 
 
-';
+
+
+// ';
 
 
 $obj_pdf->writeHTML($content);

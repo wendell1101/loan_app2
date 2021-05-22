@@ -17,6 +17,7 @@ if (isset($_GET['id'])) {
     $membership_fee = '200.00';
     $user_fullname = ucfirst($user->firstname) . ' ' . ucfirst($user->lastname);
 
+    $ref = $user->account_number;
     $date = shortDate($user->created_at);
 
     //output
@@ -137,7 +138,7 @@ $content .= $output;
 
 
 $obj_pdf->writeHTML($content);
-$obj_pdf->Output('official_receipt.pdf', 'I');
+$obj_pdf->Output($ref . '.pdf', 'I');
 
 //============================================================+
 // END OF FILE
