@@ -17,7 +17,9 @@
                 <div class="col-md-6 align-items-center hero-left p-3">
                     <div>
                         <a href="select_loan.php" class="btn btn-success btn-block mb-2">Request your loan</a>
-                        <small>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quis, maiores. Doloribus ducimus fugit eius aliquam expedita libero vero eligendi dicta!</small>
+                        <small>
+                            Faculty and Employee Associaction is an independent financial Loan Institute who are dedicated to helping members from all walks of life build secure, stress free financial futures
+                        </small>
                     </div>
                 </div>
             </div>

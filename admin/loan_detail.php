@@ -35,7 +35,7 @@ if (isset($_GET['id'])) {
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <a href="loans.php"><i class="fas fa-arrow-circle-left text-success mb-2" style="font-size: 1.5rem"></i></a>
+                <!-- <a href="loans.php"><i class="fas fa-arrow-circle-left text-success mb-2" style="font-size: 1.5rem"></i></a> -->
                 <?php if ($loan) : ?>
                     <table class="table">
                         <thead>
