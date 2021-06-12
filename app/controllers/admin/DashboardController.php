@@ -5,6 +5,22 @@ class Dashboard extends Connection
     {
         parent::__construct();
     }
+    public function getUser($id)
+    {
+        $sql = "SELECT * FROM users WHERE id=:id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute(['id' => $id]);
+        $user = $stmt->fetch();
+        return $user;
+    }
+    public function getDepartment($id)
+    {
+        $sql = "SELECT * FROM departments WHERE id=:id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute(['id' => $id]);
+        $department = $stmt->fetch();
+        return $department;
+    }
     public function getUsersCount()
     {
         $stmt = $this->conn->query("SELECT * FROM users");
@@ -14,6 +30,31 @@ class Dashboard extends Connection
     {
         $stmt = $this->conn->query("SELECT * FROM departments");
         return $stmt->rowCount();
+    }
+    public function getLoanCountPerDepartment($department_id)
+    {
+        $sql = "SELECT * FROM loans WHERE department_id=$department_id";
+        $stmt = $this->conn->query($sql);
+        return $stmt->rowCount();
+    }
+    public function formatNumber($number)
+    {
+        return number_format((float)$number, 0, '.', '');
+    }
+    public function getLoanCountPercentagePerDepartment($loanCount, $totalLoanCount)
+    {
+        $percentage =  $loanCount == 0 ? 0 : $loanCount / $totalLoanCount * 100;
+        return $this->formatNumber($percentage);
+    }
+    public function getDepartments()
+    {
+        $stmt = $this->conn->query("SELECT * FROM departments");
+        return $stmt->fetchAll();
+    }
+    public function getUsers()
+    {
+        $stmt = $this->conn->query("SELECT * FROM users");
+        return $stmt->fetchAll();
     }
     public function getPaymentsCount()
     {
@@ -29,6 +70,12 @@ class Dashboard extends Connection
     {
         $stmt = $this->conn->query("SELECT * FROM loans");
         return $stmt->rowCount();
+    }
+
+    public function getLoans()
+    {
+        $stmt = $this->conn->query("SELECT * FROM loans");
+        return $stmt->fetchAll();
     }
 
     private function getReservations()

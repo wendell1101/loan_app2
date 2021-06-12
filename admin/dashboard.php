@@ -14,6 +14,9 @@ $departmentsCount = $dashboard->getDepartmentsCount();
 $paymentsCount = $dashboard->getPaymentsCount();
 $loanTypesCount = $dashboard->getLoanTypesCount();
 $loansCount = $dashboard->getLoansCount();
+$loans = $dashboard->getLoans();
+$departments = $dashboard->getDepartments();
+$users = $dashboard->getUsers();
 
 
 ?>
@@ -82,17 +85,52 @@ $loansCount = $dashboard->getLoansCount();
                 </div>
             </div>
             <!-- ./col -->
-            <div class="col-md-6 mx-auto mt-5">
-                <h5 class="text-center">Loan Summary</h5>
-                <canvas id="myChart" width="400" height="200"></canvas>
-                <!-- </div>
-            <div class="col-md-6 mt-5">
+
+
+            <!--<div class="col-md-6 mt-5">
                 <h5 class="text-center">Loan Summary (<?php echo date("Y") ?>)</h5>
                 <canvas id="lineChart" width="400" height="200"></canvas>
             </div> -->
+
+        </div>
+        <div class="row my-5">
+            <div class="col-12 mb-2">
+                <h2>Loans Per Departments - Total : <?php echo $totalLoanCount = $loansCount ?></h2>
             </div>
 
-        </div><!-- /.container-fluid -->
+            <div class="col-md-12 ">
+                <div class="row">
+                    <?php if ($loans) : ?>
+
+                        <?php foreach ($loans as $loan) : ?>
+                            <div class="col-md-6 p-3">
+                                <span class="font-weight-bold"><?php echo $dashboard->getDepartment($loan->department_id)->name ?> -
+                                    <!-- <?php echo $loanCount = $dashboard->getLoanCountPerDepartment($loan->department_id) ?><br> -->
+                                    <?php echo $percent = $dashboard->getLoanCountPercentagePerDepartment($loanCount, $totalLoanCount) ?> % <span><br>
+                                        <div class="progress">
+                                            <div class="progress-bar
+                            <?php if ($percent == 0) : ?>
+                            text-dark w-100 bg-light border
+                        <?php endif ?>
+                        " role="progressbar" style="width: <?php echo $percent ?>%; " aria-valuenow="<?php echo $percent ?>" aria-valuemin="0" aria-valuemax="100"><?php echo $percent ?>%</div>
+                                        </div>
+                            </div>
+
+                        <?php endforeach; ?>
+
+                    <?php else : ?>
+                        <h2 class="text-secondary">No departments yet</h2>
+                    <?php endif ?>
+                </div>
+
+            </div>
+            <div class="col-md-6 mt-5 mx-auto">
+                <h5 class="text-center">Loan Summary</h5>
+                <canvas id="myChart" width="400" height="200"></canvas>
+            </div>
+
+        </div>
+    </div>
 </section>
 
 <!-- /.content -->

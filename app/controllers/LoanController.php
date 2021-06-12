@@ -269,6 +269,9 @@ class Loan extends Connection
 
         $activeLoan = $_SESSION['active_loan'];
         $id = $_SESSION['id'];
+        $current_user = $this->getUser($id);
+        $department_id = $current_user->department_id;
+
         // transaction_id
         $transaction_id = bin2hex(random_bytes(7));
         //LOAN-2021-4
@@ -294,10 +297,10 @@ class Loan extends Connection
             $sql = "INSERT INTO loans (transaction_id, loan_number, membership_number, amount,
             amount_per_kinsenas, amount_per_month, interest_amount, interest_amount_per_kinsenas,
             interest_amount_per_month, total_amount, term, status,
-            loan_type_id, user_id, comaker1_id, comaker2_id) VALUES(:transaction_id, :loan_number, :membership_number, :amount,
+            loan_type_id, user_id, department_id, comaker1_id, comaker2_id) VALUES(:transaction_id, :loan_number, :membership_number, :amount,
             :amount_per_kinsenas, :amount_per_month, :interest_amount, :interest_amount_per_kinsenas,
             :interest_amount_per_month, :total_amount, :term, :status,
-            :loan_type_id, :user_id, :comaker1_id, :comaker2_id)";
+            :loan_type_id, :user_id, :department_id, :comaker1_id, :comaker2_id)";
             $stmt = $this->conn->prepare($sql);
             $saved = $stmt->execute([
                 'transaction_id' => $transaction_id,
@@ -314,6 +317,7 @@ class Loan extends Connection
                 'status' => $status,
                 'loan_type_id' => $activeLoan['loan_type_id'],
                 'user_id' => $id,
+                'department_id' => $department_id,
                 'comaker1_id' => $comakers[0],
                 'comaker2_id' => $comakers[1],
             ]);
