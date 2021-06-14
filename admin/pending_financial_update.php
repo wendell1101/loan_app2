@@ -24,6 +24,9 @@ if (isset($_POST['update'])) {
     // $adminUser->updateByMembershipCommittee($_POST);
     $adminLoan->updateLoanByFinancialCommittee($_POST);
     // $errors = $adminUser->validate();
+    if ($_POST['approved'] == 0) {
+        redirect("loan_reason_for_decline.php?id=$id");
+    }
 }
 
 ?>

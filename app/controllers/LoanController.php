@@ -18,6 +18,16 @@ class Loan extends Connection
         return $stmt->fetchAll();
     }
 
+    public function checkifUserIsAllowedToLoan()
+    {
+        $id = $_SESSION['id'];
+        $sql = "SELECT * FROM fixed_deposits WHERE user_id=$id";
+        $stmt = $this->conn->query($sql);
+        if ($stmt->rowCount() > 0) {
+            return true;
+        }
+        return false;
+    }
     public function getData()
     {
         return $this->data;

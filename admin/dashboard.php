@@ -95,7 +95,7 @@ $users = $dashboard->getUsers();
         </div>
         <div class="row my-5">
             <div class="col-12 mb-2">
-                <h2>Loans Per Departments - Total : <?php echo $totalLoanCount = $loansCount ?></h2>
+                <h2>Loans Per Department - Total Loan : <?php echo $totalLoanCount = $loansCount ?></h2>
             </div>
 
             <div class="col-md-12 ">
@@ -106,7 +106,8 @@ $users = $dashboard->getUsers();
                             <div class="col-md-6 p-3">
                                 <span class="font-weight-bold"><?php echo $dashboard->getDepartment($loan->department_id)->name ?> -
                                     <!-- <?php echo $loanCount = $dashboard->getLoanCountPerDepartment($loan->department_id) ?><br> -->
-                                    <?php echo $percent = $dashboard->getLoanCountPercentagePerDepartment($loanCount, $totalLoanCount) ?> % <span><br>
+                                    <?php echo $loanCount ?> <span><br>
+                                        <!-- <?php echo $percent = $dashboard->getLoanCountPercentagePerDepartment($loanCount, $totalLoanCount) ?> % <span><br> -->
                                         <div class="progress">
                                             <div class="progress-bar
                             <?php if ($percent == 0) : ?>
@@ -124,12 +125,94 @@ $users = $dashboard->getUsers();
                 </div>
 
             </div>
-            <div class="col-md-6 mt-5 mx-auto">
-                <h5 class="text-center">Loan Summary</h5>
-                <canvas id="myChart" width="400" height="200"></canvas>
-            </div>
+            <?php if ($loans) : ?>
+                <div class="col-12 mb-2">
+                    <h2>Regular Loans Per Term </h2>
+                </div>
+                <div class="col-md-12 ">
+                    <div class="row">
+                        <div class="col-md-6">
+
+                            6 MONTHS: <?php echo $loanTermCount = $dashboard->getLoanTermCount(6) ?>
+                            <!-- <?php echo $percent = $dashboard->getLoanCountPercentagePerTerm($loanTermCount, $totalLoanCount) ?> % -->
+                            <div class="progress">
+                                <div class="progress-bar
+                            <?php if ($percent == 0) : ?>
+                            text-dark w-100 bg-light border
+                        <?php endif ?>
+                        " role="progressbar" style="width: <?php echo $percent ?>%; " aria-valuenow="<?php echo $percent ?>" aria-valuemin="0" aria-valuemax="100"><?php echo $percent ?>%
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 ">
+
+                            12 MONTHS: <?php echo $loanTermCount = $dashboard->getLoanTermCount(12) ?>
+                            <!-- <?php echo $percent = $dashboard->getLoanCountPercentagePerTerm($loanTermCount, $totalLoanCount) ?> % -->
+                            <div class="progress">
+                                <div class="progress-bar
+                            <?php if ($percent == 0) : ?>
+                            text-dark w-100 bg-light border
+                        <?php endif ?>
+                        " role="progressbar" style="width: <?php echo $percent ?>%; " aria-valuenow="<?php echo $percent ?>" aria-valuemin="0" aria-valuemax="100"><?php echo $percent ?>%</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mt-3">
+
+                            18 MONTHS: <?php echo $loanTermCount = $dashboard->getLoanTermCount(18) ?>
+                            <!-- <?php echo $percent = $dashboard->getLoanCountPercentagePerTerm($loanTermCount, $totalLoanCount) ?> % -->
+                            <div class="progress">
+                                <div class="progress-bar
+                            <?php if ($percent == 0) : ?>
+                            text-dark w-100 bg-light border
+                        <?php endif ?>
+                        " role="progressbar" style="width: <?php echo $percent ?>%; " aria-valuenow="<?php echo $percent ?>" aria-valuemin="0" aria-valuemax="100"><?php echo $percent ?>%</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mt-3">
+
+                            24 MONTHS: <?php echo $loanTermCount = $dashboard->getLoanTermCount(24) ?>
+                            <!-- <?php echo $percent = $dashboard->getLoanCountPercentagePerTerm($loanTermCount, $totalLoanCount) ?> % -->
+                            <div class="progress">
+                                <div class="progress-bar
+                            <?php if ($percent == 0) : ?>
+                            text-dark w-100 bg-light border
+                        <?php endif ?>
+                        " role="progressbar" style="width: <?php echo $percent ?>%; " aria-valuenow="<?php echo $percent ?>" aria-valuemin="0" aria-valuemax="100"><?php echo $percent ?>%</div>
+                            </div>
+                        </div>
+                        <div class="col-12 mb-2">
+                            <h2>Character Loans Per Term </h2>
+                        </div>
+                        <!-- 5 months -->
+                        <div class="col-md-6">
+
+                            5 MONTHS: <?php echo $loanTermCount = $dashboard->getLoanTermCount(5) ?>
+                            <!-- <?php echo $percent = $dashboard->getLoanCountPercentagePerTerm($loanTermCount, $totalLoanCount) ?> % -->
+                            <div class="progress">
+                                <div class="progress-bar
+                            <?php if ($percent == 0) : ?>
+                            text-dark w-100 bg-light border
+                        <?php endif ?>
+                        " role="progressbar" style="width: <?php echo $percent ?>%; " aria-valuenow="<?php echo $percent ?>" aria-valuemin="0" aria-valuemax="100"><?php echo $percent ?>%
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                <?php else : ?>
+                    <h2 class="text-secondary">No departments yet</h2>
+                <?php endif ?>
+                </div>
 
         </div>
+        <div class="col-md-6 mt-5 mx-auto">
+            <h5 class="text-center">Loan Summary</h5>
+            <canvas id="myChart" width="400" height="200"></canvas>
+        </div>
+
+    </div>
     </div>
 </section>
 

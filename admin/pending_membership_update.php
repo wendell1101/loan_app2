@@ -20,6 +20,10 @@ if (isset($_POST['id'])) {
 }
 if (isset($_POST['update'])) {
     $adminUser->updateByMembershipCommittee($_POST);
+    if ($_POST['approved'] == 0) {
+        redirect("reason_for_decline.php?id=$id");
+        // modal popup
+    }
     // $errors = $adminUser->validate();
 }
 
@@ -55,9 +59,14 @@ if (isset($_POST['update'])) {
                     <button type="submit" name="update" class="btn btn-success">Submit</button>
                 </div>
             </form>
+
+
         </div>
     </div>
 </div>
+<!-- Modal -->
+<!-- Button trigger modal -->
+
 <!-- /.content -->
 
 <!-- /.content -->

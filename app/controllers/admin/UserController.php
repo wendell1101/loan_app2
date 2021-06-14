@@ -40,7 +40,15 @@ class AdminUser extends Connection
     public function getPendingMemberships()
     {
         $u_id = $_SESSION['id'];
-        $sql = "SELECT * FROM users WHERE approved_by_m1 IS NULL OR approved_by_m2 IS NULL OR approved_by_m3 IS NULL AND approved_by_president=0";
+        $sql = "SELECT * FROM users WHERE approved_by_m1 IS NULL OR approved_by_m2 IS NULL OR approved_by_m3 IS NULL  AND approved_by_president=0 ";
+        $stmt = $this->conn->query($sql);
+        $users = $stmt->fetchAll();
+        return $users;
+    }
+    public function getDeclinedMemberships()
+    {
+        $u_id = $_SESSION['id'];
+        $sql = "SELECT * FROM users WHERE reason_for_decline IS NOT NULL";
         $stmt = $this->conn->query($sql);
         $users = $stmt->fetchAll();
         return $users;
@@ -66,13 +74,13 @@ class AdminUser extends Connection
 
             // pag null ang approved_by_m1 lagyan ng laman
             if (is_null($activeUser->approved_by_m1)) {
-                $sql = "UPDATE users SET approved_by_m1=$u_id WHERE id=$user_id";
+                $sql = "UPDATE users SET approved_by_m1=$u_id, reason_for_decline=NULL WHERE id=$user_id";
                 $run = $stmt = $this->conn->query($sql);
             } else if (is_null($activeUser->approved_by_m2)) {
-                $sql = "UPDATE users SET approved_by_m2=$u_id WHERE id=$user_id";
+                $sql = "UPDATE users SET approved_by_m2=$u_id, reason_for_decline=NULL WHERE id=$user_id";
                 $run = $stmt = $this->conn->query($sql);
             } else if (is_null($activeUser->approved_by_m3)) {
-                $sql = "UPDATE users SET approved_by_m3=$u_id WHERE id=$user_id";
+                $sql = "UPDATE users SET approved_by_m3=$u_id, reason_for_decline=NULL WHERE id=$user_id";
                 $run = $stmt = $this->conn->query($sql);
             }
         } else if ($data['approved'] == 0) {
@@ -90,6 +98,26 @@ class AdminUser extends Connection
         if ($run) {
             message('success', 'A member status has been updated');
             redirect('pending_memberships.php');
+        }
+    }
+    public function membershipDecline($data)
+    {
+
+        $reason_for_decline = $data['reason_for_decline'];
+        $user_id = $data['user_id'];
+        $sql = "UPDATE users SET reason_for_decline=:reason_for_decline WHERE id=:user_id";
+        $stmt = $this->conn->prepare($sql);
+        $run = $stmt->execute([
+            'reason_for_decline' => $reason_for_decline,
+            'user_id' => $user_id,
+        ]);
+        if ($run) {
+            message('success', 'A member status has been updated');
+            if ($_SESSION['position_id'] == 6) {
+                redirect('pending_memberships.php');
+            } elseif ($_SESSION['position_id'] == 3) {
+                redirect('pending_memberships_president');
+            }
         }
     }
     public function updateMemberByPresident($data)

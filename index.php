@@ -1,16 +1,30 @@
-<?php include 'app/includes/main-header.php' ?>
+<?php
+require_once 'path.php';
+require_once 'core.php';
+
+include 'app/includes/main-header.php';
+
+$loan = new Loan();
+$allowed = $loan->checkifUserIsAllowedToLoan();
+
+?>
 <div class="hero-wrapper"></div>
 <div class="wrapper">
     <div class="hero">
         <div class="container">
             <span class="text-center"><?php include 'app/includes/message.php'; ?></span>
+            <?php if ($allowed) : ?>
+                <h2 class="text-white text-center bg-success rounded px-2">Notice: You are now allowed to loan!</h2>
+            <?php else : ?>
+                <h2 class="text-white text-center bg-danger rounded px-2">Notice : You are not allowed to loan unless you have a fixed deposit!</h2>
+            <?php endif ?>
             <div class="row">
                 <div class="col-md-6">
                     <h1 class="text-white">Get an online loan in just 5 mins</h1>
                     <h3 class="text-success">Find the personal loan that’s best for you — without fees or paperwork</h3>
                     <ul class="text-white">
                         <li class="loan-list">Let us know how big of a loan you need</li>
-                        <li class="loan-list">We’ll compare offers from hundreds of lenders and select the best loan for you, personalized to match your profile</li>
+                        <li class="loan-list">Process your loans in easy steps</li>
                         <li class="loan-list">You’ll get your money quickly & on the best possible terms</li>
                     </ul>
                 </div>
@@ -36,16 +50,16 @@
 
                     <ul class="list-group mt-5">
                         <li class="list-group-item mb-2 section2-li">
-                            <h5>Fill out the online form</h5>
-                            <p>Do you have five minutes and an official ID? That’s all you need. (We really mean it — no credit score or paperwork necessary.)</p>
+                            <h5>Choose a type of loan according to your need</h5>
+                            <p>You first need to have an initial fixed deposit to loan</p>
                         </li>
                         <li class="list-group-item mb-2 section2-li">
-                            <h5>Get the best personalized offers for you</h5>
-                            <p>We’ll compare hundreds of quotes and lenders, then provide you with the personal loan options that best fit your needs. (Think of us as your perfect matchmaker!)</p>
+                            <h5>Fill up the required information for your loan</h5>
+                            <p>You must provide the necessary informations such as loan type, amount, term and you also need to choose two comakers</p>
                         </li>
                         <li class="list-group-item mb-2 section2-li">
-                            <h5>Get your money</h5>
-                            <p>It can take as little as five minutes! Receive the money by card, directly to your bank account, or in cash at a nearby pickup point. (Whichever’s most convenient and comfortable for you!)</p>
+                            <h5>Finalize your loan</h5>
+                            <p>You should review the details and if everything is fine, you can finalize your loan and wait for further notice</p>
                         </li>
                     </ul>
 
@@ -60,8 +74,30 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-8 mx-auto text-white text-center">
-                    <h1 class="text-success mb-5">Why choose us?</h1>
-                    <p>Our unique system enables us to go through the entire market of lenders in order to find the best possible loan for you, saving you time and money. The best part? It’s always 100% free, with zero obligation. It’s no wonder why our customers come back to use FEA again.</p>
+                    <h1 class="text-success mb-5 ">Principles and Objectives</h1>
+                    <p>
+                        Section 1. The ASSOCIATION shall be an independent, non-stock and non-profit organization of the faculty members and employees of Laguna State Polytechnic University Siniloan Campus.
+                    </p>
+                    <p>
+                        Section 2. The main objective of the ASSOCIATION is to promote the moral, social and economic well-being of all its members.
+                    </p>
+                    <p>
+                        Section 3. The ASSOCIATION shall seek to promote solidarity, camaraderie, equity and professional relationship among its members.
+                    </p>
+                    <p>
+                        Section 4. The ASSOCIATION shall promote collaboration and harmonious relationship among faculty, employees, students, the administration and the community particularly on matters concerning the welfare of its members.
+                    </p>
+                    <p>
+                        Section 5. The ASSOCIATION shall observe transparency, dialogue and active communication within the organization.
+                    </p>
+
+
+
+
+
+
+
+
                 </div>
             </div>
         </div>

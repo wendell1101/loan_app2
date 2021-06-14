@@ -19,8 +19,11 @@ if (isset($_POST['id'])) {
     redirect('pending_memberships_president.php');
 }
 if (isset($_POST['update'])) {
+
     $adminUser->updateMemberByPresident($_POST);
-    // $errors = $adminUser->validate();
+    if ($_POST['approved'] == 0) {
+        redirect("reason_for_decline.php?id=$id");
+    }
 }
 
 ?>

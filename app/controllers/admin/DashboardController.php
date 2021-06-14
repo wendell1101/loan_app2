@@ -37,9 +37,20 @@ class Dashboard extends Connection
         $stmt = $this->conn->query($sql);
         return $stmt->rowCount();
     }
+    public function getLoanTermCount($term)
+    {
+        $sql = "SELECT * FROM loans WHERE term=$term";
+        $stmt = $this->conn->query($sql);
+        return $stmt->rowCount();
+    }
     public function formatNumber($number)
     {
         return number_format((float)$number, 0, '.', '');
+    }
+    public function getLoanCountPercentagePerTerm($loanCount, $totalLoanCount)
+    {
+        $percentage =  $loanCount == 0 ? 0 : $loanCount / $totalLoanCount * 100;
+        return $this->formatNumber($percentage);
     }
     public function getLoanCountPercentagePerDepartment($loanCount, $totalLoanCount)
     {

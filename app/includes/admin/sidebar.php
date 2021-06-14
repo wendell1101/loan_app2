@@ -146,12 +146,32 @@
                     </a>
                 </li>
                 <li class="nav-item menu-open
+            <?php echo (strpos(CURRENT_URL, 'declined_memberships') !== false) ? 'active' : '' ?>
+            ">
+                    <a href="<?php echo BASE_URL . 'admin/declined_memberships.php' ?>" class="nav-link">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>
+                            Declined Memberships
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item menu-open
             <?php echo (strpos(CURRENT_URL, 'admin/pending_president') !== false) ? 'active' : '' ?>
             ">
                     <a href="<?php echo BASE_URL . 'admin/pending_president_loans.php' ?>" class="nav-link">
                         <i class="nav-icon fas fa-users"></i>
                         <p>
                             Pending Loans
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item menu-open
+            <?php echo (strpos(CURRENT_URL, 'admin/declined_loans') !== false) ? 'active' : '' ?>
+            ">
+                    <a href="<?php echo BASE_URL . 'admin/declined_loans.php' ?>" class=" nav-link ">
+                        <i class="nav-icon fas fa-money-check"></i>
+                        <p>
+                            Declined Loans
                         </p>
                     </a>
                 </li>
@@ -229,6 +249,16 @@
                         <i class="nav-icon fas fa-users"></i>
                         <p>
                             Pending Memberships
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item menu-open
+            <?php echo (strpos(CURRENT_URL, 'declined_membership') !== false) ? 'active' : '' ?>
+            ">
+                    <a href="<?php echo BASE_URL . 'admin/declined_memberships.php' ?>" class="nav-link">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>
+                            Declined Memberships
                         </p>
                     </a>
                 </li>
@@ -380,6 +410,16 @@
                         <i class="nav-icon fas fa-money-check"></i>
                         <p>
                             Pending Loans
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item menu-open
+            <?php echo (strpos(CURRENT_URL, 'admin/declined_loans') !== false) ? 'active' : '' ?>
+            ">
+                    <a href="<?php echo BASE_URL . 'admin/declined_loans.php' ?>" class=" nav-link ">
+                        <i class="nav-icon fas fa-money-check"></i>
+                        <p>
+                            Declined Loans
                         </p>
                     </a>
                 </li>

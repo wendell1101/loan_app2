@@ -298,6 +298,34 @@ class AdminLoan extends Connection
         $loans = $stmt->fetchAll();
         return $loans;
     }
+    public function getDeclinedLoans()
+    {
+        $u_id = $_SESSION['id'];
+        $sql = "SELECT * FROM loans WHERE reason_for_decline IS NOT NULL";
+        $stmt = $this->conn->query($sql);
+        $loans = $stmt->fetchAll();
+        return $loans;
+    }
+    public function loanDecline($data)
+    {
+
+        $reason_for_decline = $data['reason_for_decline'];
+        $loan_id = $data['loan_id'];
+        $sql = "UPDATE loans SET reason_for_decline=:reason_for_decline WHERE id=:loan_id";
+        $stmt = $this->conn->prepare($sql);
+        $run = $stmt->execute([
+            'reason_for_decline' => $reason_for_decline,
+            'loan_id' => $loan_id,
+        ]);
+        if ($run) {
+            message('success', 'A loan status has been updated');
+            if ($_SESSION['position_id'] == 7) {
+                redirect('pending_financial_loans.php');
+            } elseif ($_SESSION['position_id'] == 3) {
+                redirect('pending_president_loans.php');
+            }
+        }
+    }
     public function updateLoanByFinancialCommittee($data)
     {
         $loan_id = $data['id'];
