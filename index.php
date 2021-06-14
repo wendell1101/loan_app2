@@ -5,7 +5,10 @@ require_once 'core.php';
 include 'app/includes/main-header.php';
 
 $loan = new Loan();
-$allowed = $loan->checkifUserIsAllowedToLoan();
+if (isset($_SESSION['id'])) {
+    $allowed = $loan->checkifUserIsAllowedToLoan();
+}
+
 
 ?>
 <div class="hero-wrapper"></div>
@@ -13,10 +16,12 @@ $allowed = $loan->checkifUserIsAllowedToLoan();
     <div class="hero">
         <div class="container">
             <span class="text-center"><?php include 'app/includes/message.php'; ?></span>
-            <?php if ($allowed) : ?>
-                <h2 class="text-white text-center bg-success rounded px-2">Notice: You are now allowed to loan!</h2>
-            <?php else : ?>
-                <h2 class="text-white text-center bg-danger rounded px-2">Notice : You are not allowed to loan unless you have a fixed deposit!</h2>
+            <?php if (isset($_SESSION['id'])) : ?>
+                <?php if ($allowed) : ?>
+                    <h2 class="text-white text-center bg-success rounded px-2">Notice: You are now allowed to loan!</h2>
+                <?php else : ?>
+                    <h2 class="text-white text-center bg-danger rounded px-2">Notice : You are not allowed to loan unless you have a fixed deposit!</h2>
+                <?php endif ?>
             <?php endif ?>
             <div class="row">
                 <div class="col-md-6">
