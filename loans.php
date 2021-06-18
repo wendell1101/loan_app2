@@ -35,6 +35,8 @@ $activeUser = $loan->getUser($_SESSION['id']);
                                         <th scope="col">Type</th>
                                         <th scope="col">Status</th>
                                         <th scope="col">Payment History</th>
+                                        <th scope="col">Principal Amount</th>
+                                        <th scope="col">Interest</th>
                                         <th scope="col">Total Amount</th>
 
                                     </tr>
@@ -50,6 +52,8 @@ $activeUser = $loan->getUser($_SESSION['id']);
                                             <td><?php echo $loan->getLoanType($activeLoan->loan_type_id) ?></td>
                                             <td><?php echo $activeLoan->status ?></td>
                                             <td><a href="payment_history.php?id=<?php echo $activeLoan->id ?>">View</a></td>
+                                            <td>PHP <?php echo formatDecimal($activeLoan->amount) ?></td>
+                                            <td>PHP <?php echo formatDecimal($loan->getInterest($activeLoan->loan_type_id)->interest) ?> %</td>
                                             <td>PHP <?php echo formatDecimal($activeLoan->total_amount) ?></td>
                                         </tr>
                                     <?php endforeach; ?>
