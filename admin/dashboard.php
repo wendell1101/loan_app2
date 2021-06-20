@@ -120,7 +120,7 @@ $users = $dashboard->getUsers();
                         <?php endforeach; ?>
 
                     <?php else : ?>
-                        <h2 class="text-secondary">No departments yet</h2>
+                        <h2 class="text-secondary">No department loan yet</h2>
                     <?php endif ?>
                 </div>
 

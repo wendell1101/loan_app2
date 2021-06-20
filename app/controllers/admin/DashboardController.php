@@ -33,13 +33,18 @@ class Dashboard extends Connection
     }
     public function getLoanCountPerDepartment($department_id)
     {
-        $sql = "SELECT * FROM loans WHERE department_id=$department_id";
-        $stmt = $this->conn->query($sql);
+        $status = 'approved';
+        $sql = "SELECT * FROM loans WHERE status=:status AND department_id=$department_id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([
+            'status' => $status
+        ]);
+        // dump($stmt->fetchAll());
         return $stmt->rowCount();
     }
     public function getLoanTermCount($term)
     {
-        $sql = "SELECT * FROM loans WHERE term=$term";
+        $sql = "SELECT * FROM loans WHERE term=$term AND status='approved'";
         $stmt = $this->conn->query($sql);
         return $stmt->rowCount();
     }
@@ -79,13 +84,13 @@ class Dashboard extends Connection
     }
     public function getLoansCount()
     {
-        $stmt = $this->conn->query("SELECT * FROM loans");
+        $stmt = $this->conn->query("SELECT * FROM loans WHERE status='approved'");
         return $stmt->rowCount();
     }
 
     public function getLoans()
     {
-        $stmt = $this->conn->query("SELECT * FROM loans");
+        $stmt = $this->conn->query("SELECT * FROM loans WHERE status='approved'");
         return $stmt->fetchAll();
     }
 
