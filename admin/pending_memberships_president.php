@@ -63,43 +63,45 @@ if (isset($_POST['active'])) {
                             <?php include BASE . '/app/includes/message.php' ?>
 
                             <?php foreach ($users as $key => $singleUser) : ?>
-                                <tr class="align-items-center">
-                                    <th scope="row"><?php echo $key + 1 ?></th>
-                                    <td><a class="text-info" href="admin_user_detail.php?id=<?php echo $singleUser->id ?>"><?php echo ucfirst($singleUser->firstname) . ' ' . ucfirst($singleUser->lastname) ?></a></td>
-                                    <td><?php echo $singleUser->email ?></td>
-                                    <td><?php echo $singleUser->gender ?></td>
+                                <?php if (is_null($singleUser->reason_for_decline)) : ?>
+                                    <tr class="align-items-center">
+                                        <th scope="row"><?php echo $key + 1 ?></th>
+                                        <td><a class="text-info" href="admin_user_detail.php?id=<?php echo $singleUser->id ?>"><?php echo ucfirst($singleUser->firstname) . ' ' . ucfirst($singleUser->lastname) ?></a></td>
+                                        <td><?php echo $singleUser->email ?></td>
+                                        <td><?php echo $singleUser->gender ?></td>
 
-                                    <td>
-                                        <span class="<?php echo ($adminUser->getPosition($singleUser->position_id) != 'customer') ? 'text-success' : 'text-secondary' ?> ">
-                                            <?php echo $adminUser->getPosition($singleUser->position_id) ?>
-                                        </span>
-                                    </td>
-                                    <td class="text-center">
-                                        <?php if ($singleUser->approved_by_president) : ?>
-                                            <i class="fas fa-check text-success"></i>
-                                        <?php else : ?>
-                                            <i class="fas fa-times text-danger"></i>
-                                        <?php endif ?>
-                                    </td>
-                                    <td><?php echo ($singleUser->paid_membership) ? 'paid' : 'not paid' ?></td>
-                                    <td><a href="membership_receipt.php?id=<?php echo $singleUser->id ?>" class="text-info">Receipt</a></td>
-                                    <td><a href="membership_request.php?id=<?php echo $singleUser->id ?>" class="text-info">View</a></td>
-                                    <td class="d-flex">
-                                        <form action="pending_membership_president_update.php" method="POST">
-                                            <input type="hidden" name="id" value="<?php echo $singleUser->id ?>">
-                                            <button type="submit" class="text-warning mr-3" style="border:none; background:none">
-                                                <i class="fas fa-pen"></i>
-                                            </button>
-                                        </form>
-                                        <form action="pending_membership_president_delete.php" method="POST">
-                                            <input type="hidden" name="id" value="<?php echo $singleUser->id ?>">
-                                            <button type="submit" style="border:none; background:none">
-                                                <i class="fas fa-trash text-danger"></i>
-                                            </button>
-                                        </form>
+                                        <td>
+                                            <span class="<?php echo ($adminUser->getPosition($singleUser->position_id) != 'customer') ? 'text-success' : 'text-secondary' ?> ">
+                                                <?php echo $adminUser->getPosition($singleUser->position_id) ?>
+                                            </span>
+                                        </td>
+                                        <td class="text-center">
+                                            <?php if ($singleUser->approved_by_president) : ?>
+                                                <i class="fas fa-check text-success"></i>
+                                            <?php else : ?>
+                                                <i class="fas fa-times text-danger"></i>
+                                            <?php endif ?>
+                                        </td>
+                                        <td><?php echo ($singleUser->paid_membership) ? 'paid' : 'not paid' ?></td>
+                                        <td><a href="membership_receipt.php?id=<?php echo $singleUser->id ?>" class="text-info">Receipt</a></td>
+                                        <td><a href="membership_request.php?id=<?php echo $singleUser->id ?>" class="text-info">View</a></td>
+                                        <td class="d-flex">
+                                            <form action="pending_membership_president_update.php" method="POST">
+                                                <input type="hidden" name="id" value="<?php echo $singleUser->id ?>">
+                                                <button type="submit" class="text-warning mr-3" style="border:none; background:none">
+                                                    <i class="fas fa-pen"></i>
+                                                </button>
+                                            </form>
+                                            <form action="pending_membership_president_delete.php" method="POST">
+                                                <input type="hidden" name="id" value="<?php echo $singleUser->id ?>">
+                                                <button type="submit" style="border:none; background:none">
+                                                    <i class="fas fa-trash text-danger"></i>
+                                                </button>
+                                            </form>
 
-                                    </td>
-                                </tr>
+                                        </td>
+                                    </tr>
+                                <?php endif ?>
                             <?php endforeach; ?>
 
                         </tbody>

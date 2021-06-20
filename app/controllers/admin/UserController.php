@@ -116,7 +116,7 @@ class AdminUser extends Connection
             if ($_SESSION['position_id'] == 6) {
                 redirect('pending_memberships.php');
             } elseif ($_SESSION['position_id'] == 3) {
-                redirect('pending_memberships_president');
+                redirect('pending_memberships_president.php');
             }
         }
     }
