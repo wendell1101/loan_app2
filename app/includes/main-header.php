@@ -29,7 +29,7 @@ if (isset($_POST['logout'])) {
 
 <body>
     <nav class="main-nav" id="main-nav">
-        <a href="index.php" class="logo"><img src="assets/img/logo_light.png" alt="logo"></a>
+        <a href="index.php" class="logo"><img src="assets/img/lspu_logo.png" alt="logo"></a>
         <ul>
 
             <li class="">
@@ -77,7 +77,7 @@ if (isset($_POST['logout'])) {
     </nav>
     <ul class="side-nav">
 
-        <a href="index.php" class="side-nav-logo"><img src="assets/img/logo_light.png" alt="logo"></a>
+        <a href="index.php" class="side-nav-logo img-fluid"><img src="assets/img/lspu_logo.png" alt="logo"></a>
         <li class="">
             <a href="index.php">Home</a>
         </li>

@@ -25,8 +25,8 @@ if (isset($_SESSION['id'])) {
             <?php endif ?>
             <div class="row">
                 <div class="col-md-6">
-                    <h1 class="text-white">Get an online loan in just 5 mins</h1>
-                    <h3 class="text-success">Find the personal loan that’s best for you — without fees or paperwork</h3>
+                    <h1 class="text-white">FACULTY AND EMPLOYEE ASSOCIATION</h1>
+                    <h3 class="text-success">Laguna State Polytechnic University - Siniloan Campus</h3>
                     <ul class="text-white">
                         <li class="loan-list">Let us know how big of a loan you need</li>
                         <li class="loan-list">Process your loans in easy steps</li>
@@ -37,7 +37,7 @@ if (isset($_SESSION['id'])) {
                     <div>
                         <a href="select_loan.php" class="btn btn-success btn-block mb-2">Request your loan</a>
                         <small>
-                            Faculty and Employee Associaction is an independent financial Loan Institute who are dedicated to helping members from all walks of life build secure, stress free financial futures
+                            Faculty and Employee Association is an independent financial Loan Institute who are dedicated to helping members from all walks of life build secure, stress free financial futures
                         </small>
                     </div>
                 </div>
