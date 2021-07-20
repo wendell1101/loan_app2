@@ -302,6 +302,9 @@ class AdminUser extends Connection
                 $this->addError('email', 'Email must be a valid email');
             }
         }
+        if (strpos($val, 'lspu.edu.ph') == false) {
+            $this->addError('email', 'Email must be a university email. e.g: john.doe@lspu.edu.ph');
+        }
     }
 
     //Validate password1
