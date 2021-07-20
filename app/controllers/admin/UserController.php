@@ -130,7 +130,7 @@ class AdminUser extends Connection
             $sql = "UPDATE users SET approved_by_president=1 WHERE id=$user_id";
             $run = $this->conn->query($sql);
         } else if ($data['approved'] == 0) {
-            $sql = "UPDATE users SET approved_by_president=0 WHERE id=$user_id";
+            $sql = "u users SET approved_by_president=0 WHERE id=$user_id";
             $run = $this->conn->query($sql);
         }
         if ($run) {
@@ -601,6 +601,8 @@ class AdminUser extends Connection
             $mail->Body    = "
                 <h3>Good day $user->firstname $user->lastname! </h3>
                 <h4>Your membership status has been approved. </h4>
+
+                <h4>Account Number: $user->account_number </h4>
                 <p>Thank you for trusting us. </p><br><br>
 
             ";

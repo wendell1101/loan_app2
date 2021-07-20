@@ -23,15 +23,15 @@ if (isset($_SESSION['id'])) {
                     <h2 class="text-white text-center bg-danger rounded px-2">Notice : You are not allowed to loan unless you have a fixed deposit!</h2>
                 <?php endif ?>
             <?php endif ?>
-            <div class="row">
+            <div class="row" style="min-height:50vh">
                 <div class="col-md-6">
                     <h1 class="text-white">FACULTY AND EMPLOYEE ASSOCIATION</h1>
                     <h3 class="text-success">Laguna State Polytechnic University - Siniloan Campus</h3>
-                    <ul class="text-white">
+                    <!-- <ul class="text-white">
                         <li class="loan-list">Let us know how big of a loan you need</li>
                         <li class="loan-list">Process your loans in easy steps</li>
                         <li class="loan-list">You’ll get your money quickly & on the best possible terms</li>
-                    </ul>
+                    </ul> -->
                 </div>
                 <div class="col-md-6 align-items-center hero-left p-3">
                     <div>
@@ -49,24 +49,60 @@ if (isset($_SESSION['id'])) {
     <div class="section2">
         <div class="container">
             <div class="row">
-                <div class="col-md-8 mx-auto text-center w">
-                    <h2>Here’s how to get an online loan FAST</h2>
-                    <h4>All it takes is three simple steps.</h4>
+                <div class="col-md-12 mx-auto text-center w">
+                    <h2 class="text-success">Here’s how to get an online loan FAST</h2>
+                    <h4 class="text-success">All it takes is five simple steps.</h4>
+                    <div class="row text-left">
 
-                    <ul class="list-group mt-5">
-                        <li class="list-group-item mb-2 section2-li">
-                            <h5>Choose a type of loan according to your need</h5>
-                            <p>You first need to have an initial fixed deposit to loan</p>
-                        </li>
-                        <li class="list-group-item mb-2 section2-li">
-                            <h5>Fill up the required information for your loan</h5>
-                            <p>You must provide the necessary informations such as loan type, amount, term and you also need to choose two comakers</p>
-                        </li>
-                        <li class="list-group-item mb-2 section2-li">
-                            <h5>Finalize your loan</h5>
-                            <p>You should review the details and if everything is fine, you can finalize your loan and wait for further notice</p>
-                        </li>
-                    </ul>
+                        <div class="col-md-6">
+                            <div class="card-body mb-2 section2-li">
+                                <li class="list-group-item mb-2 section2-li">
+                                    <h5>1. Create an account.</h5>
+                                    <p>Account approval need to undergo several process.</p>
+                                    <ol class="text-left">
+                                        <li>a. Approval of membership committee</li>
+                                        <li>b. Approval of president</li>
+                                        <li>c. Approval of treasurer/asst.treasurer/administrator</li>
+                                    </ol>
+                                </li>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card-body mb-2 section2-li">
+                                <li class="list-group-item mb-2 section2-li">
+                                    <h5>2. You need to have an initial fixed deposit to be allowed to request a loan</h5>
+                                    <p>Go to treasurer and pay for initial fixed deposit it can be any amount</p>
+                                </li>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card-body mb-2 section2-li">
+                                <li class="list-group-item mb-2 section2-li">
+                                    <h5>3. Choose a type of loan according to your need</h5>
+                                    <p>You may choose between regular or character loan</p>
+                                </li>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card-body mb-2 section2-li">
+                                <li class="list-group-item mb-2 section2-li">
+                                    <h5>4. Fill up the required information for your loan</h5>
+                                    <p>You must provide the necessary informations such as loan type, amount, term and you also need to choose two comakers</p>
+                                </li>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card-body mb-2 section2-li">
+                                <li class="list-group-item mb-2 section2-li">
+                                    <h5>5. Finalize your loan</h5>
+                                    <p>You should review the details and if everything is fine, you can finalize your loan and wait for further notice</p>
+                                </li>
+                            </div>
+                        </div>
+
+
+                    </div>
+
 
                     <a href="select_loan.php" class="btn btn-success mx-auto btn-lg">Get Started</a>
                 </div>
