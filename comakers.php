@@ -27,6 +27,7 @@ if (isset($_POST['comaker_approval'])) {
                 redirect('comakers.php');
             }
         } else if ($approve == 0) {
+            redirect('comaker_reason_for_decline.php');
             $sql = "UPDATE loans SET comaker1_id=NULL WHERE id=$loan_id";
             $stmt = $conn->query($sql);
             if ($stmt) {

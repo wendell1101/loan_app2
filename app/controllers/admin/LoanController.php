@@ -293,7 +293,7 @@ class AdminLoan extends Connection
     public function getPendingLoans()
     {
         $u_id = $_SESSION['id'];
-        $sql = "SELECT * FROM loans WHERE approved_by_f1 IS NULL OR approved_by_f2 IS NULL OR approved_by_f3 IS NULL AND approved_by_president=0";
+        $sql = "SELECT * FROM loans WHERE approved_by_c1=1 AND approved_by_c2=1 AND approved_by_f1 IS NULL OR approved_by_f2 IS NULL OR approved_by_f3 IS NULL AND approved_by_president=0";
         $stmt = $this->conn->query($sql);
         $loans = $stmt->fetchAll();
         return $loans;

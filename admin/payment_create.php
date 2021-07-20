@@ -91,7 +91,7 @@ if (isset($_POST['create'])) {
 
                 <div class="form-group">
                     <label for="payment_fixed_deposit">Fixed Deposit Amount</label>
-                    <input type="number" name="payment_fixed_deposit" id="payment_fixed_deposit" max="20000" class="form-control
+                    <input type="number" name="payment_fixed_deposit" id="payment_fixed_deposit" class="form-control
                     <?php
                     if (!empty(($payment_fixed_deposit))) {
                         echo $errors['payment_fixed_deposit'] ? 'is-invalid' : '';
@@ -105,7 +105,7 @@ if (isset($_POST['create'])) {
                     <div class="text-danger">
                         <small><?php echo $errors['payment_fixed_deposit'] ?? '' ?></small>
                     </div>
-                    <small class="text-primary">Maximum Fixed Deposit Amount: PHP 20000.00</small>
+
                 </div>
                 <div class="text-danger">
                     <small><?php echo $errors['payment_fixed_deposit'] ?? '' ?></small>

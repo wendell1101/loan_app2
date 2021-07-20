@@ -115,7 +115,7 @@ if (isset($_POST['register'])) {
                             <div class="form-group">
                                 <input type="text" name="email" id="email" placeholder="Email Address" class="form-control
                                 <?php
-                                if (!empty(($password1))) {
+                                if (!empty(($email))) {
                                     echo $errors['email'] ? 'is-invalid' : 'is-valid';
                                 } else {
                                     if ($errors['email']) {

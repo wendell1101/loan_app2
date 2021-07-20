@@ -93,7 +93,7 @@ class Loan extends Connection
     public function getOtherUsers()
     {
         $id = $_SESSION['id'];
-        $sql = "SELECT * FROM users WHERE id!=$id AND position_id=2 AND active=1 AND paid_membership=1";
+        $sql = "SELECT * FROM users WHERE id!=$id AND position_id=2 AND active=1 AND paid_membership=1 AND is_comaker=0";
         $stmt = $this->conn->query($sql);
         $stmt->execute();
         return  $stmt->fetchAll();
@@ -331,8 +331,16 @@ class Loan extends Connection
                 'comaker1_id' => $comakers[0],
                 'comaker2_id' => $comakers[1],
             ]);
+
+
+
             if ($saved) {
                 $lastId = $this->conn->lastInsertId();
+                //update user is_comaker to true
+                $sql = "UPDATE users SET is_comaker=1 WHERE id=$comakers[0]";
+                $run1 = $this->conn->query($sql);
+                $sql = "UPDATE users SET is_comaker=1 WHERE id=$comakers[1]";
+                $run2 = $this->conn->query($sql);
                 redirect("loan_detail.php?id=$lastId");
             }
         }

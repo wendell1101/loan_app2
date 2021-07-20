@@ -94,11 +94,11 @@ $users = $dashboard->getUsers();
 
         </div>
         <div class="row my-5">
-            <div class="col-12 mb-2">
+            <div class="col-md-12 mb-2">
                 <h2>Loans Per Department - Total Loan : <?php echo $totalLoanCount = $loansCount ?></h2>
             </div>
 
-            <div class="col-md-12 ">
+            <div class="col-md-12">
                 <div class="row">
                     <?php if ($loans) : ?>
 
@@ -120,7 +120,7 @@ $users = $dashboard->getUsers();
                         <?php endforeach; ?>
 
                     <?php else : ?>
-                        <h2 class="text-secondary">No department loan yet</h2>
+                        <h2 class="text-secondary ml-2">No department loan yet</h2>
                     <?php endif ?>
                 </div>
 
@@ -202,7 +202,7 @@ $users = $dashboard->getUsers();
 
 
                 <?php else : ?>
-                    <h2 class="text-secondary">No departments yet</h2>
+                    <h2 class="text-secondary ml-2">No departments yet</h2>
                 <?php endif ?>
                 </div>
 
