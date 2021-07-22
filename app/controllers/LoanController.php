@@ -12,7 +12,7 @@ class Loan extends Connection
     public function index()
     {
         $userId = $_SESSION['id'];
-        $sql = "SELECT * FROM loans  WHERE user_id=$userId";
+        $sql = "SELECT * FROM loans  WHERE user_id=$userId AND approved_by_c1=1 AND approved_by_c2=1";
         $stmt = $this->conn->query($sql);
         $stmt->execute();
         return $stmt->fetchAll();

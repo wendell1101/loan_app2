@@ -15,4 +15,3 @@ function dump($value) // to be deleted soon
     echo "<pre>", print_r($value, true), "</pre>";
     die();
 }
-

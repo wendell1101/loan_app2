@@ -23,17 +23,18 @@ if (isset($_POST['comaker_approval'])) {
             $sql = "UPDATE loans SET approved_by_c1=1 WHERE id=$loan_id AND comaker1_id=$user_id";
             $stmt = $conn->query($sql);
             if ($stmt) {
+
                 message('success', 'Comaker request updated');
                 redirect('comakers.php');
             }
         } else if ($approve == 0) {
-            redirect('comaker_reason_for_decline.php');
-            $sql = "UPDATE loans SET comaker1_id=NULL WHERE id=$loan_id";
-            $stmt = $conn->query($sql);
-            if ($stmt) {
-                message('success', 'Comaker request updated');
-                redirect('comakers.php');
-            }
+            redirect("comaker_reason_for_decline.php?loan_id=$loan_id&user_id=$user_id");
+            // $sql = "UPDATE loans SET comaker1_id=NULL WHERE id=$loan_id";
+            // $stmt = $conn->query($sql);
+            // if ($stmt) {
+            //     message('success', 'Comaker request updated');
+            //     redirect('comakers.php');
+            // }
         }
     } else if ($activeLoan->comaker2_id == $user_id) {
         if ($approve == 1) {
@@ -44,12 +45,13 @@ if (isset($_POST['comaker_approval'])) {
                 redirect('comakers.php');
             }
         } else if ($approve == 0) {
-            $sql = "UPDATE loans SET comaker2_id=NULL WHERE id=$loan_id";
-            $stmt = $conn->query($sql);
-            if ($stmt) {
-                message('success', 'Comaker request updated');
-                redirect('comakers.php');
-            }
+            // $sql = "UPDATE loans SET comaker2_id=NULL WHERE id=$loan_id";
+            // $stmt = $conn->query($sql);
+            // if ($stmt) {
+            //     message('success', 'Comaker request updated');
+            //     redirect('comakers.php');
+            // }
+            redirect("comaker_reason_for_decline.php?loan_id=$loan_id&user_id=$user_id");
         }
     }
 }

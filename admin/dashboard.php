@@ -202,7 +202,7 @@ $users = $dashboard->getUsers();
 
 
                 <?php else : ?>
-                    <h2 class="text-secondary ml-2">No departments yet</h2>
+                    <!-- <h2 class="text-secondary ml-2">No departments yet</h2> -->
                 <?php endif ?>
                 </div>
 

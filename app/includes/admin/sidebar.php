@@ -419,7 +419,17 @@
                     <a href="<?php echo BASE_URL . 'admin/declined_loans.php' ?>" class=" nav-link ">
                         <i class="nav-icon fas fa-money-check"></i>
                         <p>
-                            Declined Loans
+                            Declined Financial Loans
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item menu-open
+            <?php echo (strpos(CURRENT_URL, 'admin/declined_comaker_loans') !== false) ? 'active' : '' ?>
+            ">
+                    <a href="<?php echo BASE_URL . 'admin/declined_comaker_loans.php' ?>" class=" nav-link ">
+                        <i class="nav-icon fas fa-money-check"></i>
+                        <p>
+                            Declined Comaker Loans
                         </p>
                     </a>
                 </li>
