@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 21, 2021 at 09:13 AM
+-- Generation Time: Jul 22, 2021 at 10:36 AM
 -- Server version: 10.4.14-MariaDB
--- PHP Version: 7.2.34
+-- PHP Version: 7.4.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,8 +18,22 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `loan_db`
+-- Database: `loan_db2`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `declined_comaker_loans`
+--
+
+CREATE TABLE `declined_comaker_loans` (
+  `id` int(11) NOT NULL,
+  `comaker_reason_for_decline` varchar(255) NOT NULL,
+  `loan_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -66,10 +80,8 @@ CREATE TABLE `fixed_deposits` (
 --
 
 INSERT INTO `fixed_deposits` (`id`, `reference_number`, `payment_by`, `amount`, `user_id`, `created_at`) VALUES
-(61, '16230383381181', 'wendell suazo', 10000, 84, '2021-06-07 03:58:59'),
-(62, '16234777642875', 'pikachu Spencer', 12000, 83, '2021-06-12 06:02:44'),
-(63, '1623575657469', 'jerald lim', 10000, 85, '2021-06-13 09:14:17'),
-(64, '1624080827535', 'Victor Lloyd', 10000, 87, '2021-06-19 05:33:47');
+(66, '1626760890330', 'wendell suazo', 10000, 84, '2021-07-20 06:01:30'),
+(67, '1626870513413', 'jerald lim', 10000, 85, '2021-07-21 12:28:33');
 
 -- --------------------------------------------------------
 
@@ -104,18 +116,9 @@ CREATE TABLE `loans` (
   `approved_by_f2` int(11) DEFAULT NULL,
   `approved_by_f3` int(11) DEFAULT NULL,
   `approved_by_president` tinyint(1) NOT NULL DEFAULT 0,
-  `reason_for_decline` text DEFAULT NULL
+  `reason_for_decline` text DEFAULT NULL,
+  `reason_for_decline_comaker` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `loans`
---
-
-INSERT INTO `loans` (`id`, `transaction_id`, `loan_number`, `membership_number`, `amount`, `amount_per_kinsenas`, `amount_per_month`, `interest_amount`, `interest_amount_per_kinsenas`, `interest_amount_per_month`, `total_amount`, `term`, `status`, `loan_type_id`, `user_id`, `department_id`, `comaker1_id`, `comaker2_id`, `approved_by_c1`, `approved_by_c2`, `created_at`, `approved_at`, `approved_by_f1`, `approved_by_f2`, `approved_by_f3`, `approved_by_president`, `reason_for_decline`) VALUES
-(79, '6ac6ad70a8cc2b', 'LOAN-2021-83', 'MEM-2021-83', 12000, 1000, 2000, 720, 60, 120, 12720, '6', 'approved', 1, 83, 8, 84, 85, 1, 1, '2021-06-12 06:09:18', '2021-06-12', 78, 79, 80, 1, NULL),
-(81, '0bd7a8f53f0502', 'LOAN-2021-85', 'MEM-2021-85', 5000, 500, 1000, 500, 50, 100, 5500, '5', 'pending', 3, 85, 7, 84, 86, 1, 1, '2021-06-13 09:15:19', NULL, 78, 79, 80, 0, 'invalid informations'),
-(82, 'cf0e90976b3d24', 'LOAN-2021-87', 'MEM-2021-87', 5000, 500, 1000, 500, 50, 100, 5500, '5', 'approved', 3, 87, 5, 84, 85, 1, 1, '2021-06-19 05:34:45', '2021-06-21', 78, 79, 80, 1, NULL),
-(83, '029d72386af6c5', 'LOAN-2021-84', 'MEM-2021-84', 6000, 166.66666666667, 333.33333333333, 1080, 30, 60, 7080, '18', 'pending', 1, 84, 4, 85, 86, 1, 1, '2021-06-20 06:14:56', NULL, 78, 79, 80, 0, 'lack of documents needed');
 
 -- --------------------------------------------------------
 
@@ -193,10 +196,8 @@ CREATE TABLE `payments` (
 --
 
 INSERT INTO `payments` (`id`, `reference_number`, `payment_by`, `payment_amount`, `payment_saving`, `payment_fixed_deposit`, `payment_saving_withdraw`, `loan_id`, `user_id`, `has_penalty`, `paid_at`, `loan_type_id`, `interest_amount`) VALUES
-(147, '16230383381181', 'wendell suazo', NULL, 9000, 10000, NULL, NULL, 84, 0, '2021-06-07 03:58:58', NULL, NULL),
-(148, '16234777642875', 'pikachu Spencer', NULL, 8000, 12000, NULL, NULL, 83, 0, '2021-06-12 06:02:44', NULL, NULL),
-(149, '1623575657469', 'jerald lim', NULL, 9000, 10000, NULL, NULL, 85, 0, '2021-06-13 09:14:17', NULL, NULL),
-(150, '1624080827535', 'Victor Lloyd', NULL, 8000, 10000, NULL, NULL, 87, 0, '2021-06-19 05:33:47', NULL, NULL);
+(152, '1626760890330', 'wendell suazo', NULL, 8000, 10000, NULL, NULL, 84, 0, '2021-07-20 06:01:30', NULL, NULL),
+(153, '1626870513413', 'jerald lim', NULL, 9000, 10000, NULL, NULL, 85, 0, '2021-07-21 12:28:33', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -243,10 +244,8 @@ CREATE TABLE `savings` (
 --
 
 INSERT INTO `savings` (`id`, `reference_number`, `payment_by`, `amount`, `user_id`, `withdraw_amount`, `created_at`) VALUES
-(49, '16230383381181', 'wendell suazo', 9000, 84, NULL, '2021-06-07 03:58:58'),
-(50, '16234777642875', 'pikachu Spencer', 8000, 83, NULL, '2021-06-12 06:02:44'),
-(51, '1623575657469', 'jerald lim', 9000, 85, NULL, '2021-06-13 09:14:17'),
-(52, '1624080827535', 'Victor Lloyd', 8000, 87, NULL, '2021-06-19 05:33:47');
+(54, '1626760890330', 'wendell suazo', 8000, 84, NULL, '2021-07-20 06:01:30'),
+(55, '1626870513413', 'jerald lim', 9000, 85, NULL, '2021-07-21 12:28:33');
 
 -- --------------------------------------------------------
 
@@ -285,6 +284,7 @@ CREATE TABLE `users` (
   `approved_by_m3` int(11) DEFAULT NULL,
   `approved_by_president` tinyint(1) NOT NULL DEFAULT 0,
   `reason_for_decline` text DEFAULT NULL,
+  `is_comaker` tinyint(1) NOT NULL DEFAULT 0,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -292,22 +292,25 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `account_number`, `firstname`, `middlename`, `lastname`, `home_address`, `permanent_address`, `gender`, `birth_date`, `contact_number`, `email`, `password`, `position_id`, `sg`, `employment_status`, `department_id`, `name_of_spouse`, `fathers_name`, `mothers_maiden_name`, `beneficiary`, `paid_membership`, `active`, `reason1`, `reason2`, `reason3`, `approved_by_m1`, `approved_by_m2`, `approved_by_m3`, `approved_by_president`, `reason_for_decline`, `created_at`) VALUES
-(61, '1618534842192', 'micaella', 'middlename', 'gadaza', '123 main st.', '123 main st.', 'female', '1999-01-13', '099588278272', 'admin@gmail.com', '21232f297a57a5a743894a0e4a801fc3', 1, 123, 'regular', 4, '', 'johnny doe sr.', 'melissa Yveth', 'melissa Yveth', 1, 1, 'asdafsdafsa', 'sdafsafa', 'dafdsaf', 63, 67, 74, 1, NULL, '2021-04-16 01:00:42'),
-(63, '1618535620256', 'john', 'doe', 'suazo', '123 main st.', '123 main st.', 'male', '2021-04-20', '09959768531', 'membership1@gmail.com', '5f4dcc3b5aa765d61d8327deb882cf99', 6, 123, 'regular', 6, '', 'enrico suazo', 'chuchie chan', 'chuchie chan', 1, 1, 'akjhfdjadfahfdajfh', 'hjahsdjfahfdsja', 'sajdhfajfhsajsjfs', 63, 67, 67, 1, NULL, '2021-04-16 01:13:40'),
-(67, '16185463592127', 'john', 'middlename', 'cena', 'Cheriffer', '123 main st.', 'female', '2021-04-13', '090283924823', 'membership2@gmail.com', '5f4dcc3b5aa765d61d8327deb882cf99', 6, 123, 'regular', 7, '', 'johnny doe sr.', 'melissa Yveth', 'melissa Yveth', 1, 1, 'aaaaaaaaaaaaaaaaa', 'bbbbbbbbbbbbb', 'ccccccccccccccc', 63, 67, 74, 1, NULL, '2021-04-16 04:12:39'),
-(69, '16207201413505', 'julia', 'de jesus', 'de jesus', 'CHERIFFER', '123 main st.', 'female', '2021-04-28', '973287482', 'president@gmail.com', '5f4dcc3b5aa765d61d8327deb882cf99', 3, 123, 'regular', 6, '', 'enrico suazo', 'chuchie chan', 'chuchie chan', 1, 1, '1212', '1221', '1212', 63, 67, 74, 1, NULL, '2021-05-11 08:02:21'),
-(74, '1620785424769', 'Gemma', 'George Mitchell', 'Walton', 'Est architecto nostr', 'Voluptatibus dicta i', 'male', '16-Feb-1985', '77', 'membership3@gmail.com', '5f4dcc3b5aa765d61d8327deb882cf99', 6, 62, 'job_order', 1, 'Vera Velazquez', 'Francesca Hartman', 'Silas Hayes', 'Commodi sunt aliquid', 1, 1, 'Fugiat quaerat est', 'Quia occaecat eiusmo', 'Sit corrupti volupt', 63, 67, 74, 1, NULL, '2021-05-12 02:10:24'),
-(78, '16208744364997', 'Forrest', 'Lysandra Hooper', 'Goodwin', 'Libero alias qui ad ', 'Sit veniam fugit e', 'female', '11-Nov-2008', '539', 'financial1@gmail.com', '5f4dcc3b5aa765d61d8327deb882cf99', 7, 16, 'regular', 1, 'Hasad Larsen', 'Britanney Flynn', 'Aurora Wilcox', 'Eos excepteur esse s', 1, 1, 'Quia omnis autem eli', 'Atque qui atque est ', 'Doloremque ea conseq', 63, 67, 74, 1, NULL, '2021-05-13 02:53:56'),
-(79, '16208744623124', 'Kay', 'Emery Jarvis', 'Booth', 'Quam in aliquam accu', 'Ut voluptate dolorem', 'male', '01-Oct-1976', '688', 'financial2@gmail.com', '5f4dcc3b5aa765d61d8327deb882cf99', 7, 4, 'regular', 4, 'Ursula Watts', 'Baxter Pacheco', 'Galvin Wallace', 'Quis laboris occaeca', 1, 1, 'Sit officia ex qui ', 'Enim voluptatem rat', 'Incidunt culpa atq', 63, 67, 74, 1, NULL, '2021-05-13 02:54:22'),
-(80, '162087448481', 'Guinevere', 'Lillith Mitchell', 'Dillon', 'Quasi ut et et volup', 'Maiores quam perspic', 'male', '01-Jan-1976', '556', 'financial3@gmail.com', '5f4dcc3b5aa765d61d8327deb882cf99', 7, 29, 'regular', 9, 'Melinda Day', 'Shana Hamilton', 'Jolene Lawson', 'Maxime quidem occaec', 1, 1, 'Sint quisquam vero r', 'Ratione beatae cupid', 'Mollit consectetur ', 63, 67, 74, 1, NULL, '2021-05-13 02:54:44'),
-(81, '16210403791219', 'Hanna', 'Chastity Dickerson', 'Mitchell', 'Laboris veniam vero', 'Aut aut sit velit n', 'female', '30-Sep-1977', '152', 'treasurer@gmail.com', '5f4dcc3b5aa765d61d8327deb882cf99', 4, 44, 'job_order', 4, 'Virginia Hardy', 'Elton Estrada', 'Claire Beasley', 'Cillum excepteur sus', 1, 1, 'Facilis amet obcaec', 'Incididunt aute dign', 'Commodi deleniti seq', 63, 67, 74, 1, NULL, '2021-05-15 00:59:39'),
-(83, '1621649608733', 'pikachu', 'Chaney Hale', 'Spencer', 'Est soluta sint dolo', 'Reprehenderit velit', 'male', '12-Jan-1972', '312', 'pikachu@gmail.com', '5f4dcc3b5aa765d61d8327deb882cf99', 2, 43, 'job_order', 8, 'Amela Matthews', 'Benjamin Lancaster', 'Quyn Vang', 'Aut voluptas non arc', 1, 1, 'Pariatur Facere lau', 'Sed quos et labore q', 'Explicabo Libero ex', 63, 67, 74, 1, NULL, '2021-05-22 02:13:28'),
-(84, '16216625941991', 'wendell', 'chan', 'suazo', 'Doloremque tempore ', 'Hic dolores in volup', 'male', '13-Jan-1978', '293', 'wendellchansuazo11@gmail.com', '5f4dcc3b5aa765d61d8327deb882cf99', 2, 13, 'regular', 4, 'Lois Wolf', 'Blaine Hamilton', 'Fuller Albert', 'Corrupti architecto', 1, 1, 'Eos odio sed nostrum', 'Dolores dolor impedi', 'Aut possimus est i', 63, 67, 74, 1, NULL, '2021-05-22 05:49:54'),
-(85, '1623464005448', 'jerald', 'Ferris Hull', 'lim', 'Quis numquam volupta', 'Enim ex voluptatem ', 'male', '09-Nov-1990', '414', 'jerald@gmail.com', '5f4dcc3b5aa765d61d8327deb882cf99', 2, 81, 'regular', 7, 'Christian Cochran', 'Noah Frederick', 'Rina King', 'Laboris dolor dolore', 1, 1, 'asdfas', 'fsafsa', 'fsa', 63, 67, 74, 1, NULL, '2021-06-12 02:13:25'),
-(86, '1623552841589', 'mika', 'Xavier Golden', 'test', 'Quibusdam voluptate ', 'Blanditiis dolor con', 'female', '27-Apr-2019', '237', 'test123@gmail.com', '5f4dcc3b5aa765d61d8327deb882cf99', 2, 1, 'regular', 10, 'Herman Simon', 'Declan Love', 'Curran Burgess', 'Inventore illo sint ', 1, 1, 'Ex fuga Voluptas es', 'Commodo veniam duci', 'Soluta dignissimos i', 63, 74, 67, 1, NULL, '2021-06-13 02:54:01'),
-(87, '1624079979506', 'Victor', 'Felicia Roth', 'Lloyd', 'Rerum velit ea quo ', 'Ad omnis consequatur', 'male', '09-Dec-2010', '561', 'test1234@gmail.com', '5f4dcc3b5aa765d61d8327deb882cf99', 2, 8, 'regular', 5, 'Lance Cherry', 'Ginger Landry', 'Larissa Gray', 'Libero id doloribus ', 1, 1, 'Quae dolorum officii', 'Aut non optio quide', 'Veritatis doloribus ', 67, 63, 74, 1, 'lack of documents needed', '2021-06-19 05:19:39'),
-(88, '1624170083167', 'melvin', 'mec', 'salonga', 'Nemo sit proident r', 'Sed sunt officia nis', 'female', '09-Nov-2004', '411', 'melvin@gmail.com', '5f4dcc3b5aa765d61d8327deb882cf99', 2, 2, 'regular', 4, 'Idola England', 'Bo Kelly', 'Jada Underwood', 'Corporis dignissimos', 1, 1, 'Voluptate repellendu', 'In ex quo minim ut', 'Sed non maxime molli', 63, 67, 74, 1, NULL, '2021-06-20 06:21:23');
+INSERT INTO `users` (`id`, `account_number`, `firstname`, `middlename`, `lastname`, `home_address`, `permanent_address`, `gender`, `birth_date`, `contact_number`, `email`, `password`, `position_id`, `sg`, `employment_status`, `department_id`, `name_of_spouse`, `fathers_name`, `mothers_maiden_name`, `beneficiary`, `paid_membership`, `active`, `reason1`, `reason2`, `reason3`, `approved_by_m1`, `approved_by_m2`, `approved_by_m3`, `approved_by_president`, `reason_for_decline`, `is_comaker`, `created_at`) VALUES
+(61, '1618534842192', 'micaella', 'middlename', 'gadaza', '123 main st.', '123 main st.', 'female', '1999-01-13', '099588278272', 'admin@lspu.edu.ph', '21232f297a57a5a743894a0e4a801fc3', 1, 123, 'regular', 4, '', 'johnny doe sr.', 'melissa Yveth', 'melissa Yveth', 1, 1, 'asdafsdafsa', 'sdafsafa', 'dafdsaf', 63, 67, 74, 1, NULL, 0, '2021-04-16 01:00:42'),
+(63, '1618535620256', 'john', 'doe', 'suazo', '123 main st.', '123 main st.', 'male', '2021-04-20', '09959768531', 'membership1@lspu.edu.ph', '5f4dcc3b5aa765d61d8327deb882cf99', 6, 123, 'regular', 6, '', 'enrico suazo', 'chuchie chan', 'chuchie chan', 1, 1, 'akjhfdjadfahfdajfh', 'hjahsdjfahfdsja', 'sajdhfajfhsajsjfs', 63, 67, 67, 1, NULL, 0, '2021-04-16 01:13:40'),
+(67, '16185463592127', 'john', 'middlename', 'cena', 'Cheriffer', '123 main st.', 'female', '2021-04-13', '090283924823', 'membership2@lspu.edu.ph', '5f4dcc3b5aa765d61d8327deb882cf99', 6, 123, 'regular', 7, '', 'johnny doe sr.', 'melissa Yveth', 'melissa Yveth', 1, 1, 'aaaaaaaaaaaaaaaaa', 'bbbbbbbbbbbbb', 'ccccccccccccccc', 63, 67, 74, 1, NULL, 0, '2021-04-16 04:12:39'),
+(69, '16207201413505', 'julia', 'de jesus', 'de jesus', 'CHERIFFER', '123 main st.', 'female', '2021-04-28', '973287482', 'president@lspu.edu.ph', '5f4dcc3b5aa765d61d8327deb882cf99', 3, 123, 'regular', 6, '', 'enrico suazo', 'chuchie chan', 'chuchie chan', 1, 1, '1212', '1221', '1212', 63, 67, 74, 1, NULL, 0, '2021-05-11 08:02:21'),
+(74, '1620785424769', 'Gemma', 'George Mitchell', 'Walton', 'Est architecto nostr', 'Voluptatibus dicta i', 'male', '16-Feb-1985', '77', 'membership3@lspu.edu.ph', '5f4dcc3b5aa765d61d8327deb882cf99', 6, 62, 'job_order', 1, 'Vera Velazquez', 'Francesca Hartman', 'Silas Hayes', 'Commodi sunt aliquid', 1, 1, 'Fugiat quaerat est', 'Quia occaecat eiusmo', 'Sit corrupti volupt', 63, 67, 74, 1, NULL, 0, '2021-05-12 02:10:24'),
+(78, '16208744364997', 'Forrest', 'Lysandra Hooper', 'Goodwin', 'Libero alias qui ad ', 'Sit veniam fugit e', 'female', '11-Nov-2008', '539', 'financial1@lspu.edu.ph', '5f4dcc3b5aa765d61d8327deb882cf99', 7, 16, 'regular', 1, 'Hasad Larsen', 'Britanney Flynn', 'Aurora Wilcox', 'Eos excepteur esse s', 1, 1, 'Quia omnis autem eli', 'Atque qui atque est ', 'Doloremque ea conseq', 63, 67, 74, 1, NULL, 0, '2021-05-13 02:53:56'),
+(79, '16208744623124', 'Kay', 'Emery Jarvis', 'Booth', 'Quam in aliquam accu', 'Ut voluptate dolorem', 'male', '01-Oct-1976', '688', 'financial2@lspu.edu.ph', '5f4dcc3b5aa765d61d8327deb882cf99', 7, 4, 'regular', 4, 'Ursula Watts', 'Baxter Pacheco', 'Galvin Wallace', 'Quis laboris occaeca', 1, 1, 'Sit officia ex qui ', 'Enim voluptatem rat', 'Incidunt culpa atq', 63, 67, 74, 1, NULL, 0, '2021-05-13 02:54:22'),
+(80, '162087448481', 'Guinevere', 'Lillith Mitchell', 'Dillon', 'Quasi ut et et volup', 'Maiores quam perspic', 'male', '01-Jan-1976', '556', 'financial3@lspu.edu.ph', '5f4dcc3b5aa765d61d8327deb882cf99', 7, 29, 'regular', 9, 'Melinda Day', 'Shana Hamilton', 'Jolene Lawson', 'Maxime quidem occaec', 1, 1, 'Sint quisquam vero r', 'Ratione beatae cupid', 'Mollit consectetur ', 63, 67, 74, 1, NULL, 0, '2021-05-13 02:54:44'),
+(81, '16210403791219', 'Hanna', 'Chastity Dickerson', 'Mitchell', 'Laboris veniam vero', 'Aut aut sit velit n', 'female', '30-Sep-1977', '152', 'treasurer@lspu.edu.ph', '5f4dcc3b5aa765d61d8327deb882cf99', 4, 44, 'job_order', 4, 'Virginia Hardy', 'Elton Estrada', 'Claire Beasley', 'Cillum excepteur sus', 1, 1, 'Facilis amet obcaec', 'Incididunt aute dign', 'Commodi deleniti seq', 63, 67, 74, 1, NULL, 0, '2021-05-15 00:59:39'),
+(83, '1621649608733', 'pikachu', 'Chaney Hale', 'Spencer', 'Est soluta sint dolo', 'Reprehenderit velit', 'male', '12-Jan-1972', '312', 'pikachu@lspu.edu.ph', '5f4dcc3b5aa765d61d8327deb882cf99', 2, 43, 'job_order', 8, 'Amela Matthews', 'Benjamin Lancaster', 'Quyn Vang', 'Aut voluptas non arc', 1, 1, 'Pariatur Facere lau', 'Sed quos et labore q', 'Explicabo Libero ex', 63, 67, 74, 1, NULL, 0, '2021-05-22 02:13:28'),
+(84, '16216625941991', 'wendell', 'chan', 'suazo', 'Doloremque tempore ', 'Hic dolores in volup', 'male', '13-Jan-1978', '293', 'wendellchansuazo11@lspu.edu.ph', '5f4dcc3b5aa765d61d8327deb882cf99', 2, 13, 'regular', 4, 'Lois Wolf', 'Blaine Hamilton', 'Fuller Albert', 'Corrupti architecto', 1, 1, 'Eos odio sed nostrum', 'Dolores dolor impedi', 'Aut possimus est i', 63, 67, 74, 1, NULL, 0, '2021-05-22 05:49:54'),
+(85, '1623464005448', 'jerald', 'Ferris Hull', 'lim', 'Quis numquam volupta', 'Enim ex voluptatem ', 'male', '09-Nov-1990', '414', 'jerald@lspu.edu.ph', '5f4dcc3b5aa765d61d8327deb882cf99', 2, 81, 'regular', 7, 'Christian Cochran', 'Noah Frederick', 'Rina King', 'Laboris dolor dolore', 1, 1, 'asdfas', 'fsafsa', 'fsa', 63, 67, 74, 1, NULL, 0, '2021-06-12 02:13:25'),
+(86, '1623552841589', 'mika', 'Xavier Golden', 'test', 'Quibusdam voluptate ', 'Blanditiis dolor con', 'female', '27-Apr-2019', '237', 'test123@lspu.edu.ph', '5f4dcc3b5aa765d61d8327deb882cf99', 2, 1, 'regular', 10, 'Herman Simon', 'Declan Love', 'Curran Burgess', 'Inventore illo sint ', 1, 1, 'Ex fuga Voluptas es', 'Commodo veniam duci', 'Soluta dignissimos i', 63, 74, 67, 1, NULL, 0, '2021-06-13 02:54:01'),
+(88, '1624170083167', 'melvin', 'mec', 'salonga', 'Nemo sit proident r', 'Sed sunt officia nis', 'female', '09-Nov-2004', '411', 'melvin@lspu.edu.ph', '5f4dcc3b5aa765d61d8327deb882cf99', 2, 2, 'regular', 4, 'Idola England', 'Bo Kelly', 'Jada Underwood', 'Corporis dignissimos', 1, 1, 'Voluptate repellendu', 'In ex quo minim ut', 'Sed non maxime molli', 63, 67, 74, 1, NULL, 0, '2021-06-20 06:21:23'),
+(89, '16267475771563', 'Ivana', 'Axel Santos', 'Stafford', 'In laudantium fuga', 'Voluptatem nisi des', 'male', '23-Apr-2014', '569', 'wcsuazo@lspu.edu.ph', '5f4dcc3b5aa765d61d8327deb882cf99', 4, 32, 'job_order', 6, 'Basil Jacobson', 'Leslie Farrell', 'Shad White', 'Aperiam vel consequa', 0, 0, 'Neque nihil consequa', 'Voluptas qui et face', 'Ad quisquam iure min', NULL, NULL, NULL, 0, NULL, 0, '2021-07-20 02:19:37'),
+(90, '1626747762181', 'Stephanie', 'Florence Holt', 'Stevenson', 'Quam molestias dolor', 'Voluptatem amet rec', 'male', '18-Jan-2016', '281', 'wcsuazo1@lspu.edu.ph', 'f3ed11bbdb94fd9ebdefbaf646ab94d3', 6, 48, 'regular', 9, 'Zane Burt', 'Oren Best', 'Aileen Lane', 'Omnis nihil quasi do', 0, 0, 'Provident qui fugia', 'Sunt nisi consequat', 'Elit ullam et aut d', NULL, NULL, NULL, 0, NULL, 0, '2021-07-20 02:22:42'),
+(91, '16267488193147', 'Blake', 'Nelle Mayer', 'Robinson', 'Culpa reprehenderit', 'Nulla rerum labore u', 'male', '23-Jul-1995', '929', 'micaella.gadaza@lspu.edu.ph', '5f4dcc3b5aa765d61d8327deb882cf99', 4, 25, 'regular', 5, 'Nathaniel Diaz', 'Silas Foley', 'Chanda Powers', 'Ullam qui aliquam vi', 0, 0, 'Non excepteur eius e', 'At earum vero optio', 'Officia magni in eu ', NULL, NULL, NULL, 0, NULL, 0, '2021-07-20 02:40:19'),
+(92, '1626760133277', 'Jackson', 'Jakeem May', 'Hanson', 'Ipsum do quo aut vol', 'Ea est officia labor', 'female', '13-Aug-1987', '119', 'test.one@lspu.edu.ph', '5f4dcc3b5aa765d61d8327deb882cf99', 2, 81, 'regular', 5, 'Malcolm Langley', 'Casey Fitzgerald', 'Alvin Rowland', 'Vel possimus cillum', 0, 0, 'Deserunt aut minus n', 'Natus adipisci eveni', 'Reiciendis perferend', NULL, NULL, NULL, 0, NULL, 0, '2021-07-20 05:48:53');
 
 -- --------------------------------------------------------
 
@@ -351,6 +354,12 @@ INSERT INTO `voucher_categories` (`id`, `name`) VALUES
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `declined_comaker_loans`
+--
+ALTER TABLE `declined_comaker_loans`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `departments`
@@ -435,6 +444,12 @@ ALTER TABLE `voucher_categories`
 --
 
 --
+-- AUTO_INCREMENT for table `declined_comaker_loans`
+--
+ALTER TABLE `declined_comaker_loans`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
 -- AUTO_INCREMENT for table `departments`
 --
 ALTER TABLE `departments`
@@ -444,13 +459,13 @@ ALTER TABLE `departments`
 -- AUTO_INCREMENT for table `fixed_deposits`
 --
 ALTER TABLE `fixed_deposits`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
 
 --
 -- AUTO_INCREMENT for table `loans`
 --
 ALTER TABLE `loans`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=94;
 
 --
 -- AUTO_INCREMENT for table `loan_comakers`
@@ -474,7 +489,7 @@ ALTER TABLE `loan_types`
 -- AUTO_INCREMENT for table `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=151;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=154;
 
 --
 -- AUTO_INCREMENT for table `positions`
@@ -486,13 +501,13 @@ ALTER TABLE `positions`
 -- AUTO_INCREMENT for table `savings`
 --
 ALTER TABLE `savings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=93;
 
 --
 -- AUTO_INCREMENT for table `vouchers`
