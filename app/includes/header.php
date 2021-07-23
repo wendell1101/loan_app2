@@ -7,6 +7,14 @@ if (isset($_POST['logout'])) {
     header('Location: login.php');
 }
 
+if (isset($_SESSION['id'])) {
+    $user_id = $_SESSION['id'];
+
+    $sql = "SELECT * FROM loans WHERE comaker1_id=$user_id AND approved_by_c1=0 OR comaker2_id=$user_id AND  approved_by_c2=0";
+    $stmt = $conn->query($sql);
+    $comakerRequestCount = $stmt->rowCount();
+}
+
 ?>
 
 
@@ -49,11 +57,12 @@ if (isset($_POST['logout'])) {
             <li>
                 <a href="loans.php">Loans</a>
             </li>
-            <li>
-                <a href="comakers.php">Comakers</a>
-            </li>
+
 
             <?php if (User::Auth()) : ?>
+                <li>
+                    <a href="comakers.php">Comakers <span class="btn btn-sm btn-warning"><?php echo $comakerRequestCount ?></span></a>
+                </li>
                 <li>
                     <a href="profile.php?id=<?php echo $_SESSION['id'] ?>">Profile</a>
                 </li>
@@ -94,11 +103,12 @@ if (isset($_POST['logout'])) {
         <li>
             <a href="loans.php">Loans</a>
         </li>
-        <li>
-            <a href="comakers.php">Comakers</a>
-        </li>
+
 
         <?php if (User::Auth()) : ?>
+            <li>
+                <a href="comakers.php">Comakers <span class="btn btn-sm btn-warning"><?php echo $comakerRequestCount ?></span></a>
+            </li>
             <li>
                 <a href="profile.php?id=<?php echo $_SESSION['id'] ?>">Profile</a>
             </li>
